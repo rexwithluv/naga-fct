@@ -1,0 +1,57 @@
+services:
+
+  mariadb:
+    image: mariadb:lts
+    container_name: fct-mariadb
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+    volumes:
+      - fct-db:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - fct-network
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: fct-phpmyadmin
+    environment:
+      - PMA_HOST=mariadb
+      - PMA_PORT=3306
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    ports:
+      - 8080:80
+    depends_on:
+      - mariadb
+    networks:
+      - fct-network
+
+  backend:
+    build:
+      context: ./backend
+    container_name: fct-backend-springboot
+    ports:
+      - 8081:9000
+    networks:
+      - fct-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: fct-frontend-vue
+    ports:
+      - 6321:80
+    networks:
+      - fct-network
+
+networks:
+  fct-network:
+    name: fct-network
+    driver: bridge
+
+volumes:
+  fct-db:
+    name: fct-db
