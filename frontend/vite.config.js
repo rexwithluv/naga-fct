@@ -29,6 +29,9 @@ export default defineConfig({
   },
   server: {
     host: true,
-    allowedHosts: process.env.VITE_ALLOWED_HOSTS.split(",") || "localhost",
+
+    // Usamos ?.split(",") para que no falle en producción, pero esta línea
+    // solo tiene importancia cuando ejecutamos en desarrollo
+    allowedHosts: process.env.VITE_ALLOWED_HOSTS?.split(",") || "localhost",
   },
 })
