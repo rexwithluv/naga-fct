@@ -20,6 +20,14 @@
 <script>
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+
+export default {
+  components: {
+    RouterLink,
+    RouterView,
+    HelloWorld
+  }
+}
 </script>
 
 <style scoped>
