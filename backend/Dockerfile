@@ -1,3 +1,5 @@
+FROM maven:latest AS build
+
 # La imagen oficial de JDK está obsoleta
 FROM eclipse-temurin:21
 WORKDIR /app
