@@ -1,33 +1,33 @@
 services:
 
-  mariadb:
-    image: mariadb:lts
-    container_name: fct-mariadb
+  db:
+    image: postgres:latest
+    container_name: fct-postgresql
     environment:
-      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
-      - MARIADB_DATABASE=${MARIADB_DATABASE}
-      - MARIADB_USER=${MARIADB_USER}
-      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
     volumes:
-      - fct-db:/var/lib/mysql
+      - fct-db:/var/lib/postgresql/data
     ports:
-      - 3306:3306
+      - 5432:5432
     networks:
       - fct-network
 
-  phpmyadmin:
-    image: phpmyadmin:latest
-    container_name: fct-phpmyadmin
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: fct-pgadmin
     environment:
-      - PMA_HOST=mariadb
-      - PMA_PORT=3306
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
     ports:
       - 8080:80
     depends_on:
-      - mariadb
+      - db
     networks:
       - fct-network
+
 
   backend:
     build:
