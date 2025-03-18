@@ -1,4 +1,3 @@
--- En PostgreSQL, crea la base de datos (esto se ejecuta fuera de la conexión a fct)
 CREATE DATABASE fct;
 
 CREATE TABLE IF NOT EXISTS cursos (
@@ -109,8 +108,6 @@ CREATE TABLE IF NOT EXISTS correos (
     empresa_id bigint NOT NULL,
     curso_academico varchar(50) NOT NULL
 );
-
--- Foreign Keys
 
 ALTER TABLE alumnos
 ADD CONSTRAINT alumnos_concello_id_fk FOREIGN KEY (concello_id) REFERENCES concellos (id);

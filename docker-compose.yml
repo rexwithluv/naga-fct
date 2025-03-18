@@ -1,7 +1,7 @@
 services:
-
   db:
-    image: postgres:latest
+    build:
+      context: ./db
     container_name: fct-postgresql
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -13,7 +13,6 @@ services:
       - 5432:5432
     networks:
       - fct-network
-
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -27,7 +26,6 @@ services:
       - db
     networks:
       - fct-network
-
 
   backend:
     build:
