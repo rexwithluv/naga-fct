@@ -1,0 +1,772 @@
+-- TEST DATA
+
+INSERT INTO
+    concellos (nombre)
+VALUES ('Agolada'),
+    ('Arbo'),
+    ('Baiona'),
+    ('Barro'),
+    ('Bueu'),
+    ('Caldas de Reis'),
+    ('Cambados'),
+    ('Campo Lameiro'),
+    ('Cangas'),
+    ('A Cañiza'),
+    ('Catoira'),
+    ('Cerdedo-Cotobade'),
+    ('Covelo'),
+    ('Crecente'),
+    ('Cuntis'),
+    ('Dozón'),
+    ('A Estrada'),
+    ('Forcarei'),
+    ('Fornelos de Montes'),
+    ('Gondomar'),
+    ('O Grove'),
+    ('A Guarda'),
+    ('A Illa de Arousa'),
+    ('Lalín'),
+    ('A Lama'),
+    ('Marín'),
+    ('Meaño'),
+    ('Meis'),
+    ('Moaña'),
+    ('Mondariz'),
+    ('Mondariz-Balneario'),
+    ('Moraña'),
+    ('Mos'),
+    ('As Neves'),
+    ('Nigrán'),
+    ('Oia'),
+    ('Pazos de Borbén'),
+    ('Poio'),
+    ('Ponte Caldelas'),
+    ('Ponteareas'),
+    ('Pontecesures'),
+    ('Pontevedra'),
+    ('O Porriño'),
+    ('Portas'),
+    ('Redondela'),
+    ('Ribadumia'),
+    ('Rodeiro'),
+    ('O Rosal'),
+    ('Salceda de Caselas'),
+    ('Salvaterra de Miño'),
+    ('Sanxenxo'),
+    ('Silleda'),
+    ('Soutomaior'),
+    ('Tomiño'),
+    ('Tui'),
+    ('Valga'),
+    ('Vigo'),
+    ('Vila de Cruces'),
+    ('Vilaboa'),
+    ('Vilagarcía de Arousa'),
+    ('Vilanova de Arousa');
+
+INSERT INTO
+    especialidades (nombre)
+VALUES (
+        "Informática y Comunicaciones"
+    ),
+    ("Imagen Personal");
+
+INSERT INTO
+    estados_alumnos (nombre)
+VALUES ('Cursando'),
+    ('De baja'),
+    ('Graduado'),
+    ('En prácticas');
+
+INSERT INTO
+    roles_usuarios (nombre)
+VALUES ("Superusuario"),
+    ("Usuario estándar");
+
+---
+
+INSERT INTO
+    empresas (
+        nombre,
+        concello_id,
+        direccion,
+        observaciones,
+        especialidad_id,
+        contacto_nombre,
+        contacto_email,
+        contacto_telefono,
+        disponible,
+        plazas
+    )
+VALUES (
+        'Tecnologías Pontevivas',
+        1,
+        'Avda. de Galicia, 25, Pontevedra',
+        'Empresa dedicada al desarrollo de software para empresas locales',
+        1,
+        'María López',
+        'maria@pontevivas.com',
+        '986123456',
+        TRUE
+    ),
+    (
+        'Consultores de Innovación',
+        2,
+        'Calle de la Costa, 13, Poio',
+        'Consultoría en innovación tecnológica y digitalización',
+        1,
+        'José Ruiz',
+        'jose@innovacionconsultores.com',
+        '986234567',
+        TRUE
+    ),
+    (
+        'Pontefrutas S.L.',
+        3,
+        'Calle Real, 45, Marín',
+        'Distribución de productos frescos locales',
+        2,
+        'Carlos Gómez',
+        'carlos@pontefrutas.com',
+        '986345678',
+        TRUE
+    ),
+    (
+        'AutoRepuestos Galicia',
+        4,
+        'Polígono Industrial, nave 6, Sanxenxo',
+        'Venta de repuestos y accesorios para vehículos',
+        1,
+        'Lucía Martínez',
+        'lucia@autorepuestosgalicia.com',
+        '986456789',
+        TRUE
+    ),
+    (
+        'Academia Inglés Pontevedra',
+        5,
+        'Calle del Mar, 12, Vilagarcía de Arousa',
+        'Centro de formación en idiomas y preparación de exámenes internacionales',
+        2,
+        'Antonio Pérez',
+        'antonio@academiaingles.com',
+        '986567890',
+        TRUE
+    ),
+    (
+        'Ingeniería y Obras Noroeste',
+        6,
+        'Rúa do Conde, 8, O Grove',
+        'Servicios de ingeniería civil, construcción y proyectos de infraestructura',
+        1,
+        'Ana Fernández',
+        'ana@ingenierianoroeste.com',
+        '986678901',
+        FALSE
+    ),
+    (
+        'Distribuciones Albariño',
+        7,
+        'Rúa da Torre, 5, Combarro',
+        'Distribución de vinos y licores gallegos',
+        2,
+        'Miguel Rodríguez',
+        'miguel@distribucionesalbariño.com',
+        '986789012',
+        TRUE
+    ),
+    (
+        'Muebles Litoral',
+        8,
+        'Calle de la Playa, 32, San Vicente do Mar',
+        'Fabricación y venta de muebles y artículos de decoración para el hogar',
+        1,
+        'Beatriz Sánchez',
+        'beatriz@muebleslitoral.com',
+        '986890123',
+        TRUE
+    ),
+    (
+        'Ferrogal Industria',
+        9,
+        'Polígono Industrial, 3, A Estrada',
+        'Fabricación y distribución de piezas de metal para maquinaria industrial',
+        1,
+        'David Álvarez',
+        'david@ferrogalindustria.com',
+        '986901234',
+        TRUE
+    ),
+    (
+        'Clínica Dental Sorriso',
+        10,
+        'Rúa da Paz, 15, Pontevedra',
+        'Servicios dentales y ortodoncia',
+        2,
+        'Raquel González',
+        'raquel@clinicadentalsorriso.com',
+        '986012345',
+        TRUE
+    );
+
+INSERT INTO
+    cursos (nombre, especialidad_id)
+VALUES (
+        "Ciclo Formativo Básico de Peiteado e Estética",
+        2
+    ),
+    (
+        "Ciclo Formativo Medio de Estética e Beleza",
+        2
+    ),
+    (
+        "Ciclo Formativo Medio de Peiteado e Cosmética Capilar",
+        2
+    ),
+    (
+        "Ciclo Formativo Superior de Asesoría de Imaxe Persoal e Corporativa",
+        2
+    ),
+    (
+        "Ciclo Formativo Superior de Estética Integral e Benestar",
+        2
+    ),
+    (
+        "Ciclo Formativo Superior de Caracterización e Maquillaxe Profesional",
+        2
+    ),
+    (
+        "Ciclo Formativo Superior de Estilismo e Dirección de Peiteado",
+        2
+    ),
+    (
+        "Ciclo Formativo Básico de Informática de Oficina",
+        1
+    ),
+    (
+        "Ciclo Formativo Medio de Sistemas Microinformáticos e Redes",
+        1
+    ),
+    (
+        "Ciclo Formativo Superior de Administración de Sistemas Informáticos en Rede",
+        1
+    ),
+    (
+        "Ciclo Formativo Superior de Desenvolvemento de Aplicacións Multiplataforma",
+        1
+    ),
+    (
+        "Ciclo Formativo Superior de Desenvolvemento de Aplicacións Web",
+        1
+    );
+
+INSERT INTO
+    skills (nombre, especialidad_id)
+VALUES ('Python', 1),
+    ('JavaScript', 1),
+    ('Linux', 1),
+    ('Docker', 1),
+    ('Git', 1),
+    ('Redes', 1),
+    ('Bases de datos SQL', 1),
+    ('Ciberseguridad', 1),
+    ('Desarrollo web', 1),
+    ('Machine Learning', 1),
+    ('Corte de pelo', 2),
+    ('Colorimetría', 2),
+    ('Maquillaje profesional', 2),
+    ('Estilismo y moda', 2),
+    ('Uñas esculpidas', 2),
+    ('Depilación', 2),
+    ('Peinados y recogidos', 2),
+    ('Asesoría de imagen', 2),
+    ('Masajes faciales', 2),
+    ('Tratamientos capilares', 2);
+
+INSERT INTO
+    tutores_centro (
+        nombre,
+        apellidos,
+        email,
+        curso_id,
+        activo
+    )
+VALUES (
+        'Ana',
+        'González',
+        'ana.gonzalez@ejemplo.com',
+        1,
+        true
+    ),
+    (
+        'Carlos',
+        'Rodríguez',
+        'carlos.rodriguez@ejemplo.com',
+        2,
+        true
+    ),
+    (
+        'Laura',
+        'Fernández',
+        'laura.fernandez@ejemplo.com',
+        3,
+        true
+    ),
+    (
+        'Pedro',
+        'Martínez',
+        'pedro.martinez@ejemplo.com',
+        4,
+        true
+    ),
+    (
+        'Marta',
+        'Sánchez',
+        'marta.sanchez@ejemplo.com',
+        5,
+        true
+    ),
+    (
+        'José',
+        'López',
+        'jose.lopez@ejemplo.com',
+        6,
+        true
+    ),
+    (
+        'Isabel',
+        'Pérez',
+        'isabel.perez@ejemplo.com',
+        7,
+        true
+    ),
+    (
+        'David',
+        'García',
+        'david.garcia@ejemplo.com',
+        8,
+        true
+    ),
+    (
+        'Sofía',
+        'Torres',
+        'sofia.torres@ejemplo.com',
+        9,
+        true
+    ),
+    (
+        'Luis',
+        'Hernández',
+        'luis.hernandez@ejemplo.com',
+        10,
+        true
+    ),
+    (
+        'Bea',
+        'Jiménez',
+        'bea.jimenez@ejemplo.com',
+        11,
+        true
+    ),
+    (
+        'Antonio',
+        'Vázquez',
+        'antonio.vazquez@ejemplo.com',
+        12,
+        true
+    );
+
+INSERT INTO
+    tutores_empresa (
+        empresa_id,
+        nombre,
+        apellidos,
+        email,
+        telefono
+    )
+VALUES (
+        1,
+        'María',
+        'López',
+        'maria@pontevivas.com',
+        '986123456'
+    ),
+    (
+        2,
+        'José',
+        'Ruiz',
+        'jose@innovacionconsultores.com',
+        '986234567'
+    ),
+    (
+        3,
+        'Carlos',
+        'Gómez',
+        'carlos@pontefrutas.com',
+        '986345678'
+    ),
+    (
+        4,
+        'Lucía',
+        'Martínez',
+        'lucia@autorepuestosgalicia.com',
+        '986456789'
+    ),
+    (
+        5,
+        'Antonio',
+        'Pérez',
+        'antonio@academiaingles.com',
+        '986567890'
+    ),
+    (
+        6,
+        'Ana',
+        'Fernández',
+        'ana@ingenierianoroeste.com',
+        '986678901'
+    ),
+    (
+        7,
+        'Miguel',
+        'Rodríguez',
+        'miguel@distribucionesalbariño.com',
+        '986789012'
+    ),
+    (
+        8,
+        'Beatriz',
+        'Sánchez',
+        'beatriz@muebleslitoral.com',
+        '986890123'
+    ),
+    (
+        9,
+        'David',
+        'Álvarez',
+        'david@ferrogalindustria.com',
+        '986901234'
+    ),
+    (
+        10,
+        'Raquel',
+        'González',
+        'raquel@clinicadentalsorriso.com',
+        '986012345'
+    );
+
+INSERT INTO
+    alumnos (
+        dni_nie,
+        nombre,
+        apellidos,
+        curso_id,
+        email,
+        telefono,
+        concello_id,
+        numero_seguridad_social,
+        estado_id,
+        tutor_empresa_id,
+        tutor_centro_id
+    )
+VALUES (
+        123456789,
+        'Carlos',
+        'Pérez García',
+        1,
+        'carlos.perez@example.com',
+        '986123457',
+        1,
+        123456789,
+        1,
+        1,
+        1
+    ),
+    (
+        987654321,
+        'Ana',
+        'López Fernández',
+        2,
+        'ana.lopez@example.com',
+        '986234568',
+        2,
+        987654321,
+        2,
+        2,
+        2
+    ),
+    (
+        112233445,
+        'Laura',
+        'Martín Sánchez',
+        3,
+        'laura.martin@example.com',
+        '986345679',
+        3,
+        112233445,
+        3,
+        3,
+        3
+    ),
+    (
+        223344556,
+        'Pedro',
+        'Gómez Díaz',
+        4,
+        'pedro.gomez@example.com',
+        '986456780',
+        4,
+        223344556,
+        4,
+        4,
+        4
+    ),
+    (
+        334455667,
+        'Marta',
+        'Vázquez Pérez',
+        5,
+        'marta.vazquez@example.com',
+        '986567891',
+        5,
+        334455667,
+        5,
+        5,
+        5
+    ),
+    (
+        445566778,
+        'José',
+        'Martínez Ruiz',
+        6,
+        'jose.martinez@example.com',
+        '986678902',
+        6,
+        445566778,
+        6,
+        6,
+        6
+    ),
+    (
+        556677889,
+        'Isabel',
+        'González Álvarez',
+        7,
+        'isabel.gonzalez@example.com',
+        '986789013',
+        7,
+        556677889,
+        7,
+        7,
+        7
+    ),
+    (
+        667788990,
+        'David',
+        'López Torres',
+        8,
+        'david.lopez@example.com',
+        '986890124',
+        8,
+        667788990,
+        8,
+        8,
+        8
+    ),
+    (
+        778899001,
+        'Sofía',
+        'Hernández Fernández',
+        9,
+        'sofia.hernandez@example.com',
+        '986901235',
+        9,
+        778899001,
+        9,
+        9,
+        9
+    ),
+    (
+        889900112,
+        'Luis',
+        'Torres López',
+        10,
+        'luis.torres@example.com',
+        '986012346',
+        10,
+        889900112,
+        10,
+        10,
+        10
+    );
+
+INSERT INTO
+    usuarios (
+        email,
+        password,
+        rol_id,
+        tutor_id,
+        activo
+    )
+VALUES (
+        'ana.gonzalez@ejemplo.com',
+        'hashed_password_ana',
+        1,
+        1,
+        true
+    ),
+    (
+        'carlos.rodriguez@ejemplo.com',
+        'hashed_password_carlos',
+        2,
+        2,
+        true
+    ),
+    (
+        'laura.fernandez@ejemplo.com',
+        'hashed_password_laura',
+        2,
+        3,
+        true
+    ),
+    (
+        'pedro.martinez@ejemplo.com',
+        'hashed_password_pedro',
+        2,
+        4,
+        true
+    ),
+    (
+        'marta.sanchez@ejemplo.com',
+        'hashed_password_marta',
+        2,
+        5,
+        true
+    ),
+    (
+        'jose.lopez@ejemplo.com',
+        'hashed_password_jose',
+        2,
+        6,
+        true
+    ),
+    (
+        'isabel.perez@ejemplo.com',
+        'hashed_password_isabel',
+        2,
+        7,
+        true
+    ),
+    (
+        'david.garcia@ejemplo.com',
+        'hashed_password_david',
+        2,
+        8,
+        true
+    ),
+    (
+        'sofia.torres@ejemplo.com',
+        'hashed_password_sofia',
+        2,
+        9,
+        true
+    ),
+    (
+        'luis.hernandez@ejemplo.com',
+        'hashed_password_luis',
+        2,
+        10,
+        true
+    ),
+    (
+        'bea.jimenez@ejemplo.com',
+        'hashed_password_bea',
+        2,
+        11,
+        true
+    ),
+    (
+        'antonio.vazquez@ejemplo.com',
+        'hashed_password_antonio',
+        2,
+        12,
+        true
+    );
+
+---
+
+INSERT INTO
+    alumnos_empresas (
+        alumno_id,
+        empresa_id,
+        fecha_inicio,
+        fecha_fin
+    )
+VALUES (1, 1, '2025-04-01', null),
+    (
+        2,
+        2,
+        '2025-04-05',
+        '2025-07-05'
+    ),
+    (
+        3,
+        3,
+        '2025-04-10',
+        '2025-07-10'
+    ),
+    (
+        4,
+        4,
+        '2025-04-15',
+        '2025-07-15'
+    ),
+    (5, 5, '2025-04-20', null),
+    (
+        6,
+        6,
+        '2025-04-25',
+        '2025-07-25'
+    ),
+    (
+        7,
+        7,
+        '2025-05-01',
+        '2025-08-01'
+    ),
+    (8, 8, '2025-05-05', null),
+    (
+        9,
+        9,
+        '2025-05-10',
+        '2025-08-10'
+    ),
+    (
+        10,
+        10,
+        '2025-05-15',
+        '2025-08-15'
+    );
+
+INSERT INTO
+    empresas_skills (empresa_id, skill_id)
+VALUES (1, 1),
+    (1, 2),
+    (2, 3),
+    (2, 4),
+    (3, 11),
+    (3, 12),
+    (4, 5),
+    (4, 6),
+    (5, 13),
+    (5, 14),
+    (6, 7),
+    (6, 8),
+    (7, 15),
+    (7, 16),
+    (8, 9),
+    (8, 10),
+    (9, 17),
+    (9, 18),
+    (10, 19),
+    (10, 20);
