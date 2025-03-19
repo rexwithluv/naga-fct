@@ -58,7 +58,8 @@ CREATE TABLE IF NOT EXISTS empresas (
     contacto_nombre VARCHAR(500),
     contacto_email VARCHAR(500),
     contacto_telefono VARCHAR(500),
-    disponible BOOLEAN NOT NULL
+    disponible BOOLEAN NOT NULL,
+    plazas SMALLINT DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS skills (

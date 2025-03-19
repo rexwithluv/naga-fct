@@ -52,6 +52,7 @@ Table empresas {
     contacto_email varchar(500)
     contacto_telefono varchar(500)
     disponible boolean [not null]
+    plazas smallint [default: 0]
 }
 
 Table skills {
