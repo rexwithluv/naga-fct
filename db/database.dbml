@@ -76,7 +76,7 @@ Table tutores_empresa {
     nombre varchar(500) [not null]
     apellidos varchar(500) [not null]
     email varchar(500) [not null]
-    telefono varchar(500)
+    telefono varchar(500) [not null]
 }
 
 Table usuarios {

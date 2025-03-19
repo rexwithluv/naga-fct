@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS tutores_empresa (
     nombre VARCHAR(500) NOT NULL,
     apellidos VARCHAR(500) NOT NULL,
     email VARCHAR(500) NOT NULL,
-    telefono VARCHAR(500)
+    telefono VARCHAR(500) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS usuarios (
