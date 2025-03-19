@@ -8,7 +8,8 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_DB=${POSTGRES_DB}
     volumes:
-      - fct-db:/var/lib/postgresql/data
+      - fct-db:/var/lib/postgresql/data/
+      # - ./db/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
     ports:
       - 5432:5432
     networks:

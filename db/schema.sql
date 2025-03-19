@@ -35,15 +35,12 @@ CREATE TABLE IF NOT EXISTS alumnos (
 );
 
 CREATE TABLE IF NOT EXISTS correos (
-    id BIGSERIAL,
+    id BIGSERIAL PRIMARY KEY,
     fecha DATE NOT NULL,
     usuario_id BIGINT NOT NULL,
     empresa_id BIGINT NOT NULL,
     curso_academico VARCHAR(50) NOT NULL,
-    PRIMARY KEY (id, curso_academico)
-)
-PARTITION BY
-    RANGE (curso_academico);
+);
 
 CREATE TABLE IF NOT EXISTS cursos (
     id BIGSERIAL PRIMARY KEY,
