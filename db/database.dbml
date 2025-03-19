@@ -1,147 +1,128 @@
-Table "cursos" {
-  "id" tinyint [pk, not null, increment]
-  "nombre" varchar(500) [not null]
-  "especialidad_id" tinyint [not null]
+Table concellos {
+    id bigint [pk, unique]
+    nombre varchar(500) [not null]
 }
 
-Table "especialidades" {
-  "id" tinyint [pk, not null, increment]
-  "nombre" varchar(500) [unique, not null]
+Table especialidades {
+    id serial [pk, unique]
+    nombre varchar(500) [not null]
 }
 
-Table "alumnos" {
-  "id" bigint [pk, not null, increment]
-  "dni_nie" bigint [unique, not null]
-  "nombre" varchar(500) [not null]
-  "apellidos" varchar(500) [not null]
-  "curso_id" tinyint [not null]
-  "email" varchar(500) [not null]
-  "telefono" varchar(500) [not null]
-  "concello_id" bigint [not null]
-  "numero_seguridad_social" bigint
-  "estado_id" tinyint [not null]
-  "tutor_empresa_id" bigint [not null]
-  "tutor_centro_id" bigint [not null]
+Table estados_alumnos {
+    id serial [pk, unique]
+    nombre varchar(500) [not null]
 }
 
-Table "estados_alumnos" {
-  "id" tinyint [pk, not null, increment]
-  "nombre" varchar(500) [unique, not null]
+Table roles_usuarios {
+    id serial [pk, unique]
+    nombre varchar(500) [not null]
 }
 
-Table "skills" {
-  "id" bigint [pk, not null, increment]
-  "nombre" varchar(500) [not null]
-  "especialidad_id" tinyint [not null]
+
+Table alumnos {
+    dni_nie bigint [pk, unique]
+    nombre varchar(500) [not null]
+    apellidos varchar(500) [not null]
+    curso_id int [not null]
+    email varchar(500) [not null]
+    telefono varchar(500) [not null]
+    concello_id bigint [not null]
+    numero_seguridad_social bigint [unique]
+    estado_id int [not null]
+    tutor_empresa_id bigint
+    tutor_centro_id bigint [not null]
 }
 
-Table "empresas" {
-  "id" bigint [pk, not null, increment]
-  "nombre" varchar(500) [not null]
-  "concello_id" bigint [not null]
-  "direccion" varchar(500) [not null]
-  "observaciones" text
-  "especialidad_id" tinyint [not null]
-  "skills_id" bigint [not null]
-  "contacto_nombre" varchar(500)
-  "contacto_email" varchar(500)
-  "contacto_telefono" varchar(500)
-  "disponible" TINYINT(1) [not null]
-  "plazas" TINYINT [default: 0]
+Table correos {
+    id bigint [pk, unique]
+    fecha date [not null]
+    usuario_id bigint [not null]
+    empresa_id bigint [not null]
+    curso_academico varchar(50) [not null]
 }
 
-Table "concellos" {
-  "id" bigint [pk, not null, increment]
-  "nombre" varchar(500) [not null]
+Table empresas {
+    id bigint [pk, unique]
+    nombre varchar(500) [not null]
+    concello_id bigint [not null]
+    direccion varchar(500) [not null]
+    observaciones text
+    especialidad_id int [not null]
+    contacto_nombre varchar(500)
+    contacto_email varchar(500)
+    contacto_telefono varchar(500)
+    disponible boolean [not null]
 }
 
-Table "empresas_skills" {
-  "id" bigint [pk, not null, increment]
-  "empresa_id" bigint [not null]
-  "skill_id" bigint [not null]
+Table skills {
+    id bigint [pk, unique]
+    nombre varchar(500) [not null]
+    especialidad_id int [not null]
 }
 
-Table "tutores_empresa" {
-  "id" bigint [pk, not null, increment]
-  "empresa_id" bigint [not null]
-  "nombre" varchar(500) [not null]
-  "apellidos" varchar(500) [not null]
-  "email" varchar(500) [not null]
-  "telefono" varchar(500)
+Table tutores_centro {
+    id bigint [pk, unique]
+    nombre varchar(500) [not null]
+    apellidos varchar(500) [not null]
+    email varchar(500) [not null]
+    curso_id int [not null]
+    activo boolean [not null]
 }
 
-Table "roles_usuarios" {
-  "id" tinyint [pk, not null, increment]
-  "nombre" varchar(500) [unique, not null]
+Table tutores_empresa {
+    id bigint [pk, unique]
+    empresa_id bigint [not null]
+    nombre varchar(500) [not null]
+    apellidos varchar(500) [not null]
+    email varchar(500) [not null]
+    telefono varchar(500)
 }
 
-Table "usuarios" {
-  "id" bigint [pk, not null, increment]
-  "email" varchar(500) [unique, not null]
-  "password" varchar(500) [not null]
-  "rol_id" tinyint [not null]
-  "tutor_id" bigint
-  "activo" TINYINT(1) [not null]
+Table usuarios {
+    id serial [pk, unique]
+    email varchar(500) [not null, unique]
+    password varchar(500) [not null]
+    rol_id int [not null]
+    tutor_id bigint
+    activo boolean [not null]
 }
 
-Table "tutores_centro" {
-  "id" bigint [pk, not null, increment]
-  "nombre" varchar(500) [not null]
-  "apellidos" varchar(500) [not null]
-  "email" varchar(500) [unique, not null]
-  "curso_id" tinyint [not null]
-  "activo" TINYINT(1) [not null]
+
+Table alumnos_empresas {
+    id bigint [pk, unique]
+    alumno_dni_nie bigint [not null]
+    empresa_id bigint [not null]
+    fecha_inicio date [not null]
+    fecha_fin date
 }
 
-Table "alumnos_empresas" {
-  "id" bigint [pk, not null, increment]
-  "alumno_id" bigint [not null]
-  "empresa_id" bigint [not null]
-  "fecha_inicio" date [not null]
-  "fecha_fin" date
+Table empresas_skills {
+    id bigint [pk, unique]
+    empresa_id bigint [not null]
+    skill_id bigint [not null]
 }
 
-Table "correos" {
-  "id" bigint [pk, not null, increment]
-  "fecha" date [not null]
-  "usuario_id" bigint [not null]
-  "empresa_id" bigint [not null]
-}
 
-Ref "alumnos_concello_id_fk":"concellos"."id" < "alumnos"."concello_id"
+Ref: "alumnos"."concello_id" > "concellos"."id"
+Ref: "alumnos"."estado_id" > "estados_alumnos"."id"
+Ref: "alumnos"."tutor_empresa_id" > "tutores_empresa"."id"
+Ref: "alumnos"."tutor_centro_id" > "tutores_centro"."id"
 
-Ref "alumnos_cursos_id_fk":"cursos"."id" < "alumnos"."curso_id"
+Ref: "skills"."especialidad_id" > "especialidades"."id"
 
-Ref "alumnos_empresas_alumno_id_fk":"alumnos"."id" < "alumnos_empresas"."alumno_id"
+Ref: "empresas"."concello_id" > "concellos"."id"
+Ref: "empresas"."especialidad_id" > "especialidades"."id"
 
-Ref "alumnos_empresas_empresa_id_fk":"empresas"."id" < "alumnos_empresas"."empresa_id"
+Ref: "empresas_skills"."empresa_id" > "empresas"."id"
+Ref: "empresas_skills"."skill_id" > "skills"."id"
 
-Ref "alumnos_estado_id_fk":"estados_alumnos"."id" < "alumnos"."estado_id"
+Ref: "tutores_empresa"."empresa_id" > "empresas"."id"
 
-Ref "alumnos_tutor_centro_id_fk":"tutores_centro"."id" < "alumnos"."tutor_centro_id"
+Ref: "usuarios"."rol_id" > "roles_usuarios"."id"
+Ref: "usuarios"."tutor_id" > "tutores_centro"."id"
 
-Ref "alumnos_tutor_empresa_id_fk":"tutores_empresa"."id" < "alumnos"."tutor_empresa_id"
+Ref: "alumnos_empresas"."alumno_dni_nie" > "alumnos"."dni_nie"
+Ref: "alumnos_empresas"."empresa_id" > "empresas"."id"
 
-Ref "curso_especialidad_id_fk":"especialidades"."id" < "cursos"."especialidad_id"
-
-Ref "empresas_concello_id_fk":"concellos"."id" < "empresas"."concello_id"
-
-Ref "empresas_especialidad_id_fk":"especialidades"."id" < "empresas"."especialidad_id"
-
-Ref "empresas_skills_empresa_id_fk":"empresas"."id" < "empresas_skills"."empresa_id"
-
-Ref "empresas_skills_skill_id_fk":"skills"."id" < "empresas_skills"."skill_id"
-
-Ref "skills_especialidad_id_fk":"especialidades"."id" < "skills"."especialidad_id"
-
-Ref "tutores_centro_curso_id_fk":"cursos"."id" - "tutores_centro"."curso_id"
-
-Ref "tutores_empresa_empresa_id_fk":"empresas"."id" < "tutores_empresa"."empresa_id"
-
-Ref "usuarios_rol_id_fk":"roles_usuarios"."id" < "usuarios"."rol_id"
-
-Ref "usuarios_tutor_id_fk":"tutores_centro"."id" - "usuarios"."tutor_id"
-
-Ref "correos_usuario_id_fk":"usuarios"."id" < "correos"."usuario_id"
-
-Ref "correos_empresa_id_fk":"empresas"."id" < "correos"."empresa_id"
+Ref: "correos"."usuario_id" > "usuarios"."id"
+Ref: "correos"."empresa_id" > "empresas"."id"
