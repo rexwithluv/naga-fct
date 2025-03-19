@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS correos (
 CREATE TABLE IF NOT EXISTS cursos (
     id BIGSERIAL PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL,
-    especialidad_id TINYINT NOT NULL
+    especialidad_id SMALLINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS empresas (
