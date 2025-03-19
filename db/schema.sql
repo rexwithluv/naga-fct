@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS roles_usuarios (
 
 -- Tablas de mayor uso (CREATE TABLE)
 CREATE TABLE IF NOT EXISTS alumnos (
-    dni_nie BIGINT PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
+    dni_nie BIGINT,
     nombre VARCHAR(500) NOT NULL,
     apellidos VARCHAR(500) NOT NULL,
     curso_id SMALLINT NOT NULL,
@@ -101,7 +102,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 -- Tablas de relación many-to-many (CREATE TABLE N:M)
 CREATE TABLE IF NOT EXISTS alumnos_empresas (
     id BIGSERIAL PRIMARY KEY,
-    alumno_dni_nie BIGINT NOT NULL,
+    alumno_id BIGINT NOT NULL,
     empresa_id BIGINT NOT NULL,
     fecha_inicio DATE NOT NULL,
     fecha_fin DATE
@@ -160,7 +161,7 @@ ALTER TABLE usuarios
 ADD CONSTRAINT fk_usuarios_tutor FOREIGN KEY (tutor_id) REFERENCES tutores_centro (id) ON DELETE SET NULL;
 
 ALTER TABLE alumnos_empresas
-ADD CONSTRAINT fk_alumnos_empresas_alumno FOREIGN KEY (alumno_dni_nie) REFERENCES alumnos (dni_nie) ON DELETE CASCADE;
+ADD CONSTRAINT fk_alumnos_empresas_alumno FOREIGN KEY (alumno_id) REFERENCES alumnos (id) ON DELETE CASCADE;
 
 ALTER TABLE alumnos_empresas
 ADD CONSTRAINT fk_alumnos_empresas_empresa FOREIGN KEY (empresa_id) REFERENCES empresas (id) ON DELETE CASCADE;
