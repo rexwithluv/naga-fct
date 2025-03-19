@@ -24,12 +24,12 @@ CREATE TABLE IF NOT EXISTS alumnos (
     dni_nie BIGINT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL,
     apellidos VARCHAR(500) NOT NULL,
-    curso_id INT NOT NULL,
+    curso_id SMALLINT NOT NULL,
     email VARCHAR(500) NOT NULL,
     telefono VARCHAR(500) NOT NULL,
     concello_id BIGINT NOT NULL,
     numero_seguridad_social BIGINT,
-    estado_id INT NOT NULL,
+    estado_id SMALLINT NOT NULL,
     tutor_empresa_id BIGINT,
     tutor_centro_id BIGINT NOT NULL
 );
@@ -42,13 +42,19 @@ CREATE TABLE IF NOT EXISTS correos (
     curso_academico VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS cursos (
+    id BIGSERIAL PRIMARY KEY,
+    nombre VARCHAR(500) NOT NULL,
+    especialidad_id TINYINT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS empresas (
     id BIGSERIAL PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL,
     concello_id BIGINT NOT NULL,
     direccion VARCHAR(500) NOT NULL,
     observaciones TEXT,
-    especialidad_id INT NOT NULL,
+    especialidad_id SMALLINT NOT NULL,
     contacto_nombre VARCHAR(500),
     contacto_email VARCHAR(500),
     contacto_telefono VARCHAR(500),
@@ -58,7 +64,7 @@ CREATE TABLE IF NOT EXISTS empresas (
 CREATE TABLE IF NOT EXISTS skills (
     id BIGSERIAL PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL,
-    especialidad_id INT NOT NULL
+    especialidad_id SMALLINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS tutores_centro (
@@ -66,7 +72,7 @@ CREATE TABLE IF NOT EXISTS tutores_centro (
     nombre VARCHAR(500) NOT NULL,
     apellidos VARCHAR(500) NOT NULL,
     email VARCHAR(500) NOT NULL,
-    curso_id INT NOT NULL,
+    curso_id SMALLINT NOT NULL,
     activo BOOLEAN NOT NULL
 );
 
@@ -83,7 +89,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     id SERIAL PRIMARY KEY,
     email VARCHAR(500) NOT NULL,
     password VARCHAR(500) NOT NULL,
-    rol_id INT NOT NULL,
+    rol_id SMALLINT NOT NULL,
     tutor_id BIGINT,
     activo BOOLEAN NOT NULL
 );
