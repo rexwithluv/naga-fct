@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS correos (
     usuario_id BIGINT NOT NULL,
     empresa_id BIGINT NOT NULL,
     curso_academico VARCHAR(50) NOT NULL
-);
+) PARTITION BY RANGE (curso_academico);
 
 CREATE TABLE IF NOT EXISTS cursos (
     id BIGSERIAL PRIMARY KEY,
