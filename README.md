@@ -16,8 +16,8 @@ NAGA nace a partir de la necesidad del profesorado por tener una plataforma que 
 ### 1. Clona el repositorio
 
 ```bash
-git clone https://github.com/rexwithluv/naga.git
-cd naga
+git clone https://github.com/rexwithluv/naga-fct.git
+cd naga-fct
 ```
 
 ### 2. Configurar variables de entorno
