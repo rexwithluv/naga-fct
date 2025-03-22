@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS alumnos (
     telefono VARCHAR(500) NOT NULL,
     concello_id INT NOT NULL,
     numero_seguridad_social VARCHAR(500),
-    estado_id SMALLINT NOT NULL,
+    estado_id TINYINT NOT NULL,
     tutor_empresa_id BIGINT,
     tutor_centro_id BIGINT NOT NULL
 );
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(500) NOT NULL,
     password VARCHAR(500) NOT NULL,
-    rol_id SMALLINT NOT NULL,
+    rol_id TINYINT NOT NULL,
     tutor_id BIGINT,
     activo BOOLEAN NOT NULL
 );
@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS alumnos_empresas (
 CREATE TABLE IF NOT EXISTS empresas_skills (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     empresa_id BIGINT NOT NULL,
-    skill_id BIGINT NOT NULL
+    skill_id INT NOT NULL
 );
 
 -- Claves foráneas (ALTER TABLE - FK)
@@ -171,7 +171,5 @@ ADD CONSTRAINT fk_correos_empresa FOREIGN KEY (empresa_id) REFERENCES empresas (
 
 -- Índices únicos (UNIQUE INDEX)
 CREATE UNIQUE INDEX idx_usuarios_email ON usuarios (email);
-
 CREATE UNIQUE INDEX idx_alumnos_dni_nie ON alumnos (dni_nie);
-
 CREATE UNIQUE INDEX idx_alumnos_numero_seguridad_social ON alumnos (numero_seguridad_social);
