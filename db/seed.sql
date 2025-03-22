@@ -220,53 +220,76 @@ VALUES (
     );
 
 INSERT INTO
-    cursos (nombre, especialidad_id)
+    cursos (
+        codigo,
+        nombre,
+        especialidad_id
+    )
 VALUES (
-        "Ciclo Formativo Básico de Peiteado e Estética",
+        "BIMP11",
+        "Peiteado e Estética",
         2
     ),
     (
-        "Ciclo Formativo Medio de Estética e Beleza",
+        "MIMP01",
+        "Estética e Beleza",
         2
     ),
     (
-        "Ciclo Formativo Medio de Peiteado e Cosmética Capilar",
+        "MIMP02" "Peiteado e Cosmética Capilar",
         2
     ),
     (
-        "Ciclo Formativo Superior de Asesoría de Imaxe Persoal e Corporativa",
+        "SIMP01",
+        "Estética Integral e Benestar",
         2
     ),
     (
-        "Ciclo Formativo Superior de Estética Integral e Benestar",
+        "SIMP02" "Estilismo e dirección de peiteado",
         2
     ),
     (
-        "Ciclo Formativo Superior de Caracterización e Maquillaxe Profesional",
+        "SIMP03" "Asesoría de imaxe persoal e corporativa",
         2
     ),
     (
-        "Ciclo Formativo Superior de Estilismo e Dirección de Peiteado",
+        "SIMP04",
+        "Caracterización e maquillaxe profesional",
         2
     ),
     (
-        "Ciclo Formativo Básico de Informática de Oficina",
+        "SIMP05",
+        "Termalismo e benestar",
+        2
+    ),
+    (
+        "BIFC11",
+        "Informática e comunicacións",
         1
     ),
     (
-        "Ciclo Formativo Medio de Sistemas Microinformáticos e Redes",
+        "BIFC12",
+        "Informática de oficina",
         1
     ),
     (
-        "Ciclo Formativo Superior de Administración de Sistemas Informáticos en Rede",
+        "MIFC01",
+        "Sistemas microinformáticos e redes",
         1
     ),
     (
-        "Ciclo Formativo Superior de Desenvolvemento de Aplicacións Multiplataforma",
+        "SIFC01",
+        "Administración de sistemas informáticos en rede",
         1
     ),
     (
-        "Ciclo Formativo Superior de Desenvolvemento de Aplicacións Web",
+        "SIFC02",
+        "Desenvolvemento de aplicacións multiplataforma",
+        1
+    ),
+    (
+        "SIFC03",
+        "Desenvolemento de aplicacións web",
         1
     );
 

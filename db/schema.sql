@@ -45,6 +45,7 @@ CREATE TABLE correos (
 
 CREATE TABLE IF NOT EXISTS cursos (
     id SMALLINT AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR(20) NOT NULL,
     nombre VARCHAR(500) NOT NULL,
     especialidad_id TINYINT NOT NULL
 );
