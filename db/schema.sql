@@ -1,27 +1,27 @@
 -- Tablas sin FK (CREATE TABLE WITHOUT FK)
 CREATE TABLE IF NOT EXISTS concellos (
-    id BIGSERIAL PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS especialidades (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS estados_alumnos (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS roles_usuarios (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL
 );
 
 -- Tablas de mayor uso (CREATE TABLE)
 CREATE TABLE IF NOT EXISTS alumnos (
-    id BIGSERIAL PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     dni_nie BIGINT,
     nombre VARCHAR(500) NOT NULL,
     apellidos VARCHAR(500) NOT NULL,
@@ -35,25 +35,22 @@ CREATE TABLE IF NOT EXISTS alumnos (
     tutor_centro_id BIGINT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS correos (
-    id BIGSERIAL,
+CREATE TABLE correos (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     fecha DATE NOT NULL,
     usuario_id BIGINT NOT NULL,
     empresa_id BIGINT NOT NULL,
-    curso_academico VARCHAR(50) NOT NULL,
-    PRIMARY KEY (id, curso_academico)
+    curso_academico VARCHAR(50) NOT NULL
 )
-PARTITION BY
-    RANGE (curso_academico);
 
 CREATE TABLE IF NOT EXISTS cursos (
-    id BIGSERIAL PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL,
     especialidad_id SMALLINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS empresas (
-    id BIGSERIAL PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL,
     concello_id BIGINT NOT NULL,
     direccion VARCHAR(500) NOT NULL,
@@ -67,13 +64,13 @@ CREATE TABLE IF NOT EXISTS empresas (
 );
 
 CREATE TABLE IF NOT EXISTS skills (
-    id BIGSERIAL PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL,
     especialidad_id SMALLINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS tutores_centro (
-    id BIGSERIAL PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL,
     apellidos VARCHAR(500) NOT NULL,
     email VARCHAR(500) NOT NULL,
@@ -82,7 +79,7 @@ CREATE TABLE IF NOT EXISTS tutores_centro (
 );
 
 CREATE TABLE IF NOT EXISTS tutores_empresa (
-    id BIGSERIAL PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     empresa_id BIGINT NOT NULL,
     nombre VARCHAR(500) NOT NULL,
     apellidos VARCHAR(500) NOT NULL,
@@ -91,7 +88,7 @@ CREATE TABLE IF NOT EXISTS tutores_empresa (
 );
 
 CREATE TABLE IF NOT EXISTS usuarios (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(500) NOT NULL,
     password VARCHAR(500) NOT NULL,
     rol_id SMALLINT NOT NULL,
@@ -101,7 +98,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 
 -- Tablas de relación many-to-many (CREATE TABLE N:M)
 CREATE TABLE IF NOT EXISTS alumnos_empresas (
-    id BIGSERIAL PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     alumno_id BIGINT NOT NULL,
     empresa_id BIGINT NOT NULL,
     fecha_inicio DATE NOT NULL,
@@ -109,7 +106,7 @@ CREATE TABLE IF NOT EXISTS alumnos_empresas (
 );
 
 CREATE TABLE IF NOT EXISTS empresas_skills (
-    id BIGSERIAL PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     empresa_id BIGINT NOT NULL,
     skill_id BIGINT NOT NULL
 );
@@ -140,7 +137,7 @@ ALTER TABLE empresas
 ADD CONSTRAINT fk_empresas_concello FOREIGN KEY (concello_id) REFERENCES concellos (id) ON DELETE SET NULL;
 
 ALTER TABLE empresas
-ADD CONSTRAINT fk_empresas_especialidad FOREIGN KEY (especialidad_id) REFERENCES especialidades (id) ON DELETE NULL;
+ADD CONSTRAINT fk_empresas_especialidad FOREIGN KEY (especialidad_id) REFERENCES especialidades (id) ON DELETE SET NULL;
 
 ALTER TABLE empresas_skills
 ADD CONSTRAINT fk_empresas_skills_empresa FOREIGN KEY (empresa_id) REFERENCES empresas (id) ON DELETE CASCADE;
