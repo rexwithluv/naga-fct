@@ -107,7 +107,8 @@ VALUES (
         'María López',
         'maria@pontevivas.com',
         '986123456',
-        TRUE
+        TRUE,
+        2
     ),
     (
         'Consultores de Innovación',
@@ -118,7 +119,8 @@ VALUES (
         'José Ruiz',
         'jose@innovacionconsultores.com',
         '986234567',
-        TRUE
+        TRUE,
+        3
     ),
     (
         'Pontefrutas S.L.',
@@ -129,7 +131,8 @@ VALUES (
         'Carlos Gómez',
         'carlos@pontefrutas.com',
         '986345678',
-        TRUE
+        TRUE,
+        4
     ),
     (
         'AutoRepuestos Galicia',
@@ -140,7 +143,8 @@ VALUES (
         'Lucía Martínez',
         'lucia@autorepuestosgalicia.com',
         '986456789',
-        TRUE
+        TRUE,
+        1
     ),
     (
         'Academia Inglés Pontevedra',
@@ -151,7 +155,8 @@ VALUES (
         'Antonio Pérez',
         'antonio@academiaingles.com',
         '986567890',
-        TRUE
+        TRUE,
+        2
     ),
     (
         'Ingeniería y Obras Noroeste',
@@ -162,7 +167,8 @@ VALUES (
         'Ana Fernández',
         'ana@ingenierianoroeste.com',
         '986678901',
-        FALSE
+        FALSE,
+        1
     ),
     (
         'Distribuciones Albariño',
@@ -173,7 +179,8 @@ VALUES (
         'Miguel Rodríguez',
         'miguel@distribucionesalbariño.com',
         '986789012',
-        TRUE
+        TRUE,
+        1
     ),
     (
         'Muebles Litoral',
@@ -184,7 +191,8 @@ VALUES (
         'Beatriz Sánchez',
         'beatriz@muebleslitoral.com',
         '986890123',
-        TRUE
+        TRUE,
+        3
     ),
     (
         'Ferrogal Industria',
@@ -195,7 +203,8 @@ VALUES (
         'David Álvarez',
         'david@ferrogalindustria.com',
         '986901234',
-        TRUE
+        TRUE,
+        4
     ),
     (
         'Clínica Dental Sorriso',
@@ -206,7 +215,8 @@ VALUES (
         'Raquel González',
         'raquel@clinicadentalsorriso.com',
         '986012345',
-        TRUE
+        TRUE,
+        1
     );
 
 INSERT INTO
@@ -530,7 +540,7 @@ VALUES (
         '986567891',
         5,
         334455667,
-        5,
+        2,
         5,
         5
     ),
@@ -543,7 +553,7 @@ VALUES (
         '986678902',
         6,
         445566778,
-        6,
+        3,
         6,
         6
     ),
@@ -556,7 +566,7 @@ VALUES (
         '986789013',
         7,
         556677889,
-        7,
+        1,
         7,
         7
     ),
@@ -569,7 +579,7 @@ VALUES (
         '986890124',
         8,
         667788990,
-        8,
+        4,
         8,
         8
     ),
@@ -582,7 +592,7 @@ VALUES (
         '986901235',
         9,
         778899001,
-        9,
+        4,
         9,
         9
     ),
@@ -595,7 +605,7 @@ VALUES (
         '986012346',
         10,
         889900112,
-        10,
+        2,
         10,
         10
     );
