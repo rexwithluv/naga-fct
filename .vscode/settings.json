@@ -1,3 +1,9 @@
 {
-  "conventionalCommits.scopes": ["docker", "db", "backend", "frontend"]
+  "conventionalCommits.scopes": [
+    "docker",
+    "db",
+    "backend",
+    "frontend"
+  ],
+  "java.configuration.updateBuildConfiguration": "automatic"
 }
