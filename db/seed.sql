@@ -236,7 +236,8 @@ VALUES (
         2
     ),
     (
-        "MIMP02" "Peiteado e Cosmética Capilar",
+        "MIMP02",
+        "Peiteado e Cosmética Capilar",
         2
     ),
     (
@@ -245,11 +246,13 @@ VALUES (
         2
     ),
     (
-        "SIMP02" "Estilismo e dirección de peiteado",
+        "SIMP02",
+        "Estilismo e dirección de peiteado",
         2
     ),
     (
-        "SIMP03" "Asesoría de imaxe persoal e corporativa",
+        "SIMP03",
+        "Asesoría de imaxe persoal e corporativa",
         2
     ),
     (
