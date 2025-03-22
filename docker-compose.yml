@@ -33,7 +33,7 @@ services:
       context: ./backend
     container_name: fct-backend-springboot
     ports:
-      - 8081:9000
+      - 9000:9000
     networks:
       - fct-network
 
@@ -42,7 +42,7 @@ services:
       context: ./frontend
     container_name: fct-frontend-vue
     ports:
-      - 6321:80
+      - 4171:80
     networks:
       - fct-network
 
