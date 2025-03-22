@@ -1,35 +1,35 @@
 -- Tablas sin FK (CREATE TABLE WITHOUT FK)
 CREATE TABLE IF NOT EXISTS concellos (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS especialidades (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id TINYINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS estados_alumnos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id TINYINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS roles_usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id TINYINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL
 );
 
 -- Tablas de mayor uso (CREATE TABLE)
 CREATE TABLE IF NOT EXISTS alumnos (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    dni_nie BIGINT,
+    dni_nie VARCHAR(500),
     nombre VARCHAR(500) NOT NULL,
     apellidos VARCHAR(500) NOT NULL,
     curso_id SMALLINT NOT NULL,
     email VARCHAR(500) NOT NULL,
     telefono VARCHAR(500) NOT NULL,
-    concello_id BIGINT NOT NULL,
-    numero_seguridad_social BIGINT,
+    concello_id INT NOT NULL,
+    numero_seguridad_social VARCHAR(500),
     estado_id SMALLINT NOT NULL,
     tutor_empresa_id BIGINT,
     tutor_centro_id BIGINT NOT NULL
@@ -41,21 +41,21 @@ CREATE TABLE correos (
     usuario_id BIGINT NOT NULL,
     empresa_id BIGINT NOT NULL,
     curso_academico VARCHAR(50) NOT NULL
-)
+);
 
 CREATE TABLE IF NOT EXISTS cursos (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id SMALLINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL,
-    especialidad_id SMALLINT NOT NULL
+    especialidad_id TINYINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS empresas (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL,
-    concello_id BIGINT NOT NULL,
+    concello_id INT NOT NULL,
     direccion VARCHAR(500) NOT NULL,
     observaciones TEXT,
-    especialidad_id SMALLINT NOT NULL,
+    especialidad_id TINYINT NOT NULL,
     contacto_nombre VARCHAR(500),
     contacto_email VARCHAR(500),
     contacto_telefono VARCHAR(500),
@@ -64,9 +64,9 @@ CREATE TABLE IF NOT EXISTS empresas (
 );
 
 CREATE TABLE IF NOT EXISTS skills (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL,
-    especialidad_id SMALLINT NOT NULL
+    especialidad_id TINYINT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS tutores_centro (
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS tutores_empresa (
 );
 
 CREATE TABLE IF NOT EXISTS usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(500) NOT NULL,
     password VARCHAR(500) NOT NULL,
     rol_id SMALLINT NOT NULL,
