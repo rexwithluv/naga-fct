@@ -20,7 +20,7 @@ import lombok.Setter;
 public class EstadosAlumno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Byte id;
 
     @Column(name = "nombre", length = 500, nullable = false)
     private String nombre;
