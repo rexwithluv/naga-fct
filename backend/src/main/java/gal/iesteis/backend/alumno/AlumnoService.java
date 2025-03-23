@@ -16,6 +16,6 @@ public class AlumnoService {
     }
 
     public Alumno getById(Long id) {
-        return repository.findById(id).orElseThrow();
+        return repository.findById(id).orElseThrow(() -> new AlumnoNotFoundException(id));
     }
 }
