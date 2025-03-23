@@ -7,24 +7,29 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import dotenv from 'dotenv'
-import { resolve, dirname } from "path"
+import { resolve, dirname } from 'node:path'
+import Components from 'unplugin-vue-components/vite'
+import { PrimeVueResolver } from '@primevue/auto-import-resolver'
 
 // Cargar variables de entorno desde un directorio superior
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 dotenv.config({
-  path: resolve(__dirname, "../.env"),
+  path: resolve(__dirname, '../.env'),
 })
 
 export default defineConfig({
   plugins: [
     vue(),
     vueDevTools(),
+    Components({
+      resolvers: [PrimeVueResolver()],
+    }),
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   server: {
@@ -32,6 +37,6 @@ export default defineConfig({
 
     // Usamos ?.split(",") para que no falle en producción, pero esta línea
     // solo tiene importancia cuando ejecutamos en desarrollo
-    allowedHosts: process.env.VITE_ALLOWED_HOSTS?.split(",") || "localhost",
+    allowedHosts: process.env.VITE_ALLOWED_HOSTS?.split(',') || 'localhost',
   },
 })
