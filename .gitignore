@@ -1,2 +1,6 @@
+# Archivos sensibles
 .env
+*.properties
+
+# @rexwithluv
 notas/
