@@ -1,0 +1,53 @@
+<script setup lang="js">
+import { Calendar1, CircleUserRound } from "lucide-vue-next";
+import { ref } from "vue";
+
+const items = ref([
+    {
+        label: "Alumnos",
+        to: "/alumnos"
+    },
+    {
+        label: "Empresas",
+        to: "/empresas"
+    },
+    {
+        label: "Tutores",
+        to: "/tutores"
+    },
+    {
+        label: "Solicitar FCT",
+        to: "/fcts"
+    }
+]);
+
+</script>
+
+<template>
+    <nav class="p-4 sticky">
+        <Menubar :model="items">
+            <template #start>
+                <RouterLink to="/" class="text-lg font-semibold ms-2 me-5">
+                    NAGA - FCT
+                </RouterLink>
+            </template>
+
+            <template #item="{ item }">
+                <RouterLink class="text-center me-2 ms-2 p-1" v-bind:to="item.to">
+                    {{ item.label }}
+                </RouterLink>
+            </template>
+
+            <template #end>
+                <div class="flex gap-2">
+                    <RouterLink>
+                        <Calendar1 size="32" stroke-width="1.5" />
+                    </RouterLink>
+                    <RouterLink>
+                        <CircleUserRound size="32" stroke-width="1.5" />
+                    </RouterLink>
+                </div>
+            </template>
+        </Menubar>
+    </nav>
+</template>
