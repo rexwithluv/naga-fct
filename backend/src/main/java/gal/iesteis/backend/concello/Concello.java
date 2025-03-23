@@ -20,8 +20,8 @@ import lombok.Setter;
 public class Concello {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
     @Column(name = "nombre", length = 500, nullable = false)
-    String nombre;
+    private String nombre;
 }
