@@ -21,8 +21,8 @@ public class Especialidad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Byte id;
+    private Byte id;
 
     @Column(name = "nombre", length = 500, nullable = false)
-    String nombre;
+    private String nombre;
 }
