@@ -20,7 +20,7 @@ app.use(PrimeVue, {
   theme: {
     preset: Aura,
   },
-  //   ripple: true,
+  // ripple: true,
 })
 
 app.mount('#app')
