@@ -22,6 +22,6 @@ public class Concello {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column(name = "nombre", length = 500)
+    @Column(name = "nombre", length = 500, nullable = false)
     String nombre;
 }
