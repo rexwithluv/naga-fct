@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header>
+    <!-- <header>
       <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
       <div class="wrapper">
@@ -13,25 +13,25 @@
       </div>
     </header>
 
-    <RouterView />
+    <RouterView /> -->
   </div>
 </template>
 
 <script>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+// import { RouterLink, RouterView } from 'vue-router'
+// import HelloWorld from './components/HelloWorld.vue'
 
-export default {
-  components: {
-    RouterLink,
-    RouterView,
-    HelloWorld
-  }
-}
+// export default {
+//   components: {
+//     RouterLink,
+//     RouterView,
+//     HelloWorld
+//   }
+// }
 </script>
 
 <style scoped>
-header {
+/* header {
   line-height: 1.5;
   max-height: 100vh;
 }
@@ -91,5 +91,5 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
-}
+} */
 </style>
