@@ -20,8 +20,8 @@ import lombok.Setter;
 public class EstadosAlumno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(name = "nombre", length = 500, nullable = false)
-    String nombre;
+    private String nombre;
 }
