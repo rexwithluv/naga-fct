@@ -6,10 +6,10 @@ WORKDIR /app
 COPY pom.xml .
 
 # Descargamos las dependencias
-RUN mvn dependency:go-offline
+RUN mvn verify -DskipTests
 
 # Copiamos el resto del proyecto
-COPY src .
+COPY . .
 
 # Generamos el .jar
 RUN mvn clean package -DskipTests
@@ -19,7 +19,7 @@ FROM eclipse-temurin:21
 WORKDIR /app
 
 # Copiamos el .jar generado en la imagen con JDK
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/target/*.jar /app/app.jar
 
 # Ejecutamos el proyecto
 CMD ["java", "-jar", "/app/app.jar"]
