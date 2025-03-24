@@ -5,19 +5,19 @@ import { ref } from "vue";
 const items = ref([
     {
         label: "Alumnos",
-        to: "/alumnos"
+        name: "alumnos"
     },
     {
         label: "Empresas",
-        to: "/empresas"
+        name: "empresas"
     },
     {
         label: "Tutores",
-        to: "/tutores"
+        name: "tutores"
     },
     {
         label: "Solicitar FCT",
-        to: "/fcts"
+        name: "fcts"
     }
 ]);
 
@@ -27,23 +27,23 @@ const items = ref([
     <nav class="p-4 sticky">
         <Menubar :model="items">
             <template #start>
-                <RouterLink to="/home" class="text-lg font-semibold ms-2 me-5">
+                <RouterLink :to="{ name: 'login' }" class="text-lg font-semibold ms-2 me-5">
                     NAGA - FCT
                 </RouterLink>
             </template>
 
             <template #item="{ item }">
-                <RouterLink class="text-center me-2 ms-2 p-1" v-bind:to="item.to">
+                <RouterLink :to="{ name: item.name }" class="text-center me-2 ms-2 p-1">
                     {{ item.label }}
                 </RouterLink>
             </template>
 
             <template #end>
-                <div class="flex gap-2">
-                    <RouterLink class="text-center p-1">
+                <div class=" flex gap-2">
+                    <RouterLink :to="{ name: 'calendario' }" class="text-center p-1">
                         <Calendar1 size="32" stroke-width="1.5" />
                     </RouterLink>
-                    <RouterLink class="text-center p-1">
+                    <RouterLink :to="{ name: 'perfil' }" class="text-center p-1">
                         <CircleUserRound size="32" stroke-width="1.5" />
                     </RouterLink>
                 </div>
