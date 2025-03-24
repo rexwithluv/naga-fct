@@ -3,6 +3,7 @@ import './assets/main.css'
 // Importaciones de PrimeVue
 import Aura from '@primeuix/themes/aura'
 import PrimeVue from 'primevue/config'
+import ToastService from 'primevue/toastservice'
 
 import { createPinia } from 'pinia'
 
@@ -20,7 +21,7 @@ app.use(PrimeVue, {
   theme: {
     preset: Aura,
   },
-  // ripple: true,
 })
+app.use(ToastService)
 
 app.mount('#app')
