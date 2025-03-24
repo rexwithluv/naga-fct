@@ -49,7 +49,7 @@ const handleSubmit = async () => {
             :resolver="yupResolver(formSchema)">
 
             <FormField v-slot="$field" name="email" class="flex flex-col gap-1">
-                <InputText type="text" v-model="formValues.email" placeholder="cosita@edu.xunta.gal" />
+                <InputText type="text" v-model="formValues.email" placeholder="cosita@edu.xunta.gal" autocomplete="email"/>
                 <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">
                     {{ $field.error?.message }}
                 </Message>
