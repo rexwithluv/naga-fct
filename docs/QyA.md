@@ -9,8 +9,6 @@
 - Reparación de tablas en caliente.
 - Preferencias de escalabilidad.
 
-## Estructura de directorios, justificación
+## Por qué en el archivo `docker-compose.yml` le pasas una variable de entorno `SPRING_PROFILES_ACTIVE=prod` al backend?
 
-
-
-## Por qué JOOQ y no JPA/Hibernate?
+Habitualmente trabajo levantando el backend desde VSCode, pero cuando quiero hacer pruebas para asegurarme de que el código funcionará en producción esa variable de entorno me sirve para que tome un `.properties` distinto.

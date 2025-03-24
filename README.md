@@ -22,14 +22,19 @@ cd naga-fct
 
 ### 2. Configurar variables de entorno
 
-El repositorio incluye un archivo `.env.example` que contiene las variables de entorno que usan los distintos contenedores. Copia el archivo `.env.example` y renómbralo a `.env` para poder comenzar a desplegar la aplicación.
+El repositorio incluye varios archivos `.example` que contienen las variables de entorno que usan los distintos contenedores. Copia el archivos `.example` y renómbralos para poder comenzar a desplegar la aplicación.
 
 #### Pasos
 
-1. Copia el archivo de ejemplo:
+1. Copia y edita los archivos de ejemplo:
 
    ```bash
    cp .env.example .env
+   ```
+
+   ```bash
+   cd backend/src/main/resources/
+   cp application.properties.example application.properties
    ```
 
 2. Levanta los servicios con docker
