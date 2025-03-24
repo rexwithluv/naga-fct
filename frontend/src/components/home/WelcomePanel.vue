@@ -29,7 +29,7 @@ onUnmounted(() => clearInterval(intervalo));
 </script>
 
 <template>
-    <div class="bg-gray-500 w-55 text-white p-4 rounded-lg shadow-md text-center">
+    <div class="bg-gray-500 w-55 p-4 rounded-lg shadow-md text-center">
         <div>
             <p>Bienvenida/o <span v-show="nombre"> {{ nombre }} </span> </p>
 

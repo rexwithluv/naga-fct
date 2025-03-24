@@ -27,7 +27,7 @@ const items = ref([
     <nav class="p-4 sticky">
         <Menubar :model="items">
             <template #start>
-                <RouterLink to="/" class="text-lg font-semibold ms-2 me-5">
+                <RouterLink to="/home" class="text-lg font-semibold ms-2 me-5">
                     NAGA - FCT
                 </RouterLink>
             </template>

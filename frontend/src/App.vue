@@ -4,7 +4,7 @@ import AppHeader from './components/AppHeader.vue';
 
 <template>
   <div class="flex flex-col h-screen">
-    <AppHeader v-if="$route.path !== '/login' && $route.path !== '/home'" />
+    <AppHeader v-if="$route.path !== '/' && $route.path !== '/login'" />
 
     <RouterView class="flex-1" />
 
