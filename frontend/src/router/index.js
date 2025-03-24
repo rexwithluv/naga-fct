@@ -21,6 +21,41 @@ const router = createRouter({
       name: 'login',
       component: LoginPage,
     },
+    {
+      path: '/alumnos',
+      name: 'alumnos',
+      component: HomePage,
+    },
+    {
+      path: '/empresas',
+      name: 'empresas',
+      component: HomePage,
+    },
+    {
+      path: '/tutores',
+      name: 'tutores',
+      component: HomePage,
+    },
+    {
+      path: '/fcts',
+      name: 'fcts',
+      component: HomePage,
+    },
+    {
+      path: '/calendario',
+      name: 'calendario',
+      component: HomePage,
+    },
+    {
+      path: '/perfil',
+      name: 'perfil',
+      component: HomePage,
+    },
+    // {
+    //   path: "/:pathMatch(.*)*",
+    //   name: "NotFound",
+    //   // component: NotFound,
+    // },
     // {
     //   // path: '/about',
     //   // name: 'about',
@@ -31,5 +66,11 @@ const router = createRouter({
     // },
   ],
 })
+
+// Guarda de Vue Router (middleware)
+// router.beforeEach((to, from, next) => {
+//   if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
+//   else next()
+// })
 
 export default router

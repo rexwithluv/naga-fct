@@ -10,7 +10,7 @@
                 alumando antes y durante las FCT (Formación en Centros de Trabajo)</p>
 
             <p>Si eres docente,
-                <RouterLink to="/login" class="text-blue-300 underline hover:text-blue-500">
+                <RouterLink :to="{ name: 'login' }" class="text-blue-300 underline hover:text-blue-500">
                     inicia sesión
                 </RouterLink>
                 para acceder a la aplicación.
