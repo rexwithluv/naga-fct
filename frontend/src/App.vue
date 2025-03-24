@@ -3,8 +3,10 @@ import AppHeader from './components/AppHeader.vue';
 </script>
 
 <template>
-  <div>
-    <AppHeader v-if="$route.path !== '/login' || $route.path !== '/home'" />
-    <RouterView />
+  <div class="flex flex-col h-screen">
+    <AppHeader v-if="$route.path !== '/login' && $route.path !== '/home'" />
+
+    <RouterView class="flex-1" />
+
   </div>
 </template>
