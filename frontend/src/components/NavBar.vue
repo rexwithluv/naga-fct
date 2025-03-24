@@ -40,10 +40,10 @@ const items = ref([
 
             <template #end>
                 <div class="flex gap-2">
-                    <RouterLink>
+                    <RouterLink class="text-center p-1">
                         <Calendar1 size="32" stroke-width="1.5" />
                     </RouterLink>
-                    <RouterLink>
+                    <RouterLink class="text-center p-1">
                         <CircleUserRound size="32" stroke-width="1.5" />
                     </RouterLink>
                 </div>
