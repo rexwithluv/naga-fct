@@ -31,8 +31,13 @@ onUnmounted(() => clearInterval(intervalo));
 <template>
     <div class="bg-gray-500 w-55 text-white p-4 rounded-lg shadow-md text-center">
         <div>
-            <p>Bienvenida/o {{ nombre }}</p>
-            <p>Eres tutor/a de {{ tutor }} </p>
+            <p>Bienvenida/o <span v-show="nombre"> {{ nombre }} </span> </p>
+
+            <p v-if="tutor">Eres tutor/a de {{ tutor }} </p>
+            <p v-else>No eres tutor/a de ningún curso </p>
+
+            <hr />
+
             <p> {{ datetime }} </p>
         </div>
     </div>
