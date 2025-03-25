@@ -653,7 +653,7 @@ VALUES (
     ),
     (
         'patricia@edu.xunta.gal',
-        'springboot',
+        '$2a$12$frnjU.CRV0Ic/LDJMVaNXOGUFdo8lHBvKSezjYTm2vbmiuP6UwdDG', -- springboot
         2,
         2,
         true
