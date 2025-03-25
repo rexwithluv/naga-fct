@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/stores/authStore'
 import HomePage from '@/views/HomePage.vue'
 import LandingPage from '@/views/LandingPage.vue'
 import LoginPage from '@/views/LoginPage.vue'
@@ -68,9 +69,14 @@ const router = createRouter({
 })
 
 // Guarda de Vue Router (middleware)
-// router.beforeEach((to, from, next) => {
-//   if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
-//   else next()
-// })
+router.beforeEach((to, from, next) => {
+  const auth = useAuthStore()
+
+  if (to.name !== 'login' && to.name !== 'inicio' && !auth.token) {
+    return next({ name: 'login' })
+  }
+
+  next()
+})
 
 export default router

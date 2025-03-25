@@ -4,9 +4,11 @@ import { useToast } from "primevue/usetoast";
 import { ref } from 'vue';
 import { object, string } from 'yup';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/authStore';
 
 const toast = useToast();
 const router = useRouter();
+const auth = useAuthStore();
 
 const formValues = ref({
     email: "",
@@ -30,16 +32,23 @@ const formSchema = object({
 const handleSubmit = async () => {
     try {
         await formSchema.validate(formValues.value);
+        await auth.login(formValues.value.email, formValues.value.password);
+
+        toast.add({
+            severity: 'success',
+            summary: "Inicio de sesión correcto",
+            detail: `Bienvenida/o ${auth.nombre}`,
+            life: 3000
+        });
         router.push({ name: 'home' });
     } catch (error) {
         toast.add({
             severity: 'error',
-            summary: "Revisa los campos del formulario",
+            summary: "Error de inicio de sesión",
             detail: error.message,
             life: 3000
         });
     }
-
 }
 
 </script>
@@ -49,7 +58,8 @@ const handleSubmit = async () => {
             :resolver="yupResolver(formSchema)">
 
             <FormField v-slot="$field" name="email" class="flex flex-col gap-1">
-                <InputText type="text" v-model="formValues.email" placeholder="cosita@edu.xunta.gal" autocomplete="email"/>
+                <InputText type="text" v-model="formValues.email" placeholder="cosita@edu.xunta.gal"
+                    autocomplete="email" />
                 <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">
                     {{ $field.error?.message }}
                 </Message>
