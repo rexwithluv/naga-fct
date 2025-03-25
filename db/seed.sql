@@ -645,22 +645,22 @@ INSERT INTO
         activo
     )
 VALUES (
-        'ana.gonzalez@ejemplo.com',
-        'hashed_password_ana',
+        'admin@edu.xunta.gal',
+        'abc123.',
         1,
-        1,
+        null,
         true
     ),
     (
-        'carlos.rodriguez@ejemplo.com',
-        'hashed_password_carlos',
+        'patricia@edu.xunta.gal',
+        'springboot',
         2,
         2,
         true
     ),
     (
-        'laura.fernandez@ejemplo.com',
-        'hashed_password_laura',
+        'adelina@edu.xunta.gal',
+        'empresa',
         2,
         3,
         true
