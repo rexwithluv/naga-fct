@@ -1,8 +1,11 @@
 <script setup lang="js">
 import WelcomePanel from "@/components/home/WelcomePanel.vue";
+import { useAuthStore } from "@/stores/authStore";
 import { ref } from "vue";
 
-const nombre = ref("Marta");
+const auth = useAuthStore();
+
+const nombre = ref(auth.nombre);
 const tutor = ref("2º DAW");
 </script>
 

@@ -1,5 +1,6 @@
 <script setup lang="js">
 import { onMounted, onUnmounted, ref } from "vue";
+import capitalize from "@/helpers/capitalize";
 
 defineProps({
     nombre: String,
@@ -31,7 +32,7 @@ onUnmounted(() => clearInterval(intervalo));
 <template>
     <div class="bg-gray-500 w-55 p-4 rounded-lg shadow-md text-center">
         <div>
-            <p>Bienvenida/o <span v-show="nombre"> {{ nombre }} </span> </p>
+            <p>Bienvenida/o <span v-show="nombre"> {{ capitalize(nombre) }} </span> </p>
 
             <p v-if="tutor">Eres tutor/a de {{ tutor }} </p>
             <p v-else>No eres tutor/a de ningún curso </p>

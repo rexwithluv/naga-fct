@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { defineStore } from 'pinia'
+import capitalize from '@/helpers/capitalize'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -16,7 +17,7 @@ export const useAuthStore = defineStore('auth', {
         })
 
         this.token = response.data.token
-        this.nombre = response.data.nombre
+        this.nombre = capitalize(response.data.email.split('@')[0])
         this.rol = response.data.rol.replace('ROLE_', '')
       } catch {
         throw new Error('Credenciales incorrectas')
