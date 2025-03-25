@@ -328,87 +328,17 @@ INSERT INTO
         activo
     )
 VALUES (
-        'Ana',
+        'Patricia',
         'González',
-        'ana.gonzalez@ejemplo.com',
-        1,
-        true
-    ),
-    (
-        'Carlos',
-        'Rodríguez',
-        'carlos.rodriguez@ejemplo.com',
-        2,
-        true
-    ),
-    (
-        'Laura',
-        'Fernández',
-        'laura.fernandez@ejemplo.com',
-        3,
-        true
-    ),
-    (
-        'Pedro',
-        'Martínez',
-        'pedro.martinez@ejemplo.com',
-        4,
-        true
-    ),
-    (
-        'Marta',
-        'Sánchez',
-        'marta.sanchez@ejemplo.com',
-        5,
-        true
-    ),
-    (
-        'José',
-        'López',
-        'jose.lopez@ejemplo.com',
-        6,
-        true
-    ),
-    (
-        'Isabel',
-        'Pérez',
-        'isabel.perez@ejemplo.com',
-        7,
-        true
-    ),
-    (
-        'David',
-        'García',
-        'david.garcia@ejemplo.com',
-        8,
-        true
-    ),
-    (
-        'Sofía',
-        'Torres',
-        'sofia.torres@ejemplo.com',
-        9,
-        true
-    ),
-    (
-        'Luis',
-        'Hernández',
-        'luis.hernandez@ejemplo.com',
-        10,
-        true
-    ),
-    (
-        'Bea',
-        'Jiménez',
-        'bea.jimenez@ejemplo.com',
+        'patricia@edu.xunta.gal',
         11,
         true
     ),
     (
-        'Antonio',
-        'Vázquez',
-        'antonio.vazquez@ejemplo.com',
-        12,
+        'Marta',
+        'Rey',
+        'marta@edu.xunta.gal.com',
+        14,
         true
     );
 
@@ -646,7 +576,7 @@ INSERT INTO
     )
 VALUES (
         'admin@edu.xunta.gal',
-        'abc123.',
+        '$2a$12$Gxa5XO.b0rvew79tIBrYMO55PXw1pVDyTRPXs3/rGyYhc2wosC7zO', -- abc123.
         1,
         null,
         true
@@ -655,78 +585,15 @@ VALUES (
         'patricia@edu.xunta.gal',
         '$2a$12$frnjU.CRV0Ic/LDJMVaNXOGUFdo8lHBvKSezjYTm2vbmiuP6UwdDG', -- springboot
         2,
-        2,
+        1,
         true
     ),
     (
-        'adelina@edu.xunta.gal',
-        'empresa',
+        'marta@edu.xunta.gal',
+        '$2a$12$ieUrumtPuz/f7trjuX8uxOL7cTdDVP.eMxu7ZrC7FERaGRiWGhMiG', -- sushi
         2,
-        3,
-        true
-    ),
-    (
-        'pedro.martinez@ejemplo.com',
-        'hashed_password_pedro',
         2,
-        4,
-        true
-    ),
-    (
-        'marta.sanchez@ejemplo.com',
-        'hashed_password_marta',
-        2,
-        5,
-        true
-    ),
-    (
-        'jose.lopez@ejemplo.com',
-        'hashed_password_jose',
-        2,
-        6,
-        true
-    ),
-    (
-        'isabel.perez@ejemplo.com',
-        'hashed_password_isabel',
-        2,
-        7,
-        true
-    ),
-    (
-        'david.garcia@ejemplo.com',
-        'hashed_password_david',
-        2,
-        8,
-        true
-    ),
-    (
-        'sofia.torres@ejemplo.com',
-        'hashed_password_sofia',
-        2,
-        9,
-        true
-    ),
-    (
-        'luis.hernandez@ejemplo.com',
-        'hashed_password_luis',
-        2,
-        10,
-        true
-    ),
-    (
-        'bea.jimenez@ejemplo.com',
-        'hashed_password_bea',
-        2,
-        11,
-        true
-    ),
-    (
-        'antonio.vazquez@ejemplo.com',
-        'hashed_password_antonio',
-        2,
-        12,
-        true
+        false
     );
 
 ---
