@@ -15,7 +15,7 @@ export const useAuthStore = defineStore('auth', {
           password: password,
         })
 
-        this.token = response.data.accessToken
+        this.token = response.data.token
         this.nombre = response.data.nombre
         this.rol = response.data.rol.replace('ROLE_', '')
       } catch {

@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class JWTResponseDTO {
-    private String accessToken;
+    private String token;
     private String tokenType;
     private Long id;
     private String email;
