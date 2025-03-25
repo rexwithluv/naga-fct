@@ -15,3 +15,7 @@ spring.jpa.properties.hibernate.format_sql=true
 
 # DevTools
 spring.devtools.restart.enabled=true
+
+# Configuraciión para JWT
+jwt.secret=mySecret
+jwt.expiration=86400000
