@@ -25,7 +25,6 @@ CREATE TABLE IF NOT EXISTS alumnos (
     dni_nie VARCHAR(500),
     nombre VARCHAR(500) NOT NULL,
     apellidos VARCHAR(500) NOT NULL,
-    curso_id SMALLINT NOT NULL,
     email VARCHAR(500) NOT NULL,
     telefono VARCHAR(500) NOT NULL,
     concello_id INT NOT NULL,
@@ -115,9 +114,6 @@ CREATE TABLE IF NOT EXISTS empresas_skills (
 -- Claves foráneas (ALTER TABLE - FK)
 ALTER TABLE cursos
 ADD CONSTRAINT fk_cursos_especialidad FOREIGN KEY (especialidad_id) REFERENCES especialidades (id) ON DELETE CASCADE;
-
-ALTER TABLE alumnos
-ADD CONSTRAINT fk_alumnos_curso FOREIGN KEY (curso_id) REFERENCES cursos (id) ON DELETE CASCADE;
 
 ALTER TABLE alumnos
 ADD CONSTRAINT fk_alumnos_concello FOREIGN KEY (concello_id) REFERENCES concellos (id);

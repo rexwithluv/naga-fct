@@ -23,7 +23,6 @@ Table "alumnos" {
   "dni_nie" VARCHAR(500)
   "nombre" VARCHAR(500) [not null]
   "apellidos" VARCHAR(500) [not null]
-  "curso_id" SMALLINT [not null]
   "email" VARCHAR(500) [not null]
   "telefono" VARCHAR(500) [not null]
   "concello_id" INT [not null]
@@ -119,8 +118,6 @@ Table "empresas_skills" {
 }
 
 Ref "fk_cursos_especialidad":"especialidades"."id" < "cursos"."especialidad_id" [delete: cascade]
-
-Ref "fk_alumnos_curso":"cursos"."id" < "alumnos"."curso_id" [delete: cascade]
 
 Ref "fk_alumnos_concello":"concellos"."id" < "alumnos"."concello_id"
 

@@ -426,7 +426,6 @@ INSERT INTO
         dni_nie,
         nombre,
         apellidos,
-        curso_id,
         email,
         telefono,
         concello_id,
@@ -439,7 +438,6 @@ VALUES (
         123456789,
         'Carlos',
         'Pérez García',
-        1,
         'carlos.perez@example.com',
         '986123457',
         1,
@@ -452,7 +450,6 @@ VALUES (
         987654321,
         'Ana',
         'López Fernández',
-        2,
         'ana.lopez@example.com',
         '986234568',
         2,
@@ -465,105 +462,97 @@ VALUES (
         112233445,
         'Laura',
         'Martín Sánchez',
-        3,
         'laura.martin@example.com',
         '986345679',
         3,
         112233445,
         3,
         3,
-        3
+        2
     ),
     (
         223344556,
         'Pedro',
         'Gómez Díaz',
-        4,
         'pedro.gomez@example.com',
         '986456780',
         4,
         223344556,
         4,
         4,
-        4
+        1
     ),
     (
         334455667,
         'Marta',
         'Vázquez Pérez',
-        5,
         'marta.vazquez@example.com',
         '986567891',
         5,
         334455667,
         2,
         5,
-        5
+        1
     ),
     (
         445566778,
         'José',
         'Martínez Ruiz',
-        6,
         'jose.martinez@example.com',
         '986678902',
         6,
         445566778,
         3,
         6,
-        6
+        2
     ),
     (
         556677889,
         'Isabel',
         'González Álvarez',
-        7,
         'isabel.gonzalez@example.com',
         '986789013',
         7,
         556677889,
         1,
         7,
-        7
+        2
     ),
     (
         667788990,
         'David',
         'López Torres',
-        8,
         'david.lopez@example.com',
         '986890124',
         8,
         667788990,
         4,
         8,
-        8
+        1
     ),
     (
         778899001,
         'Sofía',
         'Hernández Fernández',
-        9,
         'sofia.hernandez@example.com',
         '986901235',
         9,
         778899001,
         4,
         9,
-        9
+        2
     ),
     (
         889900112,
         'Luis',
         'Torres López',
-        10,
         'luis.torres@example.com',
         '986012346',
         10,
         889900112,
         2,
         10,
-        10
+        1
     );
 
 INSERT INTO
