@@ -32,9 +32,6 @@ public class Alumno {
     @Column(name = "apellidos", length = 500, nullable = false)
     private String apellidos;
 
-    @Column(name = "curso_id", nullable = false)
-    private Short cursoId;
-
     @Column(name = "email", length = 500, nullable = false)
     private String email;
 
