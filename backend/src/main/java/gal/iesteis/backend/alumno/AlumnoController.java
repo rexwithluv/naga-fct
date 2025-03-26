@@ -17,12 +17,12 @@ public class AlumnoController {
 
     @GetMapping("")
     public ResponseEntity<?> getAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getAll());
+        return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodos());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(service.obtenerPorId(id));
     }
 
 }

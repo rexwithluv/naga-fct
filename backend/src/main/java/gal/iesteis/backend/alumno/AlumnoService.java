@@ -11,11 +11,11 @@ public class AlumnoService {
     @Autowired
     private AlumnoRepository repository;
 
-    public List<Alumno> getAll() {
+    public List<Alumno> obtenerTodos() {
         return repository.findAll();
     }
 
-    public Alumno getById(Long id) {
+    public Alumno obtenerPorId(Long id) {
         return repository.findById(id).orElseThrow(() -> new AlumnoNotFoundException(id));
     }
 }
