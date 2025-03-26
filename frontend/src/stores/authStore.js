@@ -1,6 +1,6 @@
-import axios from 'axios'
-import { defineStore } from 'pinia'
+import apiClient from '@/apiClient'
 import capitalize from '@/helpers/capitalize'
+import { defineStore } from 'pinia'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -11,7 +11,7 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async login(email, password) {
       try {
-        const response = await axios.post('http://localhost:9000/login', {
+        const response = await apiClient.post('/login', {
           email: email,
           password: password,
         })
