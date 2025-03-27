@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/stores/authStore'
 import AlumnosPage from '@/views/AlumnosPage.vue'
+import EmpresasPage from '@/views/EmpresasPage.vue'
 import HomePage from '@/views/HomePage.vue'
 import LandingPage from '@/views/LandingPage.vue'
 import LoginPage from '@/views/LoginPage.vue'
@@ -31,7 +32,7 @@ const router = createRouter({
     {
       path: '/empresas',
       name: 'empresas',
-      component: HomePage,
+      component: EmpresasPage,
     },
     {
       path: '/tutores',
