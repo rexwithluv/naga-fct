@@ -29,7 +29,6 @@ onMounted(() => {
     <DataTable :value="alumnos">
         <Column field="nombre" header="Nombre" />
         <Column field="apellidos" header="Apellidos" />
-        <Column field="cursoId" header="ID Curso" />
         <Column field="email" header="Email" />
         <Column field="telefono" header="Teléfono" />
         <Column field="concelloId" header="ID Concello" />
