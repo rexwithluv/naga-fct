@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS empresas (
     contacto_nombre VARCHAR(500),
     contacto_email VARCHAR(500),
     contacto_telefono VARCHAR(500),
-    disponible BOOLEAN NOT NULL,
+    activa BOOLEAN NOT NULL,
     plazas SMALLINT DEFAULT 0
 );
 
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
 );
 
 -- Tablas de relación many-to-many (CREATE TABLE N:M)
-CREATE TABLE IF NOT EXISTS alumnos_empresas (
+CREATE TABLE IF NOT EXISTS fct (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     alumno_id BIGINT NOT NULL,
     empresa_id BIGINT NOT NULL,
@@ -154,11 +154,11 @@ ADD CONSTRAINT fk_usuarios_rol FOREIGN KEY (rol_id) REFERENCES roles_usuarios (i
 ALTER TABLE usuarios
 ADD CONSTRAINT fk_usuarios_tutor FOREIGN KEY (tutor_id) REFERENCES tutores_centro (id);
 
-ALTER TABLE alumnos_empresas
-ADD CONSTRAINT fk_alumnos_empresas_alumno FOREIGN KEY (alumno_id) REFERENCES alumnos (id) ON DELETE CASCADE;
+ALTER TABLE fct
+ADD CONSTRAINT fk_fct_alumno FOREIGN KEY (alumno_id) REFERENCES alumnos (id) ON DELETE CASCADE;
 
-ALTER TABLE alumnos_empresas
-ADD CONSTRAINT fk_alumnos_empresas_empresa FOREIGN KEY (empresa_id) REFERENCES empresas (id) ON DELETE CASCADE;
+ALTER TABLE fct
+ADD CONSTRAINT fk_fct_empresa FOREIGN KEY (empresa_id) REFERENCES empresas (id) ON DELETE CASCADE;
 
 ALTER TABLE correos
 ADD CONSTRAINT fk_correos_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios (id);

@@ -95,7 +95,7 @@ INSERT INTO
         contacto_nombre,
         contacto_email,
         contacto_telefono,
-        disponible,
+        activa,
         plazas
     )
 VALUES (
@@ -588,7 +588,7 @@ VALUES (
 ---
 
 INSERT INTO
-    alumnos_empresas (
+    fct (
         alumno_id,
         empresa_id,
         fecha_inicio,
