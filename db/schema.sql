@@ -118,7 +118,7 @@ ALTER TABLE alumnos
 ADD CONSTRAINT fk_alumnos_concello FOREIGN KEY (concello_id) REFERENCES concellos (id);
 
 ALTER TABLE alumnos
-ADD CONSTRAINT fk_alumnos_estado FOREIGN KEY (estado_id) REFERENCES estados_alumnos (id);
+ADD CONSTRAINT fk_alumnos_estado_alumnos FOREIGN KEY (estado_id) REFERENCES estados_alumnos (id);
 
 ALTER TABLE alumnos
 ADD CONSTRAINT fk_alumnos_tutor_centro FOREIGN KEY (tutor_centro_id) REFERENCES tutores_centro (id);
