@@ -30,7 +30,6 @@ CREATE TABLE IF NOT EXISTS alumnos (
     concello_id INT NOT NULL,
     numero_seguridad_social VARCHAR(500),
     estado_id TINYINT NOT NULL,
-    tutor_empresa_id BIGINT,
     tutor_centro_id BIGINT NOT NULL
 );
 
@@ -97,18 +96,18 @@ CREATE TABLE IF NOT EXISTS usuarios (
 );
 
 -- Tablas de relación many-to-many (CREATE TABLE N:M)
-CREATE TABLE IF NOT EXISTS fct (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    alumno_id BIGINT NOT NULL,
-    empresa_id BIGINT NOT NULL,
-    fecha_inicio DATE NOT NULL,
-    fecha_fin DATE
-);
-
 CREATE TABLE IF NOT EXISTS empresas_skills (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     empresa_id BIGINT NOT NULL,
     skill_id INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS fct (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    alumno_id BIGINT NOT NULL,
+    tutor_empresa_id BIGINT NOT NULL,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE
 );
 
 -- Claves foráneas (ALTER TABLE - FK)
@@ -120,9 +119,6 @@ ADD CONSTRAINT fk_alumnos_concello FOREIGN KEY (concello_id) REFERENCES concello
 
 ALTER TABLE alumnos
 ADD CONSTRAINT fk_alumnos_estado FOREIGN KEY (estado_id) REFERENCES estados_alumnos (id);
-
-ALTER TABLE alumnos
-ADD CONSTRAINT fk_alumnos_tutor_empresa FOREIGN KEY (tutor_empresa_id) REFERENCES tutores_empresa (id);
 
 ALTER TABLE alumnos
 ADD CONSTRAINT fk_alumnos_tutor_centro FOREIGN KEY (tutor_centro_id) REFERENCES tutores_centro (id);
@@ -158,7 +154,7 @@ ALTER TABLE fct
 ADD CONSTRAINT fk_fct_alumno FOREIGN KEY (alumno_id) REFERENCES alumnos (id) ON DELETE CASCADE;
 
 ALTER TABLE fct
-ADD CONSTRAINT fk_fct_empresa FOREIGN KEY (empresa_id) REFERENCES empresas (id) ON DELETE CASCADE;
+ADD CONSTRAINT fk_fct_tutor_empresa_id FOREIGN KEY (tutor_empresa_id) REFERENCES tutores_empresa (id) ON DELETE CASCADE;
 
 ALTER TABLE correos
 ADD CONSTRAINT fk_correos_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios (id);

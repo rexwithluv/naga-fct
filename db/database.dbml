@@ -28,7 +28,6 @@ Table "alumnos" {
   "concello_id" INT [not null]
   "numero_seguridad_social" VARCHAR(500)
   "estado_id" TINYINT [not null]
-  "tutor_empresa_id" BIGINT
   "tutor_centro_id" BIGINT [not null]
 
   Indexes {
@@ -103,18 +102,18 @@ Table "usuarios" {
   }
 }
 
-Table "fct" {
-  "id" BIGINT [pk, increment]
-  "alumno_id" BIGINT [not null]
-  "empresa_id" BIGINT [not null]
-  "fecha_inicio" DATE [not null]
-  "fecha_fin" DATE
-}
-
 Table "empresas_skills" {
   "id" BIGINT [pk, increment]
   "empresa_id" BIGINT [not null]
   "skill_id" INT [not null]
+}
+
+Table "fct" {
+  "id" BIGINT [pk, increment]
+  "alumno_id" BIGINT [not null]
+  "tutor_empresa_id" BIGINT [not null]
+  "fecha_inicio" DATE [not null]
+  "fecha_fin" DATE
 }
 
 Ref "fk_cursos_especialidad":"especialidades"."id" < "cursos"."especialidad_id" [delete: cascade]
@@ -122,8 +121,6 @@ Ref "fk_cursos_especialidad":"especialidades"."id" < "cursos"."especialidad_id" 
 Ref "fk_alumnos_concello":"concellos"."id" < "alumnos"."concello_id"
 
 Ref "fk_alumnos_estado":"estados_alumnos"."id" < "alumnos"."estado_id"
-
-Ref "fk_alumnos_tutor_empresa":"tutores_empresa"."id" < "alumnos"."tutor_empresa_id"
 
 Ref "fk_alumnos_tutor_centro":"tutores_centro"."id" < "alumnos"."tutor_centro_id"
 
@@ -147,7 +144,7 @@ Ref "fk_usuarios_tutor":"tutores_centro"."id" < "usuarios"."tutor_id"
 
 Ref "fk_fct_alumno":"alumnos"."id" < "fct"."alumno_id" [delete: cascade]
 
-Ref "fk_fct_empresa":"empresas"."id" < "fct"."empresa_id" [delete: cascade]
+Ref "fk_fct_tutor_empresa_id":"tutores_empresa"."id" < "fct"."tutor_empresa_id" [delete: cascade]
 
 Ref "fk_correos_usuario":"usuarios"."id" < "correos"."usuario_id"
 
