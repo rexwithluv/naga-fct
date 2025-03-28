@@ -4,6 +4,7 @@ import EmpresasPage from '@/views/EmpresasPage.vue'
 import HomePage from '@/views/HomePage.vue'
 import LandingPage from '@/views/LandingPage.vue'
 import LoginPage from '@/views/LoginPage.vue'
+import TutoresPage from '@/views/TutoresPage.vue'
 import UsuariosPage from '@/views/UsuariosPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -38,7 +39,7 @@ const router = createRouter({
     {
       path: '/tutores',
       name: 'tutores',
-      component: HomePage,
+      component: TutoresPage,
     },
     {
       path: '/usuarios',
