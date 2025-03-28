@@ -97,9 +97,9 @@ CREATE TABLE IF NOT EXISTS usuarios (
 
 -- Tablas de relación many-to-many (CREATE TABLE N:M)
 CREATE TABLE IF NOT EXISTS empresas_skills (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     empresa_id BIGINT NOT NULL,
-    skill_id INT NOT NULL
+    skill_id INT NOT NULL,
+    PRIMARY KEY (empresa_id, skill_id)
 );
 
 CREATE TABLE IF NOT EXISTS fct (
