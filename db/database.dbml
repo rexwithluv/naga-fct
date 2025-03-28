@@ -120,7 +120,7 @@ Ref "fk_cursos_especialidad":"especialidades"."id" < "cursos"."especialidad_id" 
 
 Ref "fk_alumnos_concello":"concellos"."id" < "alumnos"."concello_id"
 
-Ref "fk_alumnos_estado":"estados_alumnos"."id" < "alumnos"."estado_id"
+Ref "fk_alumnos_estado_alumnos":"estados_alumnos"."id" < "alumnos"."estado_id"
 
 Ref "fk_alumnos_tutor_centro":"tutores_centro"."id" < "alumnos"."tutor_centro_id"
 
