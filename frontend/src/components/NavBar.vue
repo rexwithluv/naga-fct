@@ -16,6 +16,10 @@ const items = ref([
         name: "tutores"
     },
     {
+        label: "Usuarios",
+        name: "usuarios"
+    },
+    {
         label: "Solicitar FCT",
         name: "fcts"
     }
