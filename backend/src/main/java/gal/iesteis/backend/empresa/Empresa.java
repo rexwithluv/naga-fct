@@ -1,10 +1,20 @@
 package gal.iesteis.backend.empresa;
 
+import java.util.List;
+
+import gal.iesteis.backend.concello.Concello;
+import gal.iesteis.backend.especialidad.Especialidad;
+import gal.iesteis.backend.skill.Skill;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,8 +36,9 @@ public class Empresa {
     @Column(name = "nombre", length = 500, nullable = false)
     private String nombre;
 
-    @Column(name = "concello_id", nullable = false)
-    private Integer concelloId;
+    @ManyToOne
+    @JoinColumn(name = "concello_id", nullable = false, foreignKey = @ForeignKey(name = "fk_empresas_concello"))
+    private Concello concello;
 
     @Column(name = "direccion", length = 500, nullable = false)
     private String direccion;
@@ -35,8 +46,9 @@ public class Empresa {
     @Column(name = "observaciones", columnDefinition = "TEXT")
     private String observaciones;
 
-    @Column(name = "especialidad_id", nullable = false)
-    private Byte especialidadId;
+    @ManyToOne
+    @JoinColumn(name = "especialidad_id", nullable = false, foreignKey = @ForeignKey(name = "fk_empresas_especialidad"))
+    private Especialidad especialidad;
 
     @Column(name = "contacto_nombre", length = 500)
     private String contactoNombre;
@@ -52,4 +64,8 @@ public class Empresa {
 
     @Column(name = "plazas", columnDefinition = "DEFAULT 0")
     private Short plazas;
+
+    @ManyToMany
+    @JoinTable(name = "empresas_skills", joinColumns = @JoinColumn(name = "empresa_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
+    private List<Skill> skills;
 }
