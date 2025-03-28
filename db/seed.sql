@@ -431,7 +431,6 @@ INSERT INTO
         concello_id,
         numero_seguridad_social,
         estado_id,
-        tutor_empresa_id,
         tutor_centro_id
     )
 VALUES (
@@ -442,7 +441,6 @@ VALUES (
         '986123457',
         1,
         123456789,
-        1,
         1,
         1
     ),
@@ -455,7 +453,6 @@ VALUES (
         2,
         987654321,
         2,
-        2,
         2
     ),
     (
@@ -466,7 +463,6 @@ VALUES (
         '986345679',
         3,
         112233445,
-        3,
         3,
         2
     ),
@@ -479,7 +475,6 @@ VALUES (
         4,
         223344556,
         4,
-        4,
         1
     ),
     (
@@ -491,7 +486,6 @@ VALUES (
         5,
         334455667,
         2,
-        5,
         1
     ),
     (
@@ -503,7 +497,6 @@ VALUES (
         6,
         445566778,
         3,
-        6,
         2
     ),
     (
@@ -515,7 +508,6 @@ VALUES (
         7,
         556677889,
         1,
-        7,
         2
     ),
     (
@@ -527,7 +519,6 @@ VALUES (
         8,
         667788990,
         4,
-        8,
         1
     ),
     (
@@ -539,7 +530,6 @@ VALUES (
         9,
         778899001,
         4,
-        9,
         2
     ),
     (
@@ -551,7 +541,6 @@ VALUES (
         10,
         889900112,
         2,
-        10,
         1
     );
 
@@ -590,7 +579,7 @@ VALUES (
 INSERT INTO
     fct (
         alumno_id,
-        empresa_id,
+        tutor_empresa_id,
         fecha_inicio,
         fecha_fin
     )
