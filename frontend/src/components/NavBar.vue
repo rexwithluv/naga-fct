@@ -20,8 +20,8 @@ const items = ref([
         name: "usuarios"
     },
     {
-        label: "Solicitar FCT",
-        name: "fcts"
+        label: "FCT",
+        name: "fct"
     }
 ]);
 
