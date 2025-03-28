@@ -33,7 +33,6 @@ onMounted(() => {
         <Column field="telefono" header="Teléfono" />
         <Column field="concelloId" header="ID Concello" />
         <Column field="estadoId" header="ID Estado" />
-        <Column field="tutorEmpresaId" header="ID Tutor Empresa" />
         <Column field="tutorCentroId" header="ID Tutor Centro" />
     </DataTable>
 </template>
