@@ -62,7 +62,7 @@ Table "empresas" {
   "contacto_nombre" VARCHAR(500)
   "contacto_email" VARCHAR(500)
   "contacto_telefono" VARCHAR(500)
-  "disponible" BOOLEAN [not null]
+  "activa" BOOLEAN [not null]
   "plazas" SMALLINT [default: 0]
 }
 
@@ -103,7 +103,7 @@ Table "usuarios" {
   }
 }
 
-Table "alumnos_empresas" {
+Table "fct" {
   "id" BIGINT [pk, increment]
   "alumno_id" BIGINT [not null]
   "empresa_id" BIGINT [not null]
@@ -145,9 +145,9 @@ Ref "fk_usuarios_rol":"roles_usuarios"."id" < "usuarios"."rol_id"
 
 Ref "fk_usuarios_tutor":"tutores_centro"."id" < "usuarios"."tutor_id"
 
-Ref "fk_alumnos_empresas_alumno":"alumnos"."id" < "alumnos_empresas"."alumno_id" [delete: cascade]
+Ref "fk_fct_alumno":"alumnos"."id" < "fct"."alumno_id" [delete: cascade]
 
-Ref "fk_alumnos_empresas_empresa":"empresas"."id" < "alumnos_empresas"."empresa_id" [delete: cascade]
+Ref "fk_fct_empresa":"empresas"."id" < "fct"."empresa_id" [delete: cascade]
 
 Ref "fk_correos_usuario":"usuarios"."id" < "correos"."usuario_id"
 
