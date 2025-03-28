@@ -1,4 +1,4 @@
-package gal.iesteis.backend.alumnosEmpresas;
+package gal.iesteis.backend.fct;
 
 import java.time.LocalDate;
 
@@ -18,8 +18,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "alumnos_empresas")
-public class AlumnosEmpresas {
+@Table(name = "fct")
+public class FCT {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +28,8 @@ public class AlumnosEmpresas {
     @Column(name = "alumno_id", nullable = false)
     private Long alumnoId;
 
-    @Column(name = "empresa_id", nullable = false)
-    private Long empresaId;
+    @Column(name = "tutor_empresa_id", nullable = false)
+    private Long tutorEmpresaId;
 
     @Column(name = "fecha_inicio", nullable = false)
     private LocalDate fechaInicio;

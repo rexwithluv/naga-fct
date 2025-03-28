@@ -47,8 +47,8 @@ public class Empresa {
     @Column(name = "contacto_telefono", length = 500)
     private String contactoTelefono;
 
-    @Column(name = "disponible", nullable = false)
-    private Boolean disponible;
+    @Column(name = "activa", nullable = false)
+    private Boolean activa;
 
     @Column(name = "plazas", columnDefinition = "DEFAULT 0")
     private Short plazas;

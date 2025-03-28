@@ -47,9 +47,6 @@ public class Alumno {
     @Column(name = "estado_id", nullable = false)
     private Byte estadoId;
 
-    @Column(name = "tutor_empresa_id")
-    private Long tutorEmpresaId;
-
     @Column(name = "tutor_centro_id", nullable = false)
     private Long tutorCentroId;
 }
