@@ -1,5 +1,9 @@
-<script setup lang="js"></script>
+<script setup lang="js">
+import UsuariosTabla from '@/components/usuarios/UsuariosTabla.vue';
+</script>
 
 <template>
-  <div>Soy la página de usuarios!</div>
+    <div>
+        <UsuariosTabla />
+    </div>
 </template>
