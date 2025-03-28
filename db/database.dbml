@@ -103,9 +103,12 @@ Table "usuarios" {
 }
 
 Table "empresas_skills" {
-  "id" BIGINT [pk, increment]
   "empresa_id" BIGINT [not null]
   "skill_id" INT [not null]
+
+  Indexes {
+    (empresa_id, skill_id) [pk]
+  }
 }
 
 Table "fct" {
