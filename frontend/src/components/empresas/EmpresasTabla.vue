@@ -1,40 +1,35 @@
 <script setup lang="js">
-import apiClient from '@/apiClient'
-import { useToast } from 'primevue/usetoast'
-import { onMounted, ref } from 'vue'
+const empresas = defineModel('empresas')
+const dialogVisible = defineModel('dialogVisible')
+const datosContacto = defineModel('datosContacto')
 
-const toast = useToast()
-const empresas = ref([])
-
-const getEmpresas = async () => {
-  try {
-    const response = await apiClient.get('/empresas');
-    console.log(response.data)
-    empresas.value = response.data
-  } catch (error) {
-    toast.add({
-      severity: 'error',
-      summary: 'Error al cargar las empresas',
-      detail: error.message,
-      life: 5000,
-    })
-  }
+const turnDialogVisible = (datos) => {
+  datosContacto.value = datos
+  dialogVisible.value = true
 }
-
-onMounted(() => {
-  getEmpresas()
-})
+const formatSkills = (lista) => lista.join(', ')
 </script>
 
 <template>
-  <DataTable :value="empresas">
+  <DataTable :value="empresas" rowHover>
     <Column field="nombre" header="Nombre" />
-    <Column field="concelloId" header="Concello" />
+    <Column field="concello" header="Concello" />
     <Column field="direccion" header="Dirección" />
     <Column field="observaciones" header="Observaciones" />
-    <Column field="contactoNombre" header="Nombre de contacto" />
-    <Column field="contactoEmail" header="Email de contacto" />
-    <Column field="contactoTelefono" header="Teléfono de contacto" />
+    <Column field="especialidad" header="Especialidad" />
+    <Column header="Nombre de contacto">
+      <template #body="slotProps">
+        <Button
+          :label="slotProps.data.contacto.nombre"
+          @click="turnDialogVisible(slotProps.data.contacto)"
+        />
+      </template>
+    </Column>
     <Column field="plazas" header="Plazas" />
+    <Column header="Skills">
+      <template #body="slotProps">
+        {{ formatSkills(slotProps.data.skills) }}
+      </template>
+    </Column>
   </DataTable>
 </template>
