@@ -142,7 +142,7 @@ ALTER TABLE tutores_empresa
 ADD CONSTRAINT fk_tutores_empresa FOREIGN KEY (empresa_id) REFERENCES empresas (id) ON DELETE CASCADE;
 
 ALTER TABLE tutores_centro
-ADD CONSTRAINT fk_tutores_centro FOREIGN KEY (curso_id) REFERENCES cursos (id);
+ADD CONSTRAINT fk_tutor_centro_curso FOREIGN KEY (curso_id) REFERENCES cursos (id);
 
 ALTER TABLE usuarios
 ADD CONSTRAINT fk_usuarios_rol FOREIGN KEY (rol_id) REFERENCES roles_usuarios (id);
