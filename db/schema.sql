@@ -145,7 +145,7 @@ ALTER TABLE tutores_centro
 ADD CONSTRAINT fk_tutor_centro_curso FOREIGN KEY (curso_id) REFERENCES cursos (id);
 
 ALTER TABLE usuarios
-ADD CONSTRAINT fk_usuario_rol FOREIGN KEY (rol_id) REFERENCES roles_usuarios (id);
+ADD CONSTRAINT fk_usuarios_rol FOREIGN KEY (rol_id) REFERENCES roles_usuarios (id);
 
 ALTER TABLE usuarios
 ADD CONSTRAINT fk_usuario_tutor FOREIGN KEY (tutor_id) REFERENCES tutores_centro (id);

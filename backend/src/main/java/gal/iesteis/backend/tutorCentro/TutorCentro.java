@@ -1,6 +1,7 @@
 package gal.iesteis.backend.tutorCentro;
 
 import gal.iesteis.backend.curso.Curso;
+import gal.iesteis.backend.usuario.Usuario;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -42,4 +43,7 @@ public class TutorCentro {
 
     @Column(name = "activo", nullable = false)
     private Boolean activo;
+
+    @OneToOne(mappedBy = "tutor")
+    private Usuario usuario;
 }

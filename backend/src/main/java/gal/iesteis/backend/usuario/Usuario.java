@@ -1,10 +1,16 @@
 package gal.iesteis.backend.usuario;
 
+import gal.iesteis.backend.rolUsuario.RolUsuario;
+import gal.iesteis.backend.tutorCentro.TutorCentro;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -32,11 +38,13 @@ public class Usuario {
     @Column(name = "password", length = 500, nullable = false)
     private String password;
 
-    @Column(name = "rol_id", nullable = false)
-    private Byte rolId;
+    @ManyToOne
+    @JoinColumn(name = "rol_id", nullable = false, foreignKey = @ForeignKey(name = "fk_usuarios_rol"))
+    private RolUsuario rol;
 
-    @Column(name = "tutor_id")
-    private Long tutorId;
+    @OneToOne
+    @JoinColumn(name = "tutor_id", foreignKey = @ForeignKey(name = "fk_usuario_tutor"))
+    private TutorCentro tutor;
 
     @Column(name = "activo", nullable = false)
     private Boolean activo;
