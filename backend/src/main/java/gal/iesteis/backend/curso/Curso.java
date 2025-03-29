@@ -1,6 +1,7 @@
 package gal.iesteis.backend.curso;
 
 import gal.iesteis.backend.especialidad.Especialidad;
+import gal.iesteis.backend.tutorCentro.TutorCentro;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -9,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,4 +38,7 @@ public class Curso {
     @ManyToOne
     @JoinColumn(name = "especialidad_id", nullable = false, foreignKey = @ForeignKey(name = "fk_cursos_especialidad"))
     private Especialidad especialidad;
+
+    @OneToOne(mappedBy = "curso")
+    private TutorCentro tutor;
 }

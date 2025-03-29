@@ -1,10 +1,14 @@
 package gal.iesteis.backend.tutorCentro;
 
+import gal.iesteis.backend.curso.Curso;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,8 +36,9 @@ public class TutorCentro {
     @Column(name = "email", length = 500, nullable = false)
     private String email;
 
-    @Column(name = "curso_id", nullable = false)
-    private Short cursoId;
+    @OneToOne
+    @JoinColumn(name = "curso_id", nullable = false, foreignKey = @ForeignKey(name = "fk_tutor_centro_curso"))
+    private Curso curso;
 
     @Column(name = "activo", nullable = false)
     private Boolean activo;
