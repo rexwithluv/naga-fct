@@ -2,11 +2,16 @@ package gal.iesteis.backend.correo;
 
 import java.time.LocalDate;
 
+import gal.iesteis.backend.empresa.Empresa;
+import gal.iesteis.backend.usuario.Usuario;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,11 +32,13 @@ public class Correo {
     @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
 
-    @Column(name = "usuario_id", nullable = false)
-    private Long usuarioId;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false, foreignKey = @ForeignKey(name = "fk_correos_usuario"))
+    private Usuario usuario;
 
-    @Column(name = "empresa_id", nullable = false)
-    private Long empresaId;
+    @ManyToOne
+    @JoinColumn(name = "empresa_id", nullable = false, foreignKey = @ForeignKey(name = "fk_correos_empresa"))
+    private Empresa empresa;
 
     @Column(name = "curso_academico", length = 50, nullable = false)
     private String cursoAcademico;

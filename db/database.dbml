@@ -139,11 +139,11 @@ Ref "fk_empresas_skills_skill":"skills"."id" < "empresas_skills"."skill_id" [del
 
 Ref "fk_tutores_empresa":"empresas"."id" < "tutores_empresa"."empresa_id" [delete: cascade]
 
-Ref "fk_tutores_centro":"cursos"."id" < "tutores_centro"."curso_id"
+Ref "fk_tutor_centro_curso":"cursos"."id" < "tutores_centro"."curso_id"
 
 Ref "fk_usuarios_rol":"roles_usuarios"."id" < "usuarios"."rol_id"
 
-Ref "fk_usuarios_tutor":"tutores_centro"."id" < "usuarios"."tutor_id"
+Ref "fk_usuario_tutor":"tutores_centro"."id" < "usuarios"."tutor_id"
 
 Ref "fk_fct_alumno":"alumnos"."id" < "fct"."alumno_id" [delete: cascade]
 
