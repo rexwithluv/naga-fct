@@ -29,8 +29,8 @@ onMounted(() => {
 <template>
     <DataTable :value="usuarios">
         <Column field="email" header="Email" />
-        <Column field="rolId" header="Rol" />
-        <Column field="tutorId" header="Tutor de" />
+        <Column field="rol" header="Rol" />
+        <Column field="tutor" header="Tutor de..." />
         <Column field="activo" header="Activo" />
     </DataTable>
 </template>

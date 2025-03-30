@@ -28,8 +28,9 @@ onMounted(() => {
 
 <template>
   <DataTable :value="fct">
-    <Column field="alumnoId" header="ID Alumno" />
-    <Column field="tutorEmpresaId" header="ID Tutor Empresa" />
+    <Column field="alumno" header="Alumno" />
+    <Column field="tutor" header="Tutor en la empresa" />
+    <Column field="empresa" header="Empresa" />
     <Column field="fechaInicio" header="Fecha de inicio" />
     <Column field="fechaFin" header="Fecha de fin" />
   </DataTable>

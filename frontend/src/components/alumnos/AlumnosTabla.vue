@@ -27,12 +27,13 @@ onMounted(() => {
 
 <template>
     <DataTable :value="alumnos">
+        <Column field="dniNie" header="DNI/NIE" />
         <Column field="nombre" header="Nombre" />
         <Column field="apellidos" header="Apellidos" />
         <Column field="email" header="Email" />
         <Column field="telefono" header="Teléfono" />
-        <Column field="concelloId" header="ID Concello" />
-        <Column field="estadoId" header="ID Estado" />
-        <Column field="tutorCentroId" header="ID Tutor Centro" />
+        <Column field="concello" header="Concello" />
+        <Column field="estado" header="Estado" />
+        <Column field="tutorCentro" header="Tutor" />
     </DataTable>
 </template>

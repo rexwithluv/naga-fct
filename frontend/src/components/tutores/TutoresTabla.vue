@@ -30,7 +30,7 @@ onMounted(() => {
     <Column field="nombre" header="Nombre" />
     <Column field="apellidos" header="Apellidos" />
     <Column field="email" header="Email" />
-    <Column field="cursoId" header="Curso" />
+    <Column field="curso" header="Curso" />
     <Column field="activo" header="Activo" />
   </DataTable>
 </template>

@@ -14,6 +14,7 @@ import lombok.Setter;
 public class FCTDTO {
     private String alumno;
     private String tutor;
+    private String empresa;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
 }
