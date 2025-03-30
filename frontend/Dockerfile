@@ -15,5 +15,5 @@ FROM nginx:alpine
 # Copiamos los archivos construidos en la carpeta de nginx
 COPY --from=build /app/dist /usr/share/nginx/html
 
-EXPOSE 6321
+# Iniciamos el servidor
 CMD [ "nginx", "-g", "daemon off;" ]

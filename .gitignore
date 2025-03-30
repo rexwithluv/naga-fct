@@ -1,6 +1,5 @@
 # Archivos sensibles
 .env
-backend/src/main/resources/*.properties
 
 # @rexwithluv
 notas/
