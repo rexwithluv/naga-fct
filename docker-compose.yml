@@ -48,7 +48,7 @@ services:
       context: ./frontend
     container_name: naga-frontend-vue
     ports:
-      - 4171:80
+      - 6321:80
     networks:
       - naga-network
 
