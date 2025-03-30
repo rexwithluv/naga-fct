@@ -20,6 +20,7 @@ public class FCTService {
 
         dto.setAlumno(fct.getAlumno().getNombre());
         dto.setTutor(fct.getTutor().getNombre() + " " + fct.getTutor().getApellidos());
+        dto.setEmpresa(fct.getTutor().getEmpresa().getNombre());
 
         return dto;
     }
