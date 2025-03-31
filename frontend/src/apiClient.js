@@ -3,7 +3,7 @@ import axios from 'axios'
 import { ref } from 'vue'
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:9000',
+  baseURL:import.meta.env.VITE_API_BASE_URL
 })
 
 apiClient.interceptors.request.use(
