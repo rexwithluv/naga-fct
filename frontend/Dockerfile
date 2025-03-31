@@ -5,6 +5,9 @@ WORKDIR /app
 COPY package*.json /app
 RUN npm install
 
+# Declaramos variables de entorno
+ARG VITE_API_BASE_URL
+
 # Copiamos el resto de archivos y construimos la aplicación en /dist
 COPY . .
 RUN npm run build
