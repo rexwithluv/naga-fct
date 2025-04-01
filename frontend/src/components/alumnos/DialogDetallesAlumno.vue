@@ -34,15 +34,15 @@ watch(visible, async (newValue) => {
 <template>
     <Dialog v-model:visible="visible" header="Detalles del alumno" modal dismissableMask>
         <ul>
-            <li>ID: {{ alumno.id }} </li>
-            <li>DNI/NIE: {{ alumno.dniNie }}</li>
-            <li>Nombre: {{ alumno.nombre }}</li>
-            <li>Apellidos: {{ alumno.apellidos }}</li>
-            <li>Correo electrónico: {{ alumno.email }}</li>
-            <li>Teléfono: {{ alumno.telefono }}</li>
-            <li>NUSS: {{ alumno.numeroSeguridadSocial }}</li>
-            <li>Estado: {{ alumno.estado }}</li>
-            <li>Tutor: {{ alumno.tutorCentro }}</li>
+            <li>ID: {{ alumno?.id }} </li>
+            <li>DNI/NIE: {{ alumno?.dniNie }}</li>
+            <li>Nombre: {{ alumno?.nombre }}</li>
+            <li>Apellidos: {{ alumno?.apellidos }}</li>
+            <li>Correo electrónico: {{ alumno?.email }}</li>
+            <li>Teléfono: {{ alumno?.telefono }}</li>
+            <li>NUSS: {{ alumno?.numeroSeguridadSocial }}</li>
+            <li>Estado: {{ alumno?.estado }}</li>
+            <li>Tutor: {{ alumno?.tutorCentro }}</li>
         </ul>
     </Dialog>
 </template>
