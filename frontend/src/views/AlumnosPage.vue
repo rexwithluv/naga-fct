@@ -7,7 +7,7 @@ import { onMounted, ref } from 'vue'
 const toast = useToast()
 const alumnos = ref([])
 const alumnoID = ref(null)
-const verDetallesAlumno = ref(false)
+const dialogDetalles = ref(false)
 
 const getAlumnos = async () => {
     try {
@@ -23,9 +23,9 @@ const getAlumnos = async () => {
     }
 }
 
-const obtenerDetalles = (e) => {
+const verDetalles = (e) => {
     alumnoID.value = e.data.id
-    verDetallesAlumno.value = true
+    dialogDetalles.value = true
 }
 
 onMounted(getAlumnos)
@@ -33,8 +33,8 @@ onMounted(getAlumnos)
 
 <template>
     <div>
-        <DialogDetallesAlumno v-model:alumnoID="alumnoID" v-model:visible="verDetallesAlumno" />
-        <DataTable :value="alumnos" @row-click="obtenerDetalles" row-hover>
+        <DialogDetallesAlumno v-model:alumnoID="alumnoID" v-model:visible="dialogDetalles" />
+        <DataTable :value="alumnos" @row-click="verDetalles" row-hover>
             <Column field="dniNie" header="DNI/NIE" />
             <Column field="nombre" header="Nombre" />
             <Column field="apellidos" header="Apellidos" />

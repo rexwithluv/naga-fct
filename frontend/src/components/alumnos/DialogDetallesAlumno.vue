@@ -16,7 +16,7 @@ const getAlumnoData = async () => {
     } catch (error) {
         toast.add({
             severity: 'error',
-            summary: 'Error al cargar los alumnos',
+            summary: 'Error al cargar la/el alumna/o',
             detail: error.message,
             life: 5000,
         })
