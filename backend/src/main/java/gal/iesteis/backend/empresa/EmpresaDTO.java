@@ -13,6 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EmpresaDTO {
+    private Long id;
     private String nombre;
     private String concello;
     private String direccion;

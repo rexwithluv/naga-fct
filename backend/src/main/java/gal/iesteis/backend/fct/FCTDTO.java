@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FCTDTO {
+    private Long id;
     private String alumno;
     private String tutor;
     private String empresa;
