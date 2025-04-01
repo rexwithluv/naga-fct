@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AlumnoDTO {
+    private Long id;
     private String dniNie;
     private String nombre;
     private String apellidos;
