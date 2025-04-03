@@ -34,7 +34,7 @@ onMounted(getAlumnos)
 <template>
     <div>
         <DialogDetallesAlumno v-model:alumnoID="alumnoID" v-model:visible="dialogDetalles" />
-        <DataTable :value="alumnos" @row-click="verDetalles" row-hover>
+        <DataTable :value="alumnos" @row-click="verDetalles" rowHover>
             <Column field="dniNie" header="DNI/NIE" />
             <Column field="nombre" header="Nombre" />
             <Column field="apellidos" header="Apellidos" />

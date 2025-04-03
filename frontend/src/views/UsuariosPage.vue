@@ -36,7 +36,7 @@ onMounted(getUsuarios)
   <div>
     <DialogDetallesTutor v-model:usuarioID="usuarioID" v-model:visible="dialogDetalles"  />
 
-    <DataTable :value="usuarios" @row-click="verDetalles" row-hover>
+    <DataTable :value="usuarios" @row-click="verDetalles" rowHover>
       <Column field="email" header="Email" />
       <Column field="rol" header="Rol" />
       <Column field="tutor" header="Tutor de..." />
