@@ -26,15 +26,10 @@ El repositorio incluye varios archivos `.example` que contienen las variables de
 
 #### Pasos
 
-1. Copia y edita los archivos de ejemplo:
+1. Copia y edita los archivos de ejemplo
 
    ```bash
    cp .env.example .env
-   ```
-
-   ```bash
-   cd backend/src/main/resources/
-   cp application.properties.example application.properties
    ```
 
 2. Levanta los servicios con docker
@@ -66,7 +61,7 @@ El repositorio incluye varios archivos `.example` que contienen las variables de
 
 Después de levantar los contenedores con Docker Compose, puedes acceder a la interfaz de usuario del frontend en:
 
-[http://localhost:4171](http://localhost:4171)
+[http://localhost:6321](http://localhost:6321)
 
 ### 2. Acceso al Backend
 
