@@ -23,16 +23,21 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDTO loginDto) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDto.getEmail(),
-                        loginDto.getPassword()));
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
+
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         String rol = userDetails.getAuthorities().stream().findFirst().map(a -> a.getAuthority()).orElse("ERROR");
-        return ResponseEntity.ok(new JWTResponseDTO(jwt, "Bearer",
-                userDetails.getId(),
-                userDetails.getEmail(),
-                rol));
+
+        return ResponseEntity.ok(
+                new JWTResponseDTO(
+                        jwt,
+                        "Bearer",
+                        userDetails.getId(),
+                        userDetails.getEmail(),
+                        rol));
     }
 }

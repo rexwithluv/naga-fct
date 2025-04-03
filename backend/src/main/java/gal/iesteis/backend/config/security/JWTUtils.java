@@ -19,14 +19,16 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JWTUtils {
+
     private static final Logger logger = LoggerFactory.getLogger(JWTUtils.class);
+
     @Value("${jwt.secret}")
-    private String jwtSecret ;
+    private String jwtSecret;
+
     @Value("${jwt.expiration}")
     private int jwtExpirationMs;
 
     public String generateJwtToken(Authentication authentication) {
-
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
         return Jwts.builder()
@@ -42,8 +44,7 @@ public class JWTUtils {
     }
 
     public String getUserNameFromJwtToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key()).build()
-                .parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean validateJwtToken(String authToken) {
