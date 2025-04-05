@@ -7,6 +7,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gal.iesteis.backend.config.security.UserDetailsImpl;
+
 @Service
 public class UsuarioService {
 
@@ -40,5 +42,10 @@ public class UsuarioService {
     public UsuarioDTO obtenerPorId(Long id) {
         Usuario usuario = repository.findById(id).orElseThrow(() -> new UsuarioNotFoundException(id));
         return usuarioADTO(usuario);
+    }
+
+    public UsuarioDTO obtenerMisDatos(UserDetailsImpl userDetails) {
+        Long id = userDetails.getId();
+        return obtenerPorId(id);
     }
 }

@@ -5,6 +5,7 @@ import FCTPage from '@/views/FCTPage.vue'
 import HomePage from '@/views/HomePage.vue'
 import LandingPage from '@/views/LandingPage.vue'
 import LoginPage from '@/views/LoginPage.vue'
+import PerfilPage from '@/views/PerfilPage.vue'
 import TutoresPage from '@/views/TutoresPage.vue'
 import UsuariosPage from '@/views/UsuariosPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -60,7 +61,7 @@ const router = createRouter({
     {
       path: '/perfil',
       name: 'perfil',
-      component: HomePage,
+      component: PerfilPage,
     },
     // {
     //   path: "/:pathMatch(.*)*",

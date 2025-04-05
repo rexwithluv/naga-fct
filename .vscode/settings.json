@@ -3,7 +3,8 @@
     "docker",
     "db",
     "backend",
-    "frontend"
+    "frontend",
+    "both"
   ],
   "java.configuration.updateBuildConfiguration": "automatic",
   "java.compile.nullAnalysis.mode": "automatic"

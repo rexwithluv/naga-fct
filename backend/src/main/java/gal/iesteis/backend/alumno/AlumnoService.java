@@ -33,9 +33,6 @@ public class AlumnoService {
     }
 
     public List<AlumnoDTO> obtenerTodos(UserDetailsImpl userDetails) {
-        System.out.println("cosita");
-        System.out.println(userDetails.getAuthorities());
-
         boolean isAdmin = userDetails.getAuthorities().stream()
                 .anyMatch(rol -> rol.getAuthority().equals("ROLE_1"));
         List<Alumno> alumnos = new ArrayList<>();
