@@ -14,6 +14,7 @@ import gal.iesteis.backend.usuario.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -25,16 +26,23 @@ public class UserDetailsImpl implements UserDetails {
     private Long id;
     private String email;
 
+    @Getter
+    private Long tutorCentroId;
+
     @JsonIgnore
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
     public static UserDetailsImpl build(Usuario usuario) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + usuario.getRol()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getId()));
+
+        Long tutorCentroId = usuario.getTutor() != null ? usuario.getTutor().getId() : null;
+
         return new UserDetailsImpl(
                 usuario.getId(),
                 usuario.getEmail(),
+                tutorCentroId,
                 usuario.getPassword(),
                 authorities);
     }

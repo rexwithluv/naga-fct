@@ -1,16 +1,23 @@
 package gal.iesteis.backend.alumno;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gal.iesteis.backend.config.security.UserDetailsImpl;
+import gal.iesteis.backend.usuario.UsuarioService;
+
 @Service
 public class AlumnoService {
 
     @Autowired
     private AlumnoRepository repository;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -25,8 +32,25 @@ public class AlumnoService {
         return dto;
     }
 
-    public List<AlumnoDTO> obtenerTodos() {
-        List<Alumno> alumnos = repository.findAll();
+    public List<AlumnoDTO> obtenerTodos(UserDetailsImpl userDetails) {
+        System.out.println("cosita");
+        System.out.println(userDetails.getAuthorities());
+
+        boolean isAdmin = userDetails.getAuthorities().stream()
+                .anyMatch(rol -> rol.getAuthority().equals("ROLE_1"));
+        List<Alumno> alumnos = new ArrayList<>();
+
+        // Si es admin, devolvemos todos
+        if (isAdmin) {
+            alumnos = repository.findAll();
+        }
+
+        // Si es profesor, solo los que le pertenecen y están activos
+        if (!isAdmin) {
+            Long tutorId = userDetails.getTutorCentroId();
+            alumnos = repository.findByTutorCentroIdAndEstadoId(tutorId, (byte) 1);
+        }
+
         return alumnos.stream().map(alumno -> alumnoADTO(alumno)).toList();
     }
 

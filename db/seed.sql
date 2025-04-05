@@ -80,8 +80,8 @@ VALUES ('Cursando'),
 
 INSERT INTO
     roles_usuarios (nombre)
-VALUES ("Superusuario"),
-    ("Usuario estándar");
+VALUES ("admin"),
+    ("comun");
 
 ---
 
@@ -453,7 +453,7 @@ VALUES (
         2,
         987654321,
         2,
-        2
+        1
     ),
     (
         112233445,
@@ -464,7 +464,7 @@ VALUES (
         3,
         112233445,
         3,
-        2
+        1
     ),
     (
         223344556,
@@ -485,8 +485,8 @@ VALUES (
         '986567891',
         5,
         334455667,
-        2,
-        1
+        1,
+        2
     ),
     (
         445566778,
@@ -496,7 +496,7 @@ VALUES (
         '986678902',
         6,
         445566778,
-        3,
+        2,
         2
     ),
     (
@@ -507,7 +507,7 @@ VALUES (
         '986789013',
         7,
         556677889,
-        1,
+        3,
         2
     ),
     (
@@ -519,29 +519,7 @@ VALUES (
         8,
         667788990,
         4,
-        1
-    ),
-    (
-        778899001,
-        'Sofía',
-        'Hernández Fernández',
-        'sofia.hernandez@example.com',
-        '986901235',
-        9,
-        778899001,
-        4,
         2
-    ),
-    (
-        889900112,
-        'Luis',
-        'Torres López',
-        'luis.torres@example.com',
-        '986012346',
-        10,
-        889900112,
-        2,
-        1
     );
 
 INSERT INTO
@@ -560,18 +538,18 @@ VALUES (
         true
     ),
     (
+        'marta@edu.xunta.gal',
+        '$2a$12$i0Jo1orADsIW08bF.pGshuRXQyCVeqOSzJarfE8NPMBtYsw1smAJK', -- nigiri
+        2,
+        2,
+        false
+    ),
+    (
         'patricia@edu.xunta.gal',
         '$2a$12$frnjU.CRV0Ic/LDJMVaNXOGUFdo8lHBvKSezjYTm2vbmiuP6UwdDG', -- springboot
         2,
         1,
         true
-    ),
-    (
-        'marta@edu.xunta.gal',
-        '$2a$12$ieUrumtPuz/f7trjuX8uxOL7cTdDVP.eMxu7ZrC7FERaGRiWGhMiG', -- sushi
-        2,
-        2,
-        false
     );
 
 ---
@@ -615,19 +593,7 @@ VALUES (1, 1, '2025-04-01', null),
         '2025-05-01',
         '2025-08-01'
     ),
-    (8, 8, '2025-05-05', null),
-    (
-        9,
-        9,
-        '2025-05-10',
-        '2025-08-10'
-    ),
-    (
-        10,
-        10,
-        '2025-05-15',
-        '2025-08-15'
-    );
+    (8, 8, '2025-05-05', null);
 
 INSERT INTO
     empresas_skills (empresa_id, skill_id)
