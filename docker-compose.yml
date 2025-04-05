@@ -11,8 +11,6 @@ services:
       - naga-db:/var/lib/mysql
       - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
       - ./db/seed.sql:/docker-entrypoint-initdb.d/seed.sql
-    ports:
-      - 3306:3306
     networks:
       - naga-network
     healthcheck:
