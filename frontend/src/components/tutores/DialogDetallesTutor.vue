@@ -10,36 +10,36 @@ const visible = defineModel('visible')
 const tutor = ref(null)
 
 const getTutorData = async () => {
-    try {
-        const response = await apiClient.get(`/tutores-centro/${tutorID.value}`)
-        tutor.value = response.data
-    } catch (error) {
-        toast.add({
-            severity: 'error',
-            summary: 'Error al cargar la/el tutora/',
-            detail: error.message,
-            life: 5000,
-        })
-    }
+  try {
+    const response = await apiClient.get(`/tutores-centro/${tutorID.value}`)
+    tutor.value = response.data
+  } catch (error) {
+    toast.add({
+      severity: 'error',
+      summary: 'Error al cargar la/el tutora/',
+      detail: error.message,
+      life: 5000,
+    })
+  }
 }
 
 // Solo cuando el Dialog es visible intentamos cargar los datos
 watch(visible, async (newValue) => {
-    if (newValue === true) {
-        await getTutorData()
-    }
+  if (newValue === true) {
+    await getTutorData()
+  }
 })
 </script>
 
 <template>
-    <Dialog v-model:visible="visible" header="Detalles de tutora/" modal dismissableMask>
-        <ul>
-            <li>ID: {{ tutor?.id }} </li>
-            <li>Nombre: {{ tutor?.nombre }}</li>
-            <li>Apellidos: {{ tutor?.apellidos }}</li>
-            <li>Correo electrónico: {{ tutor?.email }}</li>
-            <li>Curso: {{ tutor?.curso }}</li>
-            <li>Activo: {{ tutor?.activo }}</li>
-        </ul>
-    </Dialog>
+  <Dialog v-model:visible="visible" header="Detalles de tutora/" modal dismissableMask>
+    <ul>
+      <li>ID: {{ tutor?.id }}</li>
+      <li>Nombre: {{ tutor?.nombre }}</li>
+      <li>Apellidos: {{ tutor?.apellidos }}</li>
+      <li>Correo electrónico: {{ tutor?.email }}</li>
+      <li>Curso: {{ tutor?.curso }}</li>
+      <li>Activo: {{ tutor?.activo }}</li>
+    </ul>
+  </Dialog>
 </template>

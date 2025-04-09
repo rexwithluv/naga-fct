@@ -1,45 +1,51 @@
 <script setup lang="js">
-import { onMounted, onUnmounted, ref } from "vue";
-import capitalize from "@/helpers/capitalize";
+import { onMounted, onUnmounted, ref } from 'vue'
+import capitalize from '@/helpers/capitalize'
 
 defineProps({
-    nombre: String,
-    tutor: String,
+  nombre: String,
+  tutor: String,
 })
 
-const datetime = ref(new Date);
+const datetime = ref(new Date())
 const actualizarFecha = () => {
-    datetime.value = ref(new Date().toLocaleString("es-ES", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false
-    }).replace(",", " -"));
+  datetime.value = ref(
+    new Date()
+      .toLocaleString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+      })
+      .replace(',', ' -'),
+  )
 }
 
-let intervalo;
+let intervalo
 onMounted(() => {
-    actualizarFecha();
-    intervalo = setInterval(() => actualizarFecha(), 1000);
+  actualizarFecha()
+  intervalo = setInterval(() => actualizarFecha(), 1000)
 })
 
-onUnmounted(() => clearInterval(intervalo));
+onUnmounted(() => clearInterval(intervalo))
 </script>
 
 <template>
-    <div class="bg-gray-500 w-55 p-4 rounded-lg shadow-md text-center">
-        <div>
-            <p>Bienvenida/o <span v-show="nombre"> {{ capitalize(nombre) }} </span> </p>
+  <div class="bg-gray-500 w-55 p-4 rounded-lg shadow-md text-center">
+    <div>
+      <p>
+        Bienvenida/o <span v-show="nombre"> {{ capitalize(nombre) }} </span>
+      </p>
 
-            <p v-if="tutor">Eres tutor/a de {{ tutor }} </p>
-            <p v-else>No eres tutor/a de ningún curso </p>
+      <p v-if="tutor">Eres tutor/a de {{ tutor }}</p>
+      <p v-else>No eres tutor/a de ningún curso</p>
 
-            <hr />
+      <hr />
 
-            <p> {{ datetime }} </p>
-        </div>
+      <p>{{ datetime }}</p>
     </div>
+  </div>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="js">
-import AppNavBar from './components/AppNavBar.vue';
+import AppNavBar from './components/AppNavBar.vue'
 </script>
 
 <template>
@@ -8,6 +8,5 @@ import AppNavBar from './components/AppNavBar.vue';
     <AppNavBar v-if="$route.path !== '/' && $route.path !== '/login'" />
 
     <RouterView class="flex-1" />
-
   </div>
 </template>

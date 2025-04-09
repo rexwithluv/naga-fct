@@ -49,7 +49,7 @@ watch(visible, async (newValue) => {
           <li>Email: {{ empresa?.contacto?.email }}</li>
         </ul>
       </li>
-      <li>Activa: {{ empresa?.activa }} </li>
+      <li>Activa: {{ empresa?.activa }}</li>
       <li>Plazas: {{ empresa?.plazas }}</li>
       <li>Skills: {{ formatList(empresa?.skills) }}</li>
     </ul>

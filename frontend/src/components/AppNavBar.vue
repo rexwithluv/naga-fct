@@ -1,9 +1,9 @@
 <script setup lang="js">
 import { Calendar1, CircleUserRound } from 'lucide-vue-next'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 
-const router = useRouter();
+const router = useRouter()
 
 const items = ref([
   {
@@ -26,10 +26,10 @@ const items = ref([
     label: 'FCT',
     name: 'fct',
   },
-]);
+])
 
-const goTo = (route) =>{
-    router.push({name: route});
+const goTo = (route) => {
+  router.push({ name: route })
 }
 </script>
 

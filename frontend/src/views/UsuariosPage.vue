@@ -12,7 +12,6 @@ const dialogDetalles = ref(false)
 const getUsuarios = async () => {
   try {
     const response = await apiClient.get('/usuarios')
-    console.log(response.data)
     usuarios.value = response.data
   } catch (error) {
     toast.add({
@@ -34,7 +33,7 @@ onMounted(getUsuarios)
 
 <template>
   <div>
-    <DialogDetallesTutor v-model:usuarioID="usuarioID" v-model:visible="dialogDetalles"  />
+    <DialogDetallesTutor v-model:usuarioID="usuarioID" v-model:visible="dialogDetalles" />
 
     <DataTable :value="usuarios" @row-click="verDetalles" rowHover>
       <Column field="email" header="Email" />

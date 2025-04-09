@@ -11,7 +11,6 @@ const dialogDetalles = ref(false)
 const getFCT = async () => {
   try {
     const response = await apiClient.get('/fct')
-    console.log(response.data)
     FCTs.value = response.data
   } catch (error) {
     toast.add({
