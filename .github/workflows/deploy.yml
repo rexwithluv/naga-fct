@@ -18,6 +18,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ${{ secrets.PATH }}
-            git pull origin main
+            git fetch origin main
+            git reset --hard origin/main
             docker compose down -v --rmi local
             docker compose up -d --build backend frontend
