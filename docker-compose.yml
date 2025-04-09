@@ -19,6 +19,27 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+  db-dev:
+    image: mariadb:lts
+    container_name: naga-mariadb-dev
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./db/seed.sql:/docker-entrypoint-initdb.d/seed.sql
+    networks:
+      - naga-network
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   pma:
     image: phpmyadmin/phpmyadmin:latest
@@ -37,7 +58,7 @@ services:
       context: ./backend
     env_file:
       - .env
-    container_name: naga-backend-springboot
+    container_name: naga-springboot
     ports:
       - 9000:9000
     depends_on:
@@ -53,7 +74,7 @@ services:
         - VITE_API_BASE_URL=${VITE_API_BASE_URL}
     env_file:
       - .env
-    container_name: naga-frontend-vue
+    container_name: naga-vue
     ports:
       - 6321:80
     networks:
