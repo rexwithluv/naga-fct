@@ -51,8 +51,20 @@ public class AlumnoService {
         return alumnos.stream().map(alumno -> alumnoADTO(alumno)).toList();
     }
 
-    public AlumnoDTO obtenerPorId(Long id) {
+    public AlumnoDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
         Alumno alumno = repository.findById(id).orElseThrow(() -> new AlumnoNotFoundException(id));
+
+        // Comprobamos que el alumno que busca también aparece su "todo", así centralizmos el control de acceso a los alumnos.
+        // Si el día de mañana decidimos cambiar algún parámetro (por ejemplo que se muestren solo los activos o en cambio, todos) podemos controlarlo solo en obtenerTodos()
+        List<AlumnoDTO> alumnos = obtenerTodos(userDetails);
+
+        boolean alumnoEnAlumnos = alumnos.stream().anyMatch(a -> a.getId().equals(alumno.getId()));
+        boolean isAdmin = userDetails.getAuthorities().stream()
+                .anyMatch(rol -> rol.getAuthority().equals("ROLE_1"));
+
+        if (!isAdmin && !alumnoEnAlumnos) {
+            throw new AlumnoForbiddenException(id);
+        }
         return alumnoADTO(alumno);
     }
 }

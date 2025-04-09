@@ -26,6 +26,6 @@ public class AlumnoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.obtenerPorId(id));
+        return ResponseEntity.status(HttpStatus.OK).body(service.obtenerPorId(userDetails, id));
     }
 }
