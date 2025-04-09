@@ -35,7 +35,7 @@ El repositorio incluye varios archivos `.example` que contienen las variables de
 2. Levanta los servicios con docker
 
    ```bash
-   docker compose up -d --build
+   docker compose up -d --build backend frontend
    ```
 
 ## Estructura del Proyecto
@@ -52,7 +52,7 @@ El repositorio incluye varios archivos `.example` que contienen las variables de
 ├── frontend/
 ├── .env                   # Variables de entorno
 ├── docker-compose.yml     # Orquestación de contenedores
-└── README.md              # Este archivo
+└── README.md              # Este archivo!
 ```
 
 ## Uso
@@ -71,14 +71,7 @@ El backend de Spring Boot estará disponible en:
 
 ### 3. Acceso a la Base de Datos (MariaDB)
 
-Puedes conectarte a la base de datos MariaDB con el contenedor PHPMyAdmin que se despliega con docker o una herramienta de tu elección (como MySQL Workbench o desde la línea de comandos).
-
-- **MariaDB con MySQL Workbench**: [http://localhost:3306](http://localhost:3306)
-- **PHPMyAdmin**: [http://localhost:8080](http://localhost:8080)
-
-- **Usuario**: `root`
-- **Contraseña**: `changeme`
-- **Base de datos**: `db`
+Levanta el PHPMyAdmin asociado a la DB con `docker compose up -d pma` y accede [http://localhost:8080](http://localhost:8080)
 
 ## Licencia
 

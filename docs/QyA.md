@@ -9,13 +9,21 @@
 - Reparación de tablas en caliente.
 - Preferencias de escalabilidad.
 
-## Cuando usas rutas dentro del frontend, siempre usas un parámetro `name` en lugar de directamente usar la ruta
+## Cuando se usan rutas dentro del frontend, siempre se llama un parámetro `name` en lugar de directamente usar la ruta
 
 Según buenas prácticas, es preferible referirse a las rutas internas por el nombre dado en el router de Vue en lugar de por la ruta absoluta, pues esto puede ocasionar:
 
 - La recarga de la página y por lo tanto, el borrado de datos almacenamos en la sesión.
 - Si por algún motivo cambian las rutas, todas estas redirecciones fallarían. En cambio es más raro que podamos cambiar el nombre de una ruta.
 
-## En el archivo `docker-compose.yml` utilizas un script .sh para comprobar la salud del container de la base de datos pero no está definido en nginuna parte
+## En el archivo `docker-compose.yml` se utiliza un script .sh para comprobar la salud del container de la base de datos pero no está definido en nginuna parte
 
 En la documentación oficial de MariaDB aparece este script que viene propiamente incluido en todas las versiones de MariaDB para docker. La opción `--connect` comprueba que no solo está el contenedor levantado sino que además es posible conectarse a la DB. Por otro lado, `--innodb_initalized` comprueba que el motor está listo para aceptar consultas CRUD.
+
+## No se levantan todos los contenedores cuando hago `docker compose up -d --build backend frontend`
+
+Existen dos contenedores adicionales:
+
+- `db-dev`: Un contenedor similar a `db` pero únicamente para pruebas y desarrollo. Sus datos no persisten, se rellena con datos ficticios y expone el puerto 3306.
+- `pma`: Abreviación de *PHPMyAdmin*. En desarrollo puede ser necesario tener una aplicación que gestione la BD pero en producción todas las operaciones deberían hacerse mediante el frontend de NAGA para evitar incosistencias.
+  
