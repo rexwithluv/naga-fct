@@ -7,17 +7,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gal.iesteis.backend.config.security.AuthUtils;
 import gal.iesteis.backend.config.security.UserDetailsImpl;
-import gal.iesteis.backend.usuario.UsuarioService;
 
 @Service
 public class AlumnoService {
 
     @Autowired
     private AlumnoRepository repository;
-
-    @Autowired
-    private UsuarioService usuarioService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -33,17 +30,13 @@ public class AlumnoService {
     }
 
     public List<AlumnoDTO> obtenerTodos(UserDetailsImpl userDetails) {
-        boolean isAdmin = userDetails.getAuthorities().stream()
-                .anyMatch(rol -> rol.getAuthority().equals("ROLE_1"));
+        boolean isAdmin = AuthUtils.isAdmin(userDetails);
         List<Alumno> alumnos = new ArrayList<>();
 
         // Si es admin, devolvemos todos
         if (isAdmin) {
             alumnos = repository.findAll();
-        }
-
-        // Si es profesor, solo los que le pertenecen y están activos
-        if (!isAdmin) {
+        } else {
             Long tutorId = userDetails.getTutorCentroId();
             alumnos = repository.findByTutorCentroIdAndEstadoId(tutorId, (byte) 1);
         }
@@ -54,13 +47,15 @@ public class AlumnoService {
     public AlumnoDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
         Alumno alumno = repository.findById(id).orElseThrow(() -> new AlumnoNotFoundException(id));
 
-        // Comprobamos que el alumno que busca también aparece su "todo", así centralizmos el control de acceso a los alumnos.
-        // Si el día de mañana decidimos cambiar algún parámetro (por ejemplo que se muestren solo los activos o en cambio, todos) podemos controlarlo solo en obtenerTodos()
+        // Comprobamos que el alumno que busca también aparece su "todo", así
+        // centralizmos el control de acceso a los alumnos.
+        // Si el día de mañana decidimos cambiar algún parámetro (por ejemplo que se
+        // muestren solo los activos o en cambio, todos) podemos controlarlo solo en
+        // obtenerTodos()
         List<AlumnoDTO> alumnos = obtenerTodos(userDetails);
 
         boolean alumnoEnAlumnos = alumnos.stream().anyMatch(a -> a.getId().equals(alumno.getId()));
-        boolean isAdmin = userDetails.getAuthorities().stream()
-                .anyMatch(rol -> rol.getAuthority().equals("ROLE_1"));
+        boolean isAdmin = AuthUtils.isAdmin(userDetails);
 
         if (!isAdmin && !alumnoEnAlumnos) {
             throw new AlumnoForbiddenException(id);
