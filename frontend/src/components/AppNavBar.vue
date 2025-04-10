@@ -1,32 +1,40 @@
 <script setup lang="js">
+import { useAuthStore } from '@/stores/authStore'
 import { Calendar1, CircleUserRound } from 'lucide-vue-next'
-import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+const auth = useAuthStore()
+const userAdmin = auth.isAdmin()
 
-const items = ref([
+const items = [
   {
     label: 'Alumnos',
     name: 'alumnos',
+    needAdmin: false,
   },
   {
     label: 'Empresas',
     name: 'empresas',
+    needAdmin: false,
   },
   {
     label: 'Tutores',
     name: 'tutores',
+    needAdmin: true,
   },
   {
     label: 'Usuarios',
     name: 'usuarios',
+    needAdmin: true,
   },
   {
     label: 'FCT',
     name: 'fct',
+    needAdmin: false,
   },
-])
+]
+const filteredItems = items.filter((i) => !i.needAdmin || userAdmin)
 
 const goTo = (route) => {
   router.push({ name: route })
@@ -35,7 +43,7 @@ const goTo = (route) => {
 
 <template>
   <nav class="p-4 sticky">
-    <Menubar :model="items">
+    <Menubar :model="filteredItems">
       <template #start>
         <RouterLink :to="{ name: 'home' }" class="text-lg font-semibold ms-2 me-5">
           NAGA - FCT
@@ -43,9 +51,9 @@ const goTo = (route) => {
       </template>
 
       <template #item="{ item }">
-        <RouterLink :to="{ name: item.name }" class="text-center me-2 ms-2 p-1">
+        <Button @click="goTo(item.name)" class="p-button-text">
           {{ item.label }}
-        </RouterLink>
+        </Button>
       </template>
 
       <template #end>
