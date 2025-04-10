@@ -19,13 +19,13 @@ public class UsuarioController {
     private UsuarioService service;
 
     @GetMapping("")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodos());
+    public ResponseEntity<?> getAll(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodos(userDetails));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.obtenerPorId(id));
+    public ResponseEntity<?> getById(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.obtenerPorId(userDetails, id));
     }
 
     @GetMapping("/yo")

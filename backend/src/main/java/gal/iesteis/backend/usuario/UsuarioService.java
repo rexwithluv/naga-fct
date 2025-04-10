@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gal.iesteis.backend.config.security.AuthUtils;
 import gal.iesteis.backend.config.security.UserDetailsImpl;
 
 @Service
@@ -33,19 +34,27 @@ public class UsuarioService {
         return dto;
     }
 
-    public List<UsuarioDTO> obtenerTodos() {
-        List<Usuario> usuarios = repository.findAll();
+    public List<UsuarioDTO> obtenerTodos(UserDetailsImpl userDetails) {
+        if (!AuthUtils.isAdmin(userDetails)){
+            throw new UsuarioForbiddenException();
+        }
 
+        List<Usuario> usuarios = repository.findAll();
         return usuarios.stream().map(usuario -> usuarioADTO(usuario)).toList();
     }
 
-    public UsuarioDTO obtenerPorId(Long id) {
+    public UsuarioDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
+        if (!AuthUtils.isAdmin(userDetails)){
+            throw new UsuarioForbiddenException();
+        }
+
         Usuario usuario = repository.findById(id).orElseThrow(() -> new UsuarioNotFoundException(id));
         return usuarioADTO(usuario);
     }
 
     public UsuarioDTO obtenerMisDatos(UserDetailsImpl userDetails) {
         Long id = userDetails.getId();
-        return obtenerPorId(id);
+        Usuario usuario = repository.findById(id).orElseThrow(() -> new UsuarioNotFoundException(id));
+        return usuarioADTO(usuario);
     }
 }

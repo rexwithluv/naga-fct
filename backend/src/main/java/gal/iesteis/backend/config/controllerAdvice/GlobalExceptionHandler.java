@@ -9,9 +9,10 @@ import gal.iesteis.backend.alumno.AlumnoForbiddenException;
 import gal.iesteis.backend.alumno.AlumnoNotFoundException;
 import gal.iesteis.backend.empresa.EmpresaForbiddenException;
 import gal.iesteis.backend.empresa.EmpresaNotFoundException;
-import gal.iesteis.backend.tutorCentro.TutorCentro;
 import gal.iesteis.backend.tutorCentro.TutorCentroForbiddenException;
 import gal.iesteis.backend.tutorCentro.TutorCentroNotFoundException;
+import gal.iesteis.backend.usuario.UsuarioForbiddenException;
+import gal.iesteis.backend.usuario.UsuarioNotFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -43,6 +44,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
     }
 
+    // Tutores del centro
     @ExceptionHandler(TutorCentroNotFoundException.class)
     public ResponseEntity<?> handleTutorCentroNotFound(TutorCentroNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -53,4 +55,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
     }
 
+    // Usuarios
+    @ExceptionHandler(UsuarioNotFoundException.class)
+    public ResponseEntity<?> handleUsuarioNotFound(UsuarioNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
+    @ExceptionHandler(UsuarioForbiddenException.class)
+    public ResponseEntity<?> handleUsuarioForbidden(UsuarioForbiddenException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+    }
 }
