@@ -1,7 +1,7 @@
 package gal.iesteis.backend.fct;
 
-public class FCTNotFoundExcpetion extends RuntimeException {
-    public FCTNotFoundExcpetion(Long id) {
+public class FCTNotFoundException extends RuntimeException {
+    public FCTNotFoundException(Long id) {
         super("FCT con el id " + id + " no encontrada.");
     }
 }

@@ -9,6 +9,8 @@ import gal.iesteis.backend.alumno.AlumnoForbiddenException;
 import gal.iesteis.backend.alumno.AlumnoNotFoundException;
 import gal.iesteis.backend.empresa.EmpresaForbiddenException;
 import gal.iesteis.backend.empresa.EmpresaNotFoundException;
+import gal.iesteis.backend.fct.FCTForbiddenException;
+import gal.iesteis.backend.fct.FCTNotFoundException;
 import gal.iesteis.backend.tutorCentro.TutorCentroForbiddenException;
 import gal.iesteis.backend.tutorCentro.TutorCentroNotFoundException;
 import gal.iesteis.backend.usuario.UsuarioForbiddenException;
@@ -63,6 +65,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UsuarioForbiddenException.class)
     public ResponseEntity<?> handleUsuarioForbidden(UsuarioForbiddenException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+    }
+
+    // FCTs
+    @ExceptionHandler(FCTNotFoundException.class)
+    public ResponseEntity<?> handleFCTNotFound(FCTNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
+    @ExceptionHandler(FCTForbiddenException.class)
+    public ResponseEntity<?> handleFCTForbidden(FCTForbiddenException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
     }
 }

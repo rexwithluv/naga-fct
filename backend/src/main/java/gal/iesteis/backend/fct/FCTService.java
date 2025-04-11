@@ -6,11 +6,18 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gal.iesteis.backend.alumno.AlumnoRepository;
+import gal.iesteis.backend.config.security.AuthUtils;
+import gal.iesteis.backend.config.security.UserDetailsImpl;
+
 @Service
 public class FCTService {
 
     @Autowired
     private FCTRepository repository;
+
+    @Autowired
+    private AlumnoRepository alumnoRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -25,13 +32,24 @@ public class FCTService {
         return dto;
     }
 
-    public List<FCTDTO> obtenerTodas() {
-        List<FCT> fcts = repository.findAll();
+    public List<FCTDTO> obtenerTodas(UserDetailsImpl userDetails) {
+        boolean isAdmin = AuthUtils.isAdmin(userDetails);
+        List<FCT> fcts = isAdmin ? repository.findAll()
+                : repository.findByAlumnoIn(alumnoRepository.findByTutorCentroId(userDetails.getTutorCentroId()));
+
         return fcts.stream().map(fct -> FCTADTO(fct)).toList();
     }
 
-    public FCTDTO obtenerPorId(Long id) {
-        FCT fct = repository.findById(id).orElseThrow(() -> new FCTNotFoundExcpetion(id));
+    public FCTDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
+        FCT fct = repository.findById(id).orElseThrow(() -> new FCTNotFoundException(id));
+        List<FCT> fcts = AuthUtils.isAdmin(userDetails) ? repository.findAll()
+                : repository.findByAlumnoIn(alumnoRepository.findByTutorCentroId(userDetails.getTutorCentroId()));
+
+        boolean fctInFcts = fcts.stream().anyMatch(f -> f.getId().equals(id));
+        if (!fctInFcts){
+            throw new FCTForbiddenException(id);
+        }
+
         return FCTADTO(fct);
     }
 }
