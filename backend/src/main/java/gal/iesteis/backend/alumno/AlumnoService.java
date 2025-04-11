@@ -31,16 +31,9 @@ public class AlumnoService {
 
     public List<AlumnoDTO> obtenerTodos(UserDetailsImpl userDetails) {
         boolean isAdmin = AuthUtils.isAdmin(userDetails);
-        List<Alumno> alumnos = new ArrayList<>();
 
-        // Si es admin, devolvemos todos
-        if (isAdmin) {
-            alumnos = repository.findAll();
-        } else {
-            Long tutorId = userDetails.getTutorCentroId();
-            alumnos = repository.findByTutorCentroIdAndEstadoId(tutorId, (byte) 1);
-        }
-
+        // Si es admin, devolvemos todos, sino solo los del tutor correspondiente
+        List<Alumno> alumnos = isAdmin ? repository.findAll() : repository.findByTutorCentroId(userDetails.getTutorCentroId());
         return alumnos.stream().map(alumno -> alumnoADTO(alumno)).toList();
     }
 
