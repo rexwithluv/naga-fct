@@ -28,8 +28,8 @@ public class AlumnoService {
         return dto;
     }
 
-    private AlumnoDTOEstandar alumnoADTOEstandar(Alumno alumno) {
-        AlumnoDTOEstandar dto = modelMapper.map(alumno, AlumnoDTOEstandar.class);
+    private AlumnoDTOComun alumnoADTOComun(Alumno alumno) {
+        AlumnoDTOComun dto = modelMapper.map(alumno, AlumnoDTOComun.class);
 
         dto.setConcello(alumno.getConcello().getNombre());
         dto.setEstado(alumno.getEstado().getNombre());
@@ -44,7 +44,7 @@ public class AlumnoService {
         List<Alumno> alumnos = isAdmin ? repository.findAll()
                 : repository.findByTutorCentroId(userDetails.getTutorCentroId());
 
-        return alumnos.stream().map(alumno -> isAdmin ? alumnoADTOAdmin(alumno) : alumnoADTOEstandar(alumno)).toList();
+        return alumnos.stream().map(alumno -> isAdmin ? alumnoADTOAdmin(alumno) : alumnoADTOComun(alumno)).toList();
     }
 
     public AlumnoDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
@@ -63,6 +63,6 @@ public class AlumnoService {
         if (!isAdmin && !alumnoEnAlumnos) {
             throw new AlumnoForbiddenException(id);
         }
-        return alumnoADTOAdmin(alumno);
+        return isAdmin ? alumnoADTOAdmin(alumno) : alumnoADTOComun(alumno);
     }
 }
