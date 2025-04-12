@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AlumnoDTO {
+public abstract class AlumnoDTO {
     private Long id;
     private String dniNie;
     private String nombre;
@@ -19,5 +19,4 @@ public class AlumnoDTO {
     private String concello;
     private String numeroSeguridadSocial;
     private String estado;
-    private String tutorCentro;
 }

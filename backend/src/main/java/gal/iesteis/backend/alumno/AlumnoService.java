@@ -1,6 +1,5 @@
 package gal.iesteis.backend.alumno;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -19,8 +18,8 @@ public class AlumnoService {
     @Autowired
     private ModelMapper modelMapper;
 
-    private AlumnoDTO alumnoADTO(Alumno alumno) {
-        AlumnoDTO dto = modelMapper.map(alumno, AlumnoDTO.class);
+    private AlumnoDTOAdmin alumnoADTOAdmin(Alumno alumno) {
+        AlumnoDTOAdmin dto = modelMapper.map(alumno, AlumnoDTOAdmin.class);
 
         dto.setConcello(alumno.getConcello().getNombre());
         dto.setEstado(alumno.getEstado().getNombre());
@@ -29,12 +28,23 @@ public class AlumnoService {
         return dto;
     }
 
+    private AlumnoDTOEstandar alumnoADTOEstandar(Alumno alumno) {
+        AlumnoDTOEstandar dto = modelMapper.map(alumno, AlumnoDTOEstandar.class);
+
+        dto.setConcello(alumno.getConcello().getNombre());
+        dto.setEstado(alumno.getEstado().getNombre());
+
+        return dto;
+    }
+
     public List<AlumnoDTO> obtenerTodos(UserDetailsImpl userDetails) {
         boolean isAdmin = AuthUtils.isAdmin(userDetails);
 
         // Si es admin, devolvemos todos, sino solo los del tutor correspondiente
-        List<Alumno> alumnos = isAdmin ? repository.findAll() : repository.findByTutorCentroId(userDetails.getTutorCentroId());
-        return alumnos.stream().map(alumno -> alumnoADTO(alumno)).toList();
+        List<Alumno> alumnos = isAdmin ? repository.findAll()
+                : repository.findByTutorCentroId(userDetails.getTutorCentroId());
+
+        return alumnos.stream().map(alumno -> isAdmin ? alumnoADTOAdmin(alumno) : alumnoADTOEstandar(alumno)).toList();
     }
 
     public AlumnoDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
@@ -53,6 +63,6 @@ public class AlumnoService {
         if (!isAdmin && !alumnoEnAlumnos) {
             throw new AlumnoForbiddenException(id);
         }
-        return alumnoADTO(alumno);
+        return alumnoADTOAdmin(alumno);
     }
 }
