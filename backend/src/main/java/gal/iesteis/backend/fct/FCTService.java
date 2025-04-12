@@ -22,11 +22,20 @@ public class FCTService {
     @Autowired
     private ModelMapper modelMapper;
 
-    private FCTDTO FCTADTO(FCT fct) {
-        FCTDTO dto = modelMapper.map(fct, FCTDTO.class);
+    private FCTDTOAdmin FCTADTOAdmin(FCT fct) {
+        FCTDTOAdmin dto = modelMapper.map(fct, FCTDTOAdmin.class);
 
         dto.setAlumno(fct.getAlumno().getNombre());
         dto.setTutor(fct.getTutor().getNombre() + " " + fct.getTutor().getApellidos());
+        dto.setEmpresa(fct.getTutor().getEmpresa().getNombre());
+
+        return dto;
+    }
+
+    private FCTDTOComun FCTADTOComun(FCT fct) {
+        FCTDTOComun dto = modelMapper.map(fct, FCTDTOComun.class);
+
+        dto.setAlumno(fct.getAlumno().getNombre());
         dto.setEmpresa(fct.getTutor().getEmpresa().getNombre());
 
         return dto;
@@ -37,19 +46,20 @@ public class FCTService {
         List<FCT> fcts = isAdmin ? repository.findAll()
                 : repository.findByAlumnoIn(alumnoRepository.findByTutorCentroId(userDetails.getTutorCentroId()));
 
-        return fcts.stream().map(fct -> FCTADTO(fct)).toList();
+        return fcts.stream().map(fct -> isAdmin ? FCTADTOAdmin(fct) : FCTADTOComun(fct)).toList();
     }
 
     public FCTDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
         FCT fct = repository.findById(id).orElseThrow(() -> new FCTNotFoundException(id));
-        List<FCT> fcts = AuthUtils.isAdmin(userDetails) ? repository.findAll()
+        boolean isAdmin = AuthUtils.isAdmin(userDetails);
+        List<FCT> fcts =  isAdmin? repository.findAll()
                 : repository.findByAlumnoIn(alumnoRepository.findByTutorCentroId(userDetails.getTutorCentroId()));
 
         boolean fctInFcts = fcts.stream().anyMatch(f -> f.getId().equals(id));
-        if (!fctInFcts){
+        if (!fctInFcts) {
             throw new FCTForbiddenException(id);
         }
 
-        return FCTADTO(fct);
+        return isAdmin ? FCTADTOAdmin(fct) : FCTADTOComun(fct);
     }
 }

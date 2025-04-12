@@ -1,7 +1,5 @@
 package gal.iesteis.backend.fct;
 
-import java.time.LocalDate;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public abstract class FCTDTO {
-    private Long id;
-    private String alumno;
-    private String empresa;
-    private LocalDate fechaInicio;
-    private LocalDate fechaFin;
+public class FCTDTOAdmin extends FCTDTO {
+    private String tutor;
 }
