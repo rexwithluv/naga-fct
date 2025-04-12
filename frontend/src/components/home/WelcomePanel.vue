@@ -1,16 +1,13 @@
-<script setup lang="js">
-import { onMounted, onUnmounted, ref } from 'vue'
-import capitalize from '@/helpers/capitalize'
+<script setup lang="ts">
+  import capitalize from '@/helpers/capitalize'
+  import { ModelRef, onMounted, onUnmounted, Ref, ref } from 'vue'
 
-defineProps({
-  nombre: String,
-  tutor: String,
-})
+  const nombre: ModelRef<string | undefined> = defineModel('nombre')
+  const tutor: ModelRef<string | undefined> = defineModel('tutor')
 
-const datetime = ref(new Date())
-const actualizarFecha = () => {
-  datetime.value = ref(
-    new Date()
+  const datetime: Ref<string> = ref('')
+  const actualizarFecha = (): void => {
+    datetime.value = new Date()
       .toLocaleString('es-ES', {
         day: '2-digit',
         month: '2-digit',
@@ -20,24 +17,23 @@ const actualizarFecha = () => {
         second: '2-digit',
         hour12: false,
       })
-      .replace(',', ' -'),
-  )
-}
+      .replace(',', ' -')
+  }
 
-let intervalo
-onMounted(() => {
-  actualizarFecha()
-  intervalo = setInterval(() => actualizarFecha(), 1000)
-})
+  let intervalo: NodeJS.Timeout
+  onMounted(() => {
+    actualizarFecha()
+    intervalo = setInterval(() => actualizarFecha(), 1000)
+  })
 
-onUnmounted(() => clearInterval(intervalo))
+  onUnmounted(() => clearInterval(intervalo))
 </script>
 
 <template>
   <div class="bg-gray-500 w-55 p-4 rounded-lg shadow-md text-center">
     <div>
       <p>
-        Bienvenida/o <span v-show="nombre"> {{ capitalize(nombre) }} </span>
+        Bienvenida/o <span v-show="nombre"> {{ capitalize(nombre ?? '') }} </span>
       </p>
 
       <p v-if="tutor">Eres tutor/a de {{ tutor }}</p>

@@ -11,6 +11,6 @@ const tutor = ref('2º DAW')
 
 <template>
   <div class="flex items-center justify-center">
-    <WelcomePanel :nombre="nombre" :tutor="tutor" />
+    <WelcomePanel v-model:nombre="nombre" v-model:tutor="tutor" />
   </div>
 </template>

@@ -1,35 +1,36 @@
-<script setup lang="js">
-import apiClient from '@/apiClient'
-import formatList from '@/helpers/formatList'
-import { useToast } from 'primevue'
-import { watch, ref } from 'vue'
+<script setup lang="ts">
+  import apiClient from '@/apiClient'
+  import formatList from '@/helpers/formatList'
+  import { Empresa } from '@/types/models/Empresa'
+  import { useToast } from 'primevue'
+  import { ModelRef, ref, Ref, watch } from 'vue'
 
-const toast = useToast()
-const empresaID = defineModel('empresaID')
-const visible = defineModel('visible')
+  const toast = useToast()
+  const empresaID: ModelRef<number | undefined> = defineModel('empresaID')
+  const visible: ModelRef<boolean | undefined> = defineModel('visible')
 
-const empresa = ref({})
+  const empresa: Ref<Empresa | null> = ref(null)
 
-const getEmpresaData = async () => {
-  try {
-    const response = await apiClient.get(`/empresas/${empresaID.value}`)
-    empresa.value = response.data
-  } catch (error) {
-    toast.add({
-      severity: 'error',
-      summary: 'Error al cargar la empresa',
-      detail: error.message,
-      life: 5000,
-    })
+  const getEmpresaData = async (): Promise<void> => {
+    try {
+      const response = await apiClient.get(`/empresas/${empresaID.value}`)
+      empresa.value = response.data
+    } catch (error: any) {
+      toast.add({
+        severity: 'error',
+        summary: 'Error al cargar la empresa',
+        detail: error.message,
+        life: 5000,
+      })
+    }
   }
-}
 
-// Solo cuando el Dialog es visible intentamos cargar los datos
-watch(visible, async (newValue) => {
-  if (newValue === true) {
-    await getEmpresaData()
-  }
-})
+  // Solo cuando el Dialog es visible intentamos cargar los datos
+  watch(visible, async (newValue) => {
+    if (newValue === true) {
+      await getEmpresaData()
+    }
+  })
 </script>
 
 <template>
@@ -44,14 +45,14 @@ watch(visible, async (newValue) => {
       <li>
         Contacto:
         <ul>
-          <li>Nombre: {{ empresa?.contact?.nombre }}</li>
+          <li>Nombre: {{ empresa?.contacto?.nombre }}</li>
           <li>Teléfono: {{ empresa?.contacto?.telefono }}</li>
           <li>Email: {{ empresa?.contacto?.email }}</li>
         </ul>
       </li>
       <li>Activa: {{ empresa?.activa }}</li>
       <li>Plazas: {{ empresa?.plazas }}</li>
-      <li>Skills: {{ formatList(empresa?.skills) }}</li>
+      <li>Skills: {{ formatList(empresa?.skills ?? []) }}</li>
     </ul>
   </Dialog>
 </template>

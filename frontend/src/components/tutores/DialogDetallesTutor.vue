@@ -1,34 +1,34 @@
 <script setup lang="js">
-import apiClient from '@/apiClient'
-import { useToast } from 'primevue'
-import { watch, ref } from 'vue'
+  import apiClient from '@/apiClient'
+  import { useToast } from 'primevue'
+  import { ref, watch } from 'vue'
 
-const toast = useToast()
-const tutorID = defineModel('tutorID')
-const visible = defineModel('visible')
+  const toast = useToast()
+  const tutorID = defineModel('tutorID')
+  const visible = defineModel('visible')
 
-const tutor = ref(null)
+  const tutor = ref(null)
 
-const getTutorData = async () => {
-  try {
-    const response = await apiClient.get(`/tutores-centro/${tutorID.value}`)
-    tutor.value = response.data
-  } catch (error) {
-    toast.add({
-      severity: 'error',
-      summary: 'Error al cargar la/el tutora/',
-      detail: error.message,
-      life: 5000,
-    })
+  const getTutorData = async () => {
+    try {
+      const response = await apiClient.get(`/tutores-centro/${tutorID.value}`)
+      tutor.value = response.data
+    } catch (error) {
+      toast.add({
+        severity: 'error',
+        summary: 'Error al cargar la/el tutora/',
+        detail: error.message,
+        life: 5000,
+      })
+    }
   }
-}
 
-// Solo cuando el Dialog es visible intentamos cargar los datos
-watch(visible, async (newValue) => {
-  if (newValue === true) {
-    await getTutorData()
-  }
-})
+  // Solo cuando el Dialog es visible intentamos cargar los datos
+  watch(visible, async (newValue) => {
+    if (newValue === true) {
+      await getTutorData()
+    }
+  })
 </script>
 
 <template>

@@ -1,34 +1,35 @@
-<script setup lang="js">
-import apiClient from '@/apiClient'
-import { useToast } from 'primevue'
-import { watch, ref } from 'vue'
+<script setup lang="ts">
+  import apiClient from '@/apiClient'
+  import { Usuario } from '@/types/models/Usuario'
+  import { useToast } from 'primevue'
+  import { ModelRef, ref, Ref, watch } from 'vue'
 
-const toast = useToast()
-const usuarioID = defineModel('usuarioID')
-const visible = defineModel('visible')
+  const toast = useToast()
+  const usuarioID: ModelRef<number | undefined> = defineModel('usuarioID')
+  const visible: ModelRef<boolean | undefined> = defineModel('visible')
 
-const usuario = ref(null)
+  const usuario: Ref<Usuario | null> = ref(null)
 
-const getUsuarioData = async () => {
-  try {
-    const response = await apiClient.get(`/usuarios/${usuarioID.value}`)
-    usuario.value = response.data
-  } catch (error) {
-    toast.add({
-      severity: 'error',
-      summary: 'Error al cargar el usuario.',
-      detail: error.message,
-      life: 5000,
-    })
+  const getUsuarioData = async (): Promise<void> => {
+    try {
+      const response = await apiClient.get(`/usuarios/${usuarioID.value}`)
+      usuario.value = response.data
+    } catch (error: any) {
+      toast.add({
+        severity: 'error',
+        summary: 'Error al cargar el usuario.',
+        detail: error.message,
+        life: 5000,
+      })
+    }
   }
-}
 
-// Solo cuando el Dialog es visible intentamos cargar los datos
-watch(visible, async (newValue) => {
-  if (newValue === true) {
-    await getUsuarioData()
-  }
-})
+  // Solo cuando el Dialog es visible intentamos cargar los datos
+  watch(visible, async (newValue) => {
+    if (newValue === true) {
+      await getUsuarioData()
+    }
+  })
 </script>
 
 <template>
