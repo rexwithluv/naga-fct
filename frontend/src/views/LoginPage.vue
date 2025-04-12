@@ -1,54 +1,57 @@
-<script setup lang="js">
-import { yupResolver } from '@primevue/forms/resolvers/yup'
-import { useToast } from 'primevue/usetoast'
-import { ref } from 'vue'
-import { object, string } from 'yup'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/authStore'
+<script setup lang="ts">
+  import { useAuthStore } from '@/stores/authStore'
+  import { LoginForm } from '@/types/models/LoginForm'
+  // @ts-ignore
+  import { yupResolver } from '@primevue/forms/resolvers/yup'
+  import { StoreGeneric } from 'pinia'
+  import { useToast } from 'primevue/usetoast'
+  import { Ref, ref } from 'vue'
+  import { Router, useRouter } from 'vue-router'
+  import { object, ObjectSchema, string } from 'yup'
 
-const toast = useToast()
-const router = useRouter()
-const auth = useAuthStore()
+  const toast = useToast()
+  const router: Router = useRouter()
+  const auth: StoreGeneric = useAuthStore()
 
-const formValues = ref({
-  email: '',
-  password: '',
-})
+  const formValues: Ref<LoginForm> = ref({
+    email: '',
+    password: '',
+  })
 
-const formSchema = object({
-  email: string()
-    .email('El correo debe tener un formato válido')
-    .matches(
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      'El correo debe tener un formato válido',
-    )
-    .required('El correo es obligatorio'),
-  password: string()
-    .min(6, 'La contraseña debe tener al menos 6 caracteres')
-    .required('La contraseña es obligatoria'),
-})
+  const formSchema: ObjectSchema<LoginForm> = object({
+    email: string()
+      .email('El correo debe tener un formato válido')
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        'El correo debe tener un formato válido',
+      )
+      .required('El correo es obligatorio'),
+    password: string()
+      .min(6, 'La contraseña debe tener al menos 6 caracteres')
+      .required('La contraseña es obligatoria'),
+  })
 
-const handleSubmit = async () => {
-  try {
-    await formSchema.validate(formValues.value)
-    await auth.login(formValues.value.email, formValues.value.password)
+  const handleSubmit = async (): Promise<void> => {
+    try {
+      await formSchema.validate(formValues.value)
+      await auth.login(formValues.value.email, formValues.value.password)
 
-    toast.add({
-      severity: 'success',
-      summary: 'Inicio de sesión correcto',
-      detail: `Bienvenida/o ${auth.nombre}`,
-      life: 3000,
-    })
-    router.push({ name: 'home' })
-  } catch (error) {
-    toast.add({
-      severity: 'error',
-      summary: 'Error de inicio de sesión',
-      detail: error.message,
-      life: 3000,
-    })
+      toast.add({
+        severity: 'success',
+        summary: 'Inicio de sesión correcto',
+        detail: `Bienvenida/o ${auth.nombre}`,
+        life: 3000,
+      })
+      router.push({ name: 'home' })
+    } catch (error: any) {
+      toast.add({
+        severity: 'error',
+        summary: 'Error de inicio de sesión',
+        detail: error.message,
+        life: 3000,
+      })
+    }
   }
-}
 </script>
 <template>
   <div class="w-screen h-screen flex flex-col items-center justify-center p-4 text-center">

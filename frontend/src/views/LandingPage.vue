@@ -1,5 +1,3 @@
-<script setup lang="js"></script>
-
 <template>
   <div class="w-screen h-screen flex flex-col items-center justify-center p-4 text-center">
     <div class="w-95 rounded-lg shadow-md border p-4 space-y-4">

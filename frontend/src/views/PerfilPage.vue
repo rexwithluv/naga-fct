@@ -1,42 +1,44 @@
-<script setup lang="js">
-import { useAuthStore } from '@/stores/authStore'
-import { useRouter } from 'vue-router'
-import apiClient from '@/apiClient'
-import { useToast } from 'primevue/usetoast'
-import { onMounted, ref } from 'vue'
+<script setup lang="ts">
+  import apiClient from '@/apiClient'
+  import { useAuthStore } from '@/stores/authStore'
+  import { Usuario } from '@/types/models/Usuario'
+  import { StoreGeneric } from 'pinia'
+  import { useToast } from 'primevue/usetoast'
+  import { onMounted, ref, Ref } from 'vue'
+  import { Router, useRouter } from 'vue-router'
 
-const auth = useAuthStore()
-const router = useRouter()
-const toast = useToast()
+  const auth: StoreGeneric = useAuthStore()
+  const router: Router = useRouter()
+  const toast = useToast()
 
-const usuario = ref(null)
+  const usuario: Ref<Usuario | null> = ref(null)
 
-const logout = () => {
-  auth.logout()
-  toast.add({
-    severity: 'success',
-    summary: '¡Hasta pronto!',
-    detail: 'Has cerrado sesión correctamente',
-    life: 5000,
-  })
-  router.push({ name: 'inicio' })
-}
-
-const getUserData = async () => {
-  try {
-    const response = await apiClient.get('/usuarios/yo')
-    usuario.value = response.data
-  } catch (error) {
+  const logout = (): void => {
+    auth.logout()
     toast.add({
-      severity: 'error',
-      summary: 'Error al cargar la información del usuario',
-      detail: error.message,
+      severity: 'success',
+      summary: '¡Hasta pronto!',
+      detail: 'Has cerrado sesión correctamente',
       life: 5000,
     })
+    router.push({ name: 'inicio' })
   }
-}
 
-onMounted(getUserData)
+  const getUserData = async (): Promise<void> => {
+    try {
+      const response = await apiClient.get('/usuarios/yo')
+      usuario.value = response.data
+    } catch (error: any) {
+      toast.add({
+        severity: 'error',
+        summary: 'Error al cargar la información del usuario',
+        detail: error.message,
+        life: 5000,
+      })
+    }
+  }
+
+  onMounted(getUserData)
 </script>
 
 <template>

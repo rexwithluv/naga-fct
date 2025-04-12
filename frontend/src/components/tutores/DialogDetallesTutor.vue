@@ -1,19 +1,20 @@
-<script setup lang="js">
+<script setup lang="ts">
   import apiClient from '@/apiClient'
+  import { TutorCentro } from '@/types/models/TutorCentro'
   import { useToast } from 'primevue'
-  import { ref, watch } from 'vue'
+  import { ModelRef, Ref, ref, watch } from 'vue'
 
   const toast = useToast()
-  const tutorID = defineModel('tutorID')
-  const visible = defineModel('visible')
+  const tutorID: ModelRef<number | undefined> = defineModel('tutorID')
+  const visible: ModelRef<boolean | undefined> = defineModel('visible')
 
-  const tutor = ref(null)
+  const tutor: Ref<TutorCentro | null> = ref(null)
 
-  const getTutorData = async () => {
+  const getTutorData = async (): Promise<void> => {
     try {
       const response = await apiClient.get(`/tutores-centro/${tutorID.value}`)
       tutor.value = response.data
-    } catch (error) {
+    } catch (error: any) {
       toast.add({
         severity: 'error',
         summary: 'Error al cargar la/el tutora/',

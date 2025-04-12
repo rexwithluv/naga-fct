@@ -1,34 +1,34 @@
-<script setup lang="js">
-import apiClient from '@/apiClient'
-import DialogDetallesTutor from '@/components/tutores/DialogDetallesTutor.vue'
-import { useToast } from 'primevue/usetoast'
-import { onMounted, ref } from 'vue'
+<script setup lang="ts">
+  import apiClient from '@/apiClient'
+  import { TutorCentro } from '@/types/models/TutorCentro'
+  import { useToast } from 'primevue/usetoast'
+  import { onMounted, Ref, ref } from 'vue'
 
-const toast = useToast()
-const tutores = ref([])
-const tutorID = ref(null)
-const dialogDetalles = ref(false)
+  const toast = useToast()
+  const tutores: Ref<TutorCentro[]> = ref([])
+  const tutorID: Ref<number> = ref(0)
+  const dialogDetalles: Ref<boolean> = ref(false)
 
-const getTutores = async () => {
-  try {
-    const response = await apiClient.get('/tutores-centro')
-    tutores.value = response.data
-  } catch (error) {
-    toast.add({
-      severity: 'error',
-      summary: 'Error al cargar los tutores',
-      detail: error.message,
-      life: 5000,
-    })
+  const getTutores = async (): Promise<void> => {
+    try {
+      const response = await apiClient.get('/tutores-centro')
+      tutores.value = response.data
+    } catch (error: any) {
+      toast.add({
+        severity: 'error',
+        summary: 'Error al cargar los tutores',
+        detail: error.message,
+        life: 5000,
+      })
+    }
   }
-}
 
-const verDetalles = (e) => {
-  tutorID.value = e.data.id
-  dialogDetalles.value = true
-}
+  const verDetalles = (e: { data: TutorCentro }) => {
+    tutorID.value = e.data.id
+    dialogDetalles.value = true
+  }
 
-onMounted(getTutores)
+  onMounted(getTutores)
 </script>
 
 <template>

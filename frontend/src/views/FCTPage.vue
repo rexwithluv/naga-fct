@@ -1,33 +1,34 @@
-<script setup lang="js">
-import apiClient from '@/apiClient'
-import { useToast } from 'primevue/usetoast'
-import { onMounted, ref } from 'vue'
+<script setup lang="ts">
+  import apiClient from '@/apiClient'
+  import { FCT } from '@/types/models/FCT'
+  import { useToast } from 'primevue/usetoast'
+  import { onMounted, Ref, ref } from 'vue'
 
-const toast = useToast()
-const FCTs = ref([])
-const FCTID = ref(null)
-const dialogDetalles = ref(false)
+  const toast = useToast()
+  const FCTs: Ref<FCT[]> = ref([])
+  const FCTID: Ref<number> = ref(0)
+  const dialogDetalles: Ref<boolean> = ref(false)
 
-const getFCT = async () => {
-  try {
-    const response = await apiClient.get('/fct')
-    FCTs.value = response.data
-  } catch (error) {
-    toast.add({
-      severity: 'error',
-      summary: 'Error al cargar las FCT',
-      detail: error.message,
-      life: 5000,
-    })
+  const getFCT = async (): Promise<void> => {
+    try {
+      const response = await apiClient.get('/fct')
+      FCTs.value = response.data
+    } catch (error: any) {
+      toast.add({
+        severity: 'error',
+        summary: 'Error al cargar las FCT',
+        detail: error.message,
+        life: 5000,
+      })
+    }
   }
-}
 
-const verDetalles = (e) => {
-  FCTID.value = e.data.id
-  dialogDetalles.value = true
-}
+  const verDetalles = (e: { data: FCT }) => {
+    FCTID.value = e.data.id
+    dialogDetalles.value = true
+  }
 
-onMounted(getFCT)
+  onMounted(getFCT)
 </script>
 
 <template>

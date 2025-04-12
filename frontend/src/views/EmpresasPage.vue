@@ -1,47 +1,45 @@
-<script setup lang="js">
-import apiClient from '@/apiClient'
-import ContactoDialog from '@/components/empresas/DialogContactoEmpresa.vue'
-import DialogDetallesEmpresa from '@/components/empresas/DialogDetallesEmpresa.vue'
-import formatList from '@/helpers/formatList'
-import { useToast } from 'primevue/usetoast'
-import { onMounted, ref } from 'vue'
+<script setup lang="ts">
+  import apiClient from '@/apiClient'
+  import formatList from '@/helpers/formatList'
+  import { ContactoEmpresa } from '@/types/models/ContactoEmpresa'
+  import { Empresa } from '@/types/models/Empresa'
+  import { useToast } from 'primevue/usetoast'
+  import { onMounted, Ref, ref } from 'vue'
 
-const toast = useToast()
+  const toast = useToast()
 
-const empresas = ref([])
-const dialogContacto = ref(false)
-const datosContacto = ref({})
+  const empresas: Ref<Empresa[]> = ref([])
+  const dialogContacto: Ref<boolean> = ref(false)
+  const datosContacto: Ref<ContactoEmpresa | null> = ref(null)
 
-const empresaID = ref(null)
-const dialogDetalles = ref(false)
+  const empresaID: Ref<number> = ref(0)
+  const dialogDetalles: Ref<boolean> = ref(false)
 
-const getEmpresas = async () => {
-  try {
-    const response = await apiClient.get('/empresas')
-    empresas.value = response.data
-  } catch (error) {
-    toast.add({
-      severity: 'error',
-      summary: 'Error al cargar las empresas',
-      detail: error.message,
-      life: 5000,
-    })
+  const getEmpresas = async (): Promise<void> => {
+    try {
+      const response = await apiClient.get('/empresas')
+      empresas.value = response.data
+    } catch (error: any) {
+      toast.add({
+        severity: 'error',
+        summary: 'Error al cargar las empresas',
+        detail: error.message,
+        life: 5000,
+      })
+    }
   }
-}
 
-const verContacto = (datos) => {
-  datosContacto.value = datos
-  dialogContacto.value = true
-}
+  const verContacto = (datos: ContactoEmpresa) => {
+    datosContacto.value = datos
+    dialogContacto.value = true
+  }
 
-const verDetalles = (e) => {
-  empresaID.value = e.data.id
-  dialogDetalles.value = true
-}
+  const verDetalles = (e: { data: Empresa }) => {
+    empresaID.value = e.data.id
+    dialogDetalles.value = true
+  }
 
-onMounted(() => {
-  getEmpresas()
-})
+  onMounted(getEmpresas())
 </script>
 
 <template>
