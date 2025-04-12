@@ -39,12 +39,12 @@
     dialogDetalles.value = true
   }
 
-  onMounted(getEmpresas())
+  onMounted(getEmpresas)
 </script>
 
 <template>
   <div>
-    <ContactoDialog v-model:visible="dialogContacto" v-model:datosContacto="datosContacto" />
+    <DialogContactoEmpresa v-model:visible="dialogContacto" v-model:datosContacto="datosContacto" />
     <DialogDetallesEmpresa v-model:empresaID="empresaID" v-model:visible="dialogDetalles" />
 
     <DataTable :value="empresas" @row-click="verDetalles" rowHover>

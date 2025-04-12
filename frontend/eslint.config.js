@@ -1,19 +1,31 @@
-import js from '@eslint/js'
-import pluginVue from 'eslint-plugin-vue'
-import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
-import tseslint from '@typescript-eslint/eslint-plugin'
+import { FlatCompat } from '@eslint/eslintrc'
 import tsParser from '@typescript-eslint/parser'
+import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
+import pluginVue from 'eslint-plugin-vue'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+})
 
 export default [
   {
     name: 'app/files-to-lint',
-    files: ['**/*.{js,mjs,jsx,ts,tsx,vue}'],
+    files: ['**/*.{js,ts,vue}'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
         project: './tsconfig.json',
         ecmaVersion: 2022,
         sourceType: 'module',
+        extraFileExtensions: ['.vue'],
+      },
+      globals: {
+        defineModel: 'readonly',
       },
     },
   },
@@ -23,8 +35,14 @@ export default [
     ignores: ['**/dist/**', '**/coverage/**', '**/.output/**'],
   },
 
-  js.configs.recommended,
   ...pluginVue.configs['flat/essential'],
-  tseslint.configs.recommended,
+  ...compat.extends('plugin:@typescript-eslint/recommended'),
   skipFormatting,
+
+  {
+    rules: {
+      'no-console': 'warn',
+      'no-debugger': 'warn',
+    },
+  },
 ]
