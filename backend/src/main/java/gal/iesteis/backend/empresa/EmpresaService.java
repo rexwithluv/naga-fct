@@ -28,11 +28,27 @@ public class EmpresaService {
     @Autowired
     private ModelMapper modelMapper;
 
-    private EmpresaDTO empresaADTO(Empresa empresa) {
-        EmpresaDTO dto = modelMapper.map(empresa, EmpresaDTO.class);
+    private EmpresaDTOAdmin empresaADTOAdmin(Empresa empresa) {
+        EmpresaDTOAdmin dto = modelMapper.map(empresa, EmpresaDTOAdmin.class);
 
         dto.setConcello(empresa.getConcello().getNombre());
         dto.setEspecialidad(empresa.getEspecialidad().getNombre());
+        dto.setContacto(new HashMap<String, String>() {
+            {
+                put("nombre", empresa.getContactoNombre());
+                put("email", empresa.getContactoEmail());
+                put("telefono", empresa.getContactoTelefono());
+            }
+        });
+        dto.setSkills(empresa.getSkills().stream().map(skill -> skill.getNombre()).collect(Collectors.toSet()));
+
+        return dto;
+    }
+
+    private EmpresaDTOComun empresaADTOComun(Empresa empresa) {
+        EmpresaDTOComun dto = modelMapper.map(empresa, EmpresaDTOComun.class);
+
+        dto.setConcello(empresa.getConcello().getNombre());
         dto.setContacto(new HashMap<String, String>() {
             {
                 put("nombre", empresa.getContactoNombre());
@@ -59,7 +75,8 @@ public class EmpresaService {
             empresas = repository.findByEspecialidad(especialidad);
         }
 
-        return empresas.stream().map(empresa -> empresaADTO(empresa)).toList();
+        return empresas.stream().map(empresa -> isAdmin ? empresaADTOAdmin(empresa) : empresaADTOComun(empresa))
+                .toList();
     }
 
     public EmpresaDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
@@ -69,9 +86,9 @@ public class EmpresaService {
         boolean empresaEnEmpresas = empresas.stream().anyMatch(e -> e.getId().equals(empresa.getId()));
         boolean isAdmin = AuthUtils.isAdmin(userDetails);
 
-        if (!isAdmin && !empresaEnEmpresas){
+        if (!isAdmin && !empresaEnEmpresas) {
             throw new EmpresaForbiddenException(id);
         }
-        return empresaADTO(empresa);
+        return isAdmin ? empresaADTOAdmin(empresa) : empresaADTOComun(empresa);
     }
 }

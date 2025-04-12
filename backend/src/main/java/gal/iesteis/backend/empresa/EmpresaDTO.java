@@ -12,13 +12,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class EmpresaDTO {
+public abstract class EmpresaDTO {
     private Long id;
     private String nombre;
     private String concello;
     private String direccion;
     private String observaciones;
-    private String especialidad;
     private Map<String, String> contacto;
     private boolean activa;
     private Byte plazas;
