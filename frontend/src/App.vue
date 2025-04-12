@@ -1,7 +1,3 @@
-<script setup lang="js">
-import AppNavBar from './components/AppNavBar.vue'
-</script>
-
 <template>
   <div class="flex flex-col h-screen">
     <Toast />

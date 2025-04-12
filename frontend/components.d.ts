@@ -9,14 +9,26 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppNavBar: typeof import('./src/components/AppNavBar.vue')['default']
+    Button: typeof import('primevue/button')['default']
+    Column: typeof import('primevue/column')['default']
+    DataTable: typeof import('primevue/datatable')['default']
+    Dialog: typeof import('primevue/dialog')['default']
     DialogContactoEmpresa: typeof import('./src/components/empresas/DialogContactoEmpresa.vue')['default']
     DialogDetallesAlumno: typeof import('./src/components/alumnos/DialogDetallesAlumno.vue')['default']
     DialogDetallesEmpresa: typeof import('./src/components/empresas/DialogDetallesEmpresa.vue')['default']
     DialogDetallesFCT: typeof import('./src/components/fct/DialogDetallesFCT.vue')['default']
     DialogDetallesTutor: typeof import('./src/components/tutores/DialogDetallesTutor.vue')['default']
     DialogDetallesUsuario: typeof import('./src/components/usuarios/DialogDetallesUsuario.vue')['default']
+    Divider: typeof import('primevue/divider')['default']
+    Form: typeof import('@primevue/forms/form')['default']
+    FormField: typeof import('@primevue/forms/formfield')['default']
+    InputText: typeof import('primevue/inputtext')['default']
+    Menubar: typeof import('primevue/menubar')['default']
+    Message: typeof import('primevue/message')['default']
+    Password: typeof import('primevue/password')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Toast: typeof import('primevue/toast')['default']
     WelcomePanel: typeof import('./src/components/home/WelcomePanel.vue')['default']
   }
 }

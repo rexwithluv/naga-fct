@@ -8,6 +8,7 @@ export const useAuthStore = defineStore('auth', {
     token: null as string | null,
     nombre: null as string | null,
     rol: null as string | null,
+    isAdmin: false,
   }),
   actions: {
     async login(email: string, password: string) {
@@ -20,6 +21,7 @@ export const useAuthStore = defineStore('auth', {
         this.token = response.data.token
         this.nombre = capitalize(response.data.email.split('@')[0])
         this.rol = response.data.rol.replace('ROLE_', '')
+        this.isAdmin = this.rol === '1'
       } catch {
         throw new Error('Credenciales incorrectas')
       }
@@ -28,9 +30,6 @@ export const useAuthStore = defineStore('auth', {
       this.token = null
       this.nombre = null
       this.rol = null
-    },
-    isAdmin() {
-      return this.rol === '1'
     },
   },
 })

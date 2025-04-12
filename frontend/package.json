@@ -3,12 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "lint-staged": {
-    "*.{ts,tsx,vue,js,json}": [
-      "prettier --write",
-      "eslint --fix"
-    ]
-  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -16,8 +10,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@primevue/forms": "^4.3.2",
     "@primeuix/themes": "^1.0.0",
+    "@primevue/forms": "^4.3.2",
     "@tailwindcss/vite": "^4.0.15",
     "axios": "^1.8.4",
     "dotenv": "^16.4.7",
@@ -41,8 +35,6 @@
     "@vue/eslint-config-prettier": "^10.2.0",
     "eslint": "^9.24.0",
     "eslint-plugin-vue": "^9.33.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^15.5.1",
     "prettier": "^3.5.3",
     "typescript": "^5.8.3",
     "unplugin-vue-components": "^28.4.1",
