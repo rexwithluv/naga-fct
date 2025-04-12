@@ -3,13 +3,14 @@ import capitalize from '@/helpers/capitalize'
 import { defineStore } from 'pinia'
 
 export const useAuthStore = defineStore('auth', {
+  // null as string | null -> inicializamos en null pero también puede aceptar strings
   state: () => ({
-    token: null,
-    nombre: null,
-    rol: null,
+    token: null as string | null,
+    nombre: null as string | null,
+    rol: null as string | null,
   }),
   actions: {
-    async login(email, password) {
+    async login(email: string, password: string) {
       try {
         const response = await apiClient.post('/login', {
           email: email,

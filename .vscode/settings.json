@@ -1,11 +1,17 @@
 {
-  "conventionalCommits.scopes": [
-    "docker",
-    "db",
-    "backend",
-    "frontend",
-    "both"
-  ],
+  "conventionalCommits.scopes": ["docker", "db", "backend", "frontend", "both"],
+
   "java.configuration.updateBuildConfiguration": "automatic",
-  "java.compile.nullAnalysis.mode": "automatic"
+  "java.compile.nullAnalysis.mode": "automatic",
+
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
