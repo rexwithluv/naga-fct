@@ -1,4 +1,4 @@
-package gal.iesteis.backend.alumno;
+package gal.iesteis.backend.alumno.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public abstract class AlumnoDTO {
+public class AlumnoDTO {
     private Long id;
     private String dniNie;
     private String nombre;

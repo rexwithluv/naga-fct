@@ -20,10 +20,13 @@ Según buenas prácticas, es preferible referirse a las rutas internas por el no
 
 En la documentación oficial de MariaDB aparece este script que viene propiamente incluido en todas las versiones de MariaDB para docker. La opción `--connect` comprueba que no solo está el contenedor levantado sino que además es posible conectarse a la DB. Por otro lado, `--innodb_initalized` comprueba que el motor está listo para aceptar consultas CRUD.
 
-## No se levantan todos los contenedores cuando hago `docker compose up -d --build backend frontend`
+## No se levantan todos los contenedores con `docker compose up -d --build backend frontend`
 
 Existen dos contenedores adicionales:
 
 - `db-dev`: Un contenedor similar a `db` pero únicamente para pruebas y desarrollo. Sus datos no persisten, se rellena con datos ficticios y expone el puerto 3306.
 - `pma`: Abreviación de *PHPMyAdmin*. En desarrollo puede ser necesario tener una aplicación que gestione la BD pero en producción todas las operaciones deberían hacerse mediante el frontend de NAGA para evitar incosistencias.
-  
+
+## Algunas entidades del backend tienen varios DTOs
+
+Aquellas entidades que pueden ser solicitadas tanto por usuarios comunes como por usuarios administradores tienen varios DTO porque algunos atributos pueden solo querer enviarse a los administradores y viceversa con los usuarios comunes.

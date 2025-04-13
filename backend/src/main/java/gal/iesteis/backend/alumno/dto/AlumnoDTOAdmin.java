@@ -1,4 +1,4 @@
-package gal.iesteis.backend.alumno;
+package gal.iesteis.backend.alumno.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

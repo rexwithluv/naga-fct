@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import jakarta.persistence.ForeignKey;
 import gal.iesteis.backend.concello.Concello;
-import gal.iesteis.backend.estadoAlumno.EstadosAlumno;
+import gal.iesteis.backend.estadoAlumno.EstadoAlumno;
 import gal.iesteis.backend.tutorCentro.TutorCentro;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -58,7 +58,7 @@ public class Alumno {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "estado_id", nullable = false, foreignKey = @ForeignKey(name = "fk_alumnos_estado_alumnos"))
-    private EstadosAlumno estado;
+    private EstadoAlumno estado;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tutor_centro_id", nullable = false, foreignKey = @ForeignKey(name = "fk_alumnos_tutor_centro"))
