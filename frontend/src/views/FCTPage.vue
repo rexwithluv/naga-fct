@@ -37,7 +37,7 @@
 
     <DataTable :value="FCTs" @row-click="verDetalles" rowHover>
       <Column field="alumno" header="Alumno" />
-      <Column field="tutor" header="Tutor en la empresa" />
+      <Column field="tutorEmpresa" header="Tutor en la empresa" />
       <Column field="empresa" header="Empresa" />
       <Column field="fechaInicio" header="Fecha de inicio" />
       <Column field="fechaFin" header="Fecha de fin" />

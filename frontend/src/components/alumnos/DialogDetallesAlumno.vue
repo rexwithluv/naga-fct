@@ -1,10 +1,14 @@
 <script setup lang="ts">
   import apiClient from '@/apiClient'
+  import { useAuthStore } from '@/stores/authStore'
   import { Alumno } from '@/types/models/Alumno'
-  import { useToast } from 'primevue'
+  import { StoreGeneric } from 'pinia'
+  import { ToastServiceMethods, useToast } from 'primevue'
   import { ModelRef, Ref, ref, watch } from 'vue'
 
-  const toast = useToast()
+  const auth: StoreGeneric = useAuthStore()
+  const toast: ToastServiceMethods = useToast()
+
   const alumnoID: ModelRef<number | undefined> = defineModel('alumnoID')
   const visible: ModelRef<boolean | undefined> = defineModel('visible')
 
@@ -43,7 +47,7 @@
       <li>Teléfono: {{ alumno?.telefono }}</li>
       <li>NUSS: {{ alumno?.numeroSeguridadSocial }}</li>
       <li>Estado: {{ alumno?.estado }}</li>
-      <li>Tutor: {{ alumno?.tutorCentro }}</li>
+      <li v-if="auth.isAdmin">Tutor: {{ alumno?.tutorCentro }}</li>
     </ul>
   </Dialog>
 </template>

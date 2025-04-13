@@ -1,11 +1,12 @@
 <script setup lang="ts">
   import apiClient from '@/apiClient'
-  import { Alumno } from '@/types/models/Alumno'
+  import DialogDetallesUsuario from '@/components/usuarios/DialogDetallesUsuario.vue'
+  import { Usuario } from '@/types/models/Usuario'
   import { useToast } from 'primevue/usetoast'
   import { onMounted, Ref, ref } from 'vue'
 
   const toast = useToast()
-  const usuarios: Ref<Alumno[]> = ref([])
+  const usuarios: Ref<Usuario[]> = ref([])
   const usuarioID: Ref<number> = ref(0)
   const dialogDetalles: Ref<boolean> = ref(false)
 
@@ -23,7 +24,7 @@
     }
   }
 
-  const verDetalles = (e: { data: Alumno }): void => {
+  const verDetalles = (e: { data: Usuario }): void => {
     usuarioID.value = e.data.id
     dialogDetalles.value = true
   }
@@ -33,7 +34,7 @@
 
 <template>
   <div>
-    <DialogDetallesTutor v-model:usuarioID="usuarioID" v-model:visible="dialogDetalles" />
+    <DialogDetallesUsuario v-model:usuarioID="usuarioID" v-model:visible="dialogDetalles" />
 
     <DataTable :value="usuarios" @row-click="verDetalles" rowHover>
       <Column field="email" header="Email" />

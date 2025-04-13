@@ -45,9 +45,9 @@
       <li>
         Contacto:
         <ul>
-          <li>Nombre: {{ empresa?.contacto?.nombre }}</li>
-          <li>Teléfono: {{ empresa?.contacto?.telefono }}</li>
-          <li>Email: {{ empresa?.contacto?.email }}</li>
+          <li>&nbsp;&nbsp;&nbsp;· Nombre: {{ empresa?.contacto?.nombre }}</li>
+          <li>&nbsp;&nbsp;&nbsp;· Teléfono: {{ empresa?.contacto?.telefono }}</li>
+          <li>&nbsp;&nbsp;&nbsp;· Email: {{ empresa?.contacto?.email }}</li>
         </ul>
       </li>
       <li>Activa: {{ empresa?.activa }}</li>

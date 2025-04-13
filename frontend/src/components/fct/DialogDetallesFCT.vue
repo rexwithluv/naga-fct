@@ -37,7 +37,7 @@
     <ul>
       <li>ID: {{ fct?.id }}</li>
       <li>Alumno: {{ fct?.alumno }}</li>
-      <li>Tutor: {{ fct?.tutor }}</li>
+      <li>Tutor: {{ fct?.tutorEmpresa }}</li>
       <li>Empresa: {{ fct?.empresa }}</li>
       <li>Fecha de inicio: {{ fct?.fechaInicio }}</li>
       <li>Fecha de fin: {{ fct?.fechaFin }}</li>

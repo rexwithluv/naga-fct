@@ -1,7 +1,7 @@
 export interface FCT {
   id: number
   alumno: string
-  tutor: string
+  tutorEmpresa: string
   empresa: string
   fechaInicio: string
   fechaFin: string

@@ -1,10 +1,15 @@
 <script setup lang="ts">
   import apiClient from '@/apiClient'
+  import { useAuthStore } from '@/stores/authStore'
   import { Alumno } from '@/types/models/Alumno'
+  import { StoreGeneric } from 'pinia'
+  import { ToastServiceMethods } from 'primevue'
   import { useToast } from 'primevue/usetoast'
   import { onMounted, Ref, ref } from 'vue'
 
-  const toast = useToast()
+  const auth: StoreGeneric = useAuthStore()
+  const toast: ToastServiceMethods = useToast()
+
   const alumnos: Ref<Alumno[]> = ref([])
   const alumnoID: Ref<number> = ref(0)
   const dialogDetalles: Ref<boolean> = ref(false)
@@ -42,7 +47,7 @@
       <Column field="telefono" header="Teléfono" />
       <Column field="concello" header="Concello" />
       <Column field="estado" header="Estado" />
-      <Column field="tutorCentro" header="Tutor" />
+      <Column field="tutorCentro" header="Tutor" v-if="auth.isAdmin" />
     </DataTable>
   </div>
 </template>
