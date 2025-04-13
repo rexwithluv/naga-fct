@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "estados_alumnos")
-public class EstadosAlumno {
+public class EstadoAlumno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Byte id;
