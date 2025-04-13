@@ -11,10 +11,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public abstract class FCTDTO {
+public class FCTDTO {
     private Long id;
     private String alumno;
     private String empresa;
+    private String tutorEmpresa;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
 }

@@ -36,7 +36,7 @@ public class FCT {
 
     @ManyToOne
     @JoinColumn(name = "tutor_empresa_id", nullable = false, foreignKey = @ForeignKey(name = "fk_fct_tutor_empresa_id"))
-    private TutorEmpresa tutor;
+    private TutorEmpresa tutorEmpresa;
 
     @Column(name = "fecha_inicio", nullable = false)
     private LocalDate fechaInicio;

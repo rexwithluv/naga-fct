@@ -29,4 +29,4 @@ Existen dos contenedores adicionales:
 
 ## Algunas entidades del backend tienen varios DTOs
 
-Aquellas entidades que pueden ser solicitadas tanto por usuarios comunes como por usuarios administradores tienen varios DTO porque algunos atributos pueden solo querer enviarse a los administradores y viceversa con los usuarios comunes.
+En algunos casos no mostramos los mismos datos a los usuarios comunes que a los administradores. Por ejemplo, en el caso de un alumno, no es lógico enviarle el tutor del centro a un usuario común cuando el mismo será el tutor, en cambio, si es necesario mandarselo a un usuario administrador para que sepa quien es el tutor de ese alumno.

@@ -22,21 +22,12 @@ public class FCTService {
     @Autowired
     private ModelMapper modelMapper;
 
-    private FCTDTOAdmin FCTADTOAdmin(FCT fct) {
-        FCTDTOAdmin dto = modelMapper.map(fct, FCTDTOAdmin.class);
+    private FCTDTO FCTADTO(FCT fct) {
+        FCTDTO dto = modelMapper.map(fct, FCTDTO.class);
 
         dto.setAlumno(fct.getAlumno().getNombre());
-        dto.setTutor(fct.getTutor().getNombre() + " " + fct.getTutor().getApellidos());
-        dto.setEmpresa(fct.getTutor().getEmpresa().getNombre());
-
-        return dto;
-    }
-
-    private FCTDTOComun FCTADTOComun(FCT fct) {
-        FCTDTOComun dto = modelMapper.map(fct, FCTDTOComun.class);
-
-        dto.setAlumno(fct.getAlumno().getNombre());
-        dto.setEmpresa(fct.getTutor().getEmpresa().getNombre());
+        dto.setTutorEmpresa(fct.getTutorEmpresa().getNombre() + " " + fct.getTutorEmpresa().getApellidos());
+        dto.setEmpresa(fct.getTutorEmpresa().getEmpresa().getNombre());
 
         return dto;
     }
@@ -46,13 +37,13 @@ public class FCTService {
         List<FCT> fcts = isAdmin ? repository.findAll()
                 : repository.findByAlumnoIn(alumnoRepository.findByTutorCentroId(userDetails.getTutorCentroId()));
 
-        return fcts.stream().map(fct -> isAdmin ? FCTADTOAdmin(fct) : FCTADTOComun(fct)).toList();
+        return fcts.stream().map(fct -> FCTADTO(fct)).toList();
     }
 
     public FCTDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
         FCT fct = repository.findById(id).orElseThrow(() -> new FCTNotFoundException(id));
         boolean isAdmin = AuthUtils.isAdmin(userDetails);
-        List<FCT> fcts =  isAdmin? repository.findAll()
+        List<FCT> fcts = isAdmin ? repository.findAll()
                 : repository.findByAlumnoIn(alumnoRepository.findByTutorCentroId(userDetails.getTutorCentroId()));
 
         boolean fctInFcts = fcts.stream().anyMatch(f -> f.getId().equals(id));
@@ -60,6 +51,6 @@ public class FCTService {
             throw new FCTForbiddenException(id);
         }
 
-        return isAdmin ? FCTADTOAdmin(fct) : FCTADTOComun(fct);
+        return FCTADTO(fct);
     }
 }
