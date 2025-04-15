@@ -33,22 +33,19 @@ public class AlumnoDTOConverter {
     @Autowired
     private EstadoAlumnoService estadoAlumnoService;
 
-    public AlumnoDTOResponseAdmin alumnoADTOResponseAdmin(Alumno alumno) {
-        AlumnoDTOResponseAdmin dto = modelMapper.map(alumno, AlumnoDTOResponseAdmin.class);
-
-        dto.setConcello(alumno.getConcello().getNombre());
-        dto.setEstado(alumno.getEstado().getNombre());
-        dto.setTutorCentro(alumno.getTutorCentro().getNombre() + " " + alumno.getTutorCentro().getApellidos());
-
-        return dto;
-    }
-
-    public AlumnoDTOResponse alumnoADTOResponse(Alumno alumno) {
+    // Esto está fatal montado pero hasta ahora me parece la forma más sencilla de
+    // no andar a dos métodos
+    public AlumnoDTO alumnoADTOResponse(Alumno alumno, boolean isAdmin) {
+        if (isAdmin) {
+            AlumnoDTOResponseAdmin dto = modelMapper.map(alumno, AlumnoDTOResponseAdmin.class);
+            dto.setConcello(alumno.getConcello().getNombre());
+            dto.setEstado(alumno.getEstado().getNombre());
+            dto.setTutorCentro(alumno.getTutorCentro().getNombre() + " " + alumno.getTutorCentro().getApellidos());
+            return dto;
+        }
         AlumnoDTOResponse dto = modelMapper.map(alumno, AlumnoDTOResponse.class);
-
         dto.setConcello(alumno.getConcello().getNombre());
         dto.setEstado(alumno.getEstado().getNombre());
-
         return dto;
     }
 

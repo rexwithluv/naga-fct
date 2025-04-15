@@ -27,8 +27,7 @@ public class AlumnoService {
                 : repository.findByTutorCentroId(userDetails.getTutorCentroId());
 
         return alumnos.stream()
-                .map(alumno -> isAdmin ? dtoConverter.alumnoADTOResponseAdmin(alumno)
-                        : dtoConverter.alumnoADTOResponse(alumno))
+                .map(alumno -> dtoConverter.alumnoADTOResponse(alumno, isAdmin))
                 .toList();
     }
 
@@ -36,22 +35,17 @@ public class AlumnoService {
         Alumno alumno = repository.findById(id).orElseThrow(() -> new AlumnoNotFoundException(id));
 
         boolean isAdmin = AuthUtils.isAdmin(userDetails);
-        if (isAdmin) {
-            return dtoConverter.alumnoADTOResponseAdmin(alumno);
+        boolean esTutorAlumno = alumno.getTutorCentro().getId().equals(userDetails.getTutorCentroId());
+        if (isAdmin || esTutorAlumno) {
+            return dtoConverter.alumnoADTOResponse(alumno, isAdmin);
         }
 
-        boolean esTutorAlumno = alumno.getTutorCentro().getId().equals(userDetails.getTutorCentroId());
-        if (esTutorAlumno) {
-            return dtoConverter.alumnoADTOResponse(alumno);
-        }
-        
         throw new AlumnoForbiddenException(id);
     }
 
     public AlumnoDTO crearAlumno(UserDetailsImpl userDetails, AlumnoDTOCreate dto) {
         Alumno nuevoAlumno = repository.save(dtoConverter.DTOCreateAAlumno(dto, userDetails));
 
-        return AuthUtils.isAdmin(userDetails) ? dtoConverter.alumnoADTOResponseAdmin(nuevoAlumno)
-                : dtoConverter.alumnoADTOResponse(nuevoAlumno);
+        return dtoConverter.alumnoADTOResponse(nuevoAlumno, AuthUtils.isAdmin(userDetails));
     }
 }
