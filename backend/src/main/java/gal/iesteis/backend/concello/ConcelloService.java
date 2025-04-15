@@ -9,7 +9,7 @@ public class ConcelloService {
     @Autowired
     private ConcelloRepository repository;
 
-    public Concello obtenerPorNombre(String nombre) {
-        return repository.findByNombre(nombre);
+    public Concello obtenerPorId(Integer id) {
+        return repository.findById(id).orElseThrow(() -> new ConcelloNotFoundException(id));
     }
 }

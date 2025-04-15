@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gal.iesteis.backend.alumno.dto.AlumnoDTO;
+import gal.iesteis.backend.alumno.dto.AlumnoDTOCreate;
 import gal.iesteis.backend.config.security.AuthUtils;
 import gal.iesteis.backend.config.security.UserDetailsImpl;
 
@@ -26,37 +27,31 @@ public class AlumnoService {
                 : repository.findByTutorCentroId(userDetails.getTutorCentroId());
 
         return alumnos.stream()
-                .map(alumno -> isAdmin ? dtoConverter.alumnoADTOAdmin(alumno) : dtoConverter.alumnoADTOComun(alumno))
+                .map(alumno -> isAdmin ? dtoConverter.alumnoADTOResponseAdmin(alumno)
+                        : dtoConverter.alumnoADTOResponse(alumno))
                 .toList();
     }
 
     public AlumnoDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
         Alumno alumno = repository.findById(id).orElseThrow(() -> new AlumnoNotFoundException(id));
 
-        // Comprobamos que el alumno que busca también aparece su "todo", así
-        // centralizmos el control de acceso a los alumnos.
-        // Si el día de mañana decidimos cambiar algún parámetro (por ejemplo que se
-        // muestren solo los activos o en cambio, todos) podemos controlarlo solo en
-        // obtenerTodos()
-        List<AlumnoDTO> alumnos = obtenerTodos(userDetails);
-
-        boolean alumnoEnAlumnos = alumnos.stream().anyMatch(a -> a.getId().equals(alumno.getId()));
         boolean isAdmin = AuthUtils.isAdmin(userDetails);
-
-        if (!isAdmin && !alumnoEnAlumnos) {
-            throw new AlumnoForbiddenException(id);
+        if (isAdmin) {
+            return dtoConverter.alumnoADTOResponseAdmin(alumno);
         }
-        return isAdmin ? dtoConverter.alumnoADTOAdmin(alumno) : dtoConverter.alumnoADTOComun(alumno);
+
+        boolean esTutorAlumno = alumno.getTutorCentro().getId().equals(userDetails.getTutorCentroId());
+        if (esTutorAlumno) {
+            return dtoConverter.alumnoADTOResponse(alumno);
+        }
+        
+        throw new AlumnoForbiddenException(id);
     }
 
-    public AlumnoDTO crearAlumno(UserDetailsImpl userDetails, AlumnoDTO alumnoDTO) {
-        boolean isAdmin = AuthUtils.isAdmin(userDetails);
-        Long tutorCentorId = userDetails.getTutorCentroId();
+    public AlumnoDTO crearAlumno(UserDetailsImpl userDetails, AlumnoDTOCreate dto) {
+        Alumno nuevoAlumno = repository.save(dtoConverter.DTOCreateAAlumno(dto, userDetails));
 
-        Alumno nuevoAlumno = isAdmin ? dtoConverter.DTOAdminAAlumno(alumnoDTO)
-                : dtoConverter.DTOComunAAlumno(alumnoDTO, tutorCentorId);
-        repository.save(nuevoAlumno);
-
-        return alumnoDTO;
+        return AuthUtils.isAdmin(userDetails) ? dtoConverter.alumnoADTOResponseAdmin(nuevoAlumno)
+                : dtoConverter.alumnoADTOResponse(nuevoAlumno);
     }
 }

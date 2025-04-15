@@ -9,7 +9,7 @@ public class EstadoAlumnoService {
     @Autowired
     private EstadoAlumnoRepository repository;
 
-    public EstadoAlumno obtenerPorNombre(String nombre){
-        return repository.findByNombre(nombre);
+    public EstadoAlumno obtenerPorId(Byte id) {
+        return repository.findById(id).orElseThrow(() -> new EstadoAlumnoNotFoundException(id));
     }
 }

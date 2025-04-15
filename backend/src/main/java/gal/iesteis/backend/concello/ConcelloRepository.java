@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ConcelloRepository extends JpaRepository<Concello, Integer> {
-    Concello findByNombre(String nombre);
+
 }

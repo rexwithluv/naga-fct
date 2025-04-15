@@ -5,5 +5,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EstadoAlumnoRepository extends JpaRepository<EstadoAlumno, Byte> {
-    EstadoAlumno findByNombre(String nombre);
 }
