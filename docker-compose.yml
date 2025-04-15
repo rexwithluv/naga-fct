@@ -19,6 +19,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    profiles:
+      - prod
   db-dev:
     image: mariadb:lts
     container_name: naga-mariadb-dev
@@ -33,25 +35,29 @@ services:
       - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
       - ./db/seed.sql:/docker-entrypoint-initdb.d/seed.sql
     networks:
-      - naga-network
+      - naga-network-dev
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       start_period: 10s
       interval: 10s
       timeout: 5s
       retries: 3
+    profiles:
+      - dev
 
-  pma:
+  pma-dev:
     image: phpmyadmin/phpmyadmin:latest
     container_name: naga-phpmyadmin
     environment:
-      - PMA_HOST=db
+      - PMA_HOST=db-dev
     ports:
       - 8080:80
     depends_on:
-      - db
+      - db-dev
     networks:
-      - naga-network
+      - naga-network-dev
+    profiles:
+      - dev
 
   backend:
     build:
@@ -66,6 +72,8 @@ services:
         condition: service_healthy
     networks:
       - naga-network
+    profiles:
+      - prod
 
   frontend:
     build:
@@ -79,10 +87,15 @@ services:
       - 6321:80
     networks:
       - naga-network
+    profiles:
+      - prod
 
 networks:
   naga-network:
     name: naga-network
+    driver: bridge
+  naga-network-dev:
+    name: naga-network-dev
     driver: bridge
 
 volumes:
