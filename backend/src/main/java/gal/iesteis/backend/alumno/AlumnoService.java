@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import gal.iesteis.backend.alumno.dto.AlumnoDTO;
 import gal.iesteis.backend.alumno.dto.AlumnoDTOCreate;
+import gal.iesteis.backend.alumno.exceptions.AlumnoForbiddenException;
+import gal.iesteis.backend.alumno.exceptions.AlumnoNotFoundException;
 import gal.iesteis.backend.config.security.AuthUtils;
 import gal.iesteis.backend.config.security.UserDetailsImpl;
 
@@ -36,11 +38,11 @@ public class AlumnoService {
 
         boolean isAdmin = AuthUtils.isAdmin(userDetails);
         boolean esTutorAlumno = alumno.getTutorCentro().getId().equals(userDetails.getTutorCentroId());
-        if (isAdmin || esTutorAlumno) {
-            return dtoConverter.alumnoADTOResponse(alumno, isAdmin);
+        if (!isAdmin && !esTutorAlumno) {
+            throw new AlumnoForbiddenException(id);
         }
 
-        throw new AlumnoForbiddenException(id);
+        return dtoConverter.alumnoADTOResponse(alumno, isAdmin);
     }
 
     public AlumnoDTO crearAlumno(UserDetailsImpl userDetails, AlumnoDTOCreate dto) {

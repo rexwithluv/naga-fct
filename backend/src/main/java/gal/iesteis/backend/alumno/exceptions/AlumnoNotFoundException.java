@@ -1,4 +1,4 @@
-package gal.iesteis.backend.alumno;
+package gal.iesteis.backend.alumno.exceptions;
 
 
 public class AlumnoNotFoundException extends RuntimeException {

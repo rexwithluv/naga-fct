@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import gal.iesteis.backend.alumno.AlumnoForbiddenException;
-import gal.iesteis.backend.alumno.AlumnoNotFoundException;
+import gal.iesteis.backend.alumno.exceptions.AlumnoForbiddenException;
+import gal.iesteis.backend.alumno.exceptions.AlumnoNotFoundException;
 import gal.iesteis.backend.empresa.EmpresaForbiddenException;
 import gal.iesteis.backend.empresa.EmpresaNotFoundException;
 import gal.iesteis.backend.fct.FCTForbiddenException;
