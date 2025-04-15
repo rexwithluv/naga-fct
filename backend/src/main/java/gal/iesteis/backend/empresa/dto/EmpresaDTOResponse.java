@@ -1,4 +1,4 @@
-package gal.iesteis.backend.empresa;
+package gal.iesteis.backend.empresa.dto;
 
 import java.util.Map;
 import java.util.Set;
@@ -12,14 +12,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public abstract class EmpresaDTO {
+public class EmpresaDTOResponse extends EmpresaDTO {
     private Long id;
     private String nombre;
     private String concello;
     private String direccion;
     private String observaciones;
     private Map<String, String> contacto;
-    private boolean activa;
+    private String activa;
     private Byte plazas;
     private Set<String> skills;
 }

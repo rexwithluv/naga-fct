@@ -1,6 +1,6 @@
 package gal.iesteis.backend.empresa;
 
-import java.util.List;
+import java.util.Set;
 
 import gal.iesteis.backend.concello.Concello;
 import gal.iesteis.backend.especialidad.Especialidad;
@@ -67,5 +67,5 @@ public class Empresa {
 
     @ManyToMany
     @JoinTable(name = "empresas_skills", joinColumns = @JoinColumn(name = "empresa_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
-    private List<Skill> skills;
+    private Set<Skill> skills;
 }

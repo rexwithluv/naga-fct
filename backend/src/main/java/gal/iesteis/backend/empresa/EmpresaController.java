@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gal.iesteis.backend.config.security.UserDetailsImpl;
+import gal.iesteis.backend.empresa.dto.EmpresaDTOCreate;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/empresas")
@@ -26,6 +31,11 @@ public class EmpresaController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.obtenerPorId(userDetails, id));
+    }
+
+    @PostMapping("")
+    public ResponseEntity<?> createEmpresa(@AuthenticationPrincipal UserDetailsImpl userDetails,@RequestBody EmpresaDTOCreate dto) {
+        return ResponseEntity.status(HttpStatus.OK).body(service.crearEmpresa(userDetails, dto));
     }
 
 }
