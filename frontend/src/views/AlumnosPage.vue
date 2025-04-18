@@ -13,6 +13,7 @@
   const alumnos: Ref<Alumno[]> = ref([])
   const alumnoID: Ref<number> = ref(0)
   const dialogDetalles: Ref<boolean> = ref(false)
+  const dialogCrear: Ref<boolean> = ref(false)
 
   const getAlumnos = async (): Promise<void> => {
     try {
@@ -28,9 +29,13 @@
     }
   }
 
-  const verDetalles = (e: { data: Alumno }) => {
-    alumnoID.value = e.data.id
+  const verDetalles = (id: number) => {
+    alumnoID.value = id
     dialogDetalles.value = true
+  }
+
+  const verCrear = () => {
+    dialogCrear.value = true
   }
 
   onMounted(getAlumnos)
@@ -39,7 +44,14 @@
 <template>
   <div>
     <DialogDetallesAlumno v-model:alumnoID="alumnoID" v-model:visible="dialogDetalles" />
-    <DataTable :value="alumnos" @row-click="verDetalles" rowHover>
+    <DialogCrearAlumno v-model:visible="dialogCrear" />
+
+    <div class="mb-5 text-center">
+      <h1 class="text-2xl font-bold mb-3">Alumnos</h1>
+      <Button label="Crear alumno" @click="verCrear" />
+    </div>
+
+    <DataTable :value="alumnos" rowHover>
       <Column field="dniNie" header="DNI/NIE" />
       <Column field="nombre" header="Nombre" />
       <Column field="apellidos" header="Apellidos" />
@@ -48,6 +60,11 @@
       <Column field="concello" header="Concello" />
       <Column field="estado" header="Estado" />
       <Column field="tutorCentro" header="Tutor" v-if="auth.isAdmin" />
+      <Column header="Acciones">
+        <template #body="{ data }">
+          <Button label="Detalles" @click="verDetalles(data.id)" />
+        </template>
+      </Column>
     </DataTable>
   </div>
 </template>

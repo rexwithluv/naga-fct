@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import apiClient from '@/apiClient'
   import { TutorCentro } from '@/types/models/TutorCentro'
-  import { useToast } from 'primevue'
+  import { ToastServiceMethods, useToast } from 'primevue'
   import { ModelRef, Ref, ref, watch } from 'vue'
 
-  const toast = useToast()
+  const toast: ToastServiceMethods = useToast()
+
   const tutorID: ModelRef<number | undefined> = defineModel('tutorID')
   const visible: ModelRef<boolean | undefined> = defineModel('visible')
-
   const tutor: Ref<TutorCentro | null> = ref(null)
 
   const getTutorData = async (): Promise<void> => {

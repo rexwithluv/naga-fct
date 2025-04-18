@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import apiClient from '@/apiClient'
   import { FCT } from '@/types/models/FCT'
-  import { useToast } from 'primevue'
+  import { ToastServiceMethods, useToast } from 'primevue'
   import { ModelRef, Ref, ref, watch } from 'vue'
 
-  const toast = useToast()
+  const toast: ToastServiceMethods = useToast()
+
   const FCTID: ModelRef<number | undefined> = defineModel('FCTID')
   const visible: ModelRef<boolean | undefined> = defineModel('visible')
-
   const fct: Ref<FCT | null> = ref(null)
 
   const getTutorData = async (): Promise<void> => {

@@ -4,8 +4,8 @@
 
   const nombre: ModelRef<string | undefined> = defineModel('nombre')
   const tutor: ModelRef<string | undefined> = defineModel('tutor')
-
   const datetime: Ref<string> = ref('')
+
   const actualizarFecha = (): void => {
     datetime.value = new Date()
       .toLocaleString('es-ES', {

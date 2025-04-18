@@ -2,10 +2,12 @@
   import apiClient from '@/apiClient'
   import DialogDetallesUsuario from '@/components/usuarios/DialogDetallesUsuario.vue'
   import { Usuario } from '@/types/models/Usuario'
+  import { ToastServiceMethods } from 'primevue'
   import { useToast } from 'primevue/usetoast'
   import { onMounted, Ref, ref } from 'vue'
 
-  const toast = useToast()
+  const toast: ToastServiceMethods = useToast()
+
   const usuarios: Ref<Usuario[]> = ref([])
   const usuarioID: Ref<number> = ref(0)
   const dialogDetalles: Ref<boolean> = ref(false)

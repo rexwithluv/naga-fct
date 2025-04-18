@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { useAuthStore } from '@/stores/authStore'
   import { LoginForm } from '@/types/models/LoginForm'
-  // @ts-ignore
   import { yupResolver } from '@primevue/forms/resolvers/yup'
   import { StoreGeneric } from 'pinia'
   import { useToast } from 'primevue/usetoast'

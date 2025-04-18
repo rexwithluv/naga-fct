@@ -9,10 +9,9 @@
   const toast = useToast()
 
   const empresas: Ref<Empresa[]> = ref([])
+  const empresaID: Ref<number> = ref(0)
   const dialogContacto: Ref<boolean> = ref(false)
   const datosContacto: Ref<ContactoEmpresa | null> = ref(null)
-
-  const empresaID: Ref<number> = ref(0)
   const dialogDetalles: Ref<boolean> = ref(false)
 
   const getEmpresas = async (): Promise<void> => {

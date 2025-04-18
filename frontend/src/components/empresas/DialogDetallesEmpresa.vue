@@ -6,9 +6,9 @@
   import { ModelRef, ref, Ref, watch } from 'vue'
 
   const toast = useToast()
+
   const empresaID: ModelRef<number | undefined> = defineModel('empresaID')
   const visible: ModelRef<boolean | undefined> = defineModel('visible')
-
   const empresa: Ref<Empresa | null> = ref(null)
 
   const getEmpresaData = async (): Promise<void> => {

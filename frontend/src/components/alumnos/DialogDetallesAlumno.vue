@@ -11,7 +11,6 @@
 
   const alumnoID: ModelRef<number | undefined> = defineModel('alumnoID')
   const visible: ModelRef<boolean | undefined> = defineModel('visible')
-
   const alumno: Ref<Alumno | null> = ref(null)
 
   const getAlumnoData = async (): Promise<void> => {

@@ -1,10 +1,12 @@
 <script setup lang="ts">
   import apiClient from '@/apiClient'
   import { FCT } from '@/types/models/FCT'
+  import { ToastServiceMethods } from 'primevue'
   import { useToast } from 'primevue/usetoast'
   import { onMounted, Ref, ref } from 'vue'
 
-  const toast = useToast()
+  const toast: ToastServiceMethods = useToast()
+
   const FCTs: Ref<FCT[]> = ref([])
   const FCTID: Ref<number> = ref(0)
   const dialogDetalles: Ref<boolean> = ref(false)

@@ -9,11 +9,13 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppNavBar: typeof import('./src/components/AppNavBar.vue')['default']
+    AutoComplete: typeof import('primevue/autocomplete')['default']
     Button: typeof import('primevue/button')['default']
     Column: typeof import('primevue/column')['default']
     DataTable: typeof import('primevue/datatable')['default']
     Dialog: typeof import('primevue/dialog')['default']
     DialogContactoEmpresa: typeof import('./src/components/empresas/DialogContactoEmpresa.vue')['default']
+    DialogCrearAlumno: typeof import('./src/components/alumnos/DialogCrearAlumno.vue')['default']
     DialogDetallesAlumno: typeof import('./src/components/alumnos/DialogDetallesAlumno.vue')['default']
     DialogDetallesEmpresa: typeof import('./src/components/empresas/DialogDetallesEmpresa.vue')['default']
     DialogDetallesFCT: typeof import('./src/components/fct/DialogDetallesFCT.vue')['default']
@@ -28,6 +30,7 @@ declare module 'vue' {
     Password: typeof import('primevue/password')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Select: typeof import('primevue/select')['default']
     Toast: typeof import('primevue/toast')['default']
     WelcomePanel: typeof import('./src/components/home/WelcomePanel.vue')['default']
   }
