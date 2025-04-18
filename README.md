@@ -6,8 +6,8 @@ NAGA nace a partir de la necesidad del profesorado por tener una plataforma que 
 
 ## Stack tecnológico
 
-- **Frontend**: Vue (HTML, CSS y JavaScript)
-- **Backend**: SpringBoot (Java)
+- **Frontend**: Vue.js (HTML, CSS y TypeScript)
+- **Backend**: Spring Boot (Java)
 - **Base de datos**: MariaDB (SQL)
 - **Contenedores**: Docker
 
@@ -22,21 +22,22 @@ cd naga-fct
 
 ### 2. Configurar variables de entorno
 
-El repositorio incluye varios archivos `.example` que contienen las variables de entorno que usan los distintos contenedores. Copia el archivos `.example` y renómbralos para poder comenzar a desplegar la aplicación.
+El repositorio tiene un archivo `env.example` que contiene las variables de entorno que usan los distintos contenedores y servicios. Copia el archivos y renómbralo a `.env` para poder desplegar la aplicación.
 
 #### Pasos
 
-1. Copia y edita los archivos de ejemplo
+1. Copia y edita el archivo
 
-   ```bash
-   cp .env.example .env
-   ```
+```bash
+cp .env.example .env
+code .env
+```
 
 2. Levanta los servicios con docker
 
-   ```bash
-   docker compose up -d --build backend frontend
-   ```
+```bash
+docker compose --profile prod up -d --build
+```
 
 ## Estructura del Proyecto
 
@@ -57,21 +58,21 @@ El repositorio incluye varios archivos `.example` que contienen las variables de
 
 ## Uso
 
-### 1. Acceso al Frontend
+### 1. Acceso al Frontend - Vue.js
 
 Después de levantar los contenedores con Docker Compose, puedes acceder a la interfaz de usuario del frontend en:
 
 [http://localhost:6321](http://localhost:6321)
 
-### 2. Acceso al Backend
+### 2. Acceso al Backend - Spring Boot
 
-El backend de Spring Boot estará disponible en:
+La API de Spring Boot estará disponible en:
 
 [http://localhost:9000](http://localhost:9000)
 
 ### 3. Acceso a la Base de Datos (MariaDB)
 
-Levanta el PHPMyAdmin asociado a la DB con `docker compose up -d pma` y accede [http://localhost:8080](http://localhost:8080)
+Para no dejar la base de datos por error en algún estado incosistente, solo se puede manipular la información mediante peticiones a la API o mediante la interfaz web cuando se despliega en producción.
 
 ## Licencia
 
