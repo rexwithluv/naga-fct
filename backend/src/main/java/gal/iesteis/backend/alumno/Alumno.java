@@ -1,8 +1,12 @@
 package gal.iesteis.backend.alumno;
 
+import gal.iesteis.backend.concello.Concello;
+import gal.iesteis.backend.estadoAlumno.EstadoAlumno;
+import gal.iesteis.backend.tutorCentro.TutorCentro;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,10 +16,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import jakarta.persistence.ForeignKey;
-import gal.iesteis.backend.concello.Concello;
-import gal.iesteis.backend.estadoAlumno.EstadoAlumno;
-import gal.iesteis.backend.tutorCentro.TutorCentro;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -26,7 +26,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "alumnos", uniqueConstraints = {
         @UniqueConstraint(name = "idx_alumnos_dni_nie", columnNames = { "dni_nie" }),
-        @UniqueConstraint(name = "idx_alumnos_numero_seguridad_social", columnNames = { "numero_seguridad_socia" })
+        @UniqueConstraint(name = "idx_alumnos_numero_seguridad_social", columnNames = { "numero_seguridad_social" })
 })
 public class Alumno {
 
