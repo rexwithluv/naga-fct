@@ -1,30 +1,23 @@
 package gal.iesteis.backend.tutorCentro;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gal.iesteis.backend.config.security.AuthUtils;
 import gal.iesteis.backend.config.security.UserDetailsImpl;
+import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTO;
 
 @Service
 public class TutorCentroService {
 
     @Autowired
-    private TutorCentroRepository repository;
+    private TutorCentroDTOConverter dtoConverter;
 
     @Autowired
-    private ModelMapper modelMapper;
-
-    private TutorCentroDTO tutorCentroADTO(TutorCentro tutor) {
-        TutorCentroDTO dto = modelMapper.map(tutor, TutorCentroDTO.class);
-
-        dto.setCurso(tutor.getCurso().getNombre());
-
-        return dto;
-    }
+    private TutorCentroRepository repository;
 
     public List<TutorCentroDTO> obtenerTodos(UserDetailsImpl userDetails) {
         if (!AuthUtils.isAdmin(userDetails)) {
@@ -32,7 +25,7 @@ public class TutorCentroService {
         }
 
         List<TutorCentro> tutores = repository.findAll();
-        return tutores.stream().map(tutor -> tutorCentroADTO(tutor)).toList();
+        return tutores.stream().map(tutor -> dtoConverter.tutorCentroADTOResponseAdmin(tutor)).toList();
     }
 
     public TutorCentroDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
@@ -41,6 +34,15 @@ public class TutorCentroService {
         }
 
         TutorCentro tutor = repository.findById(id).orElseThrow(() -> new TutorCentroNotFoundException(id));
-        return tutorCentroADTO(tutor);
+        return dtoConverter.tutorCentroADTOResponseAdmin(tutor);
+    }
+
+    public List<TutorCentroDTO> obtenerTodosSelect(Optional<String> nombre) {
+        if (nombre.isEmpty()) {
+            List<TutorCentro> tutoresActivos = repository.findByActivoTrue();
+            return tutoresActivos.stream().map(t -> dtoConverter.tutorCentroADTOResponseSelect(t)).toList();
+        }
+        List<TutorCentro> tutoresFiltrados = repository.findByActivoTrueAndNombreContaining(nombre.get());
+        return tutoresFiltrados.stream().map(t -> dtoConverter.tutorCentroADTOResponseSelect(t)).toList();
     }
 }

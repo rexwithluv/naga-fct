@@ -44,7 +44,7 @@
 <template>
   <div>
     <DialogDetallesAlumno v-model:alumnoID="alumnoID" v-model:visible="dialogDetalles" />
-    <DialogCrearAlumno v-model:visible="dialogCrear" />
+    <DialogCrearAlumno v-model:visible="dialogCrear" @alumnoCreado="getAlumnos" />
 
     <div class="mb-5 text-center">
       <h1 class="text-2xl font-bold mb-3">Alumnos</h1>

@@ -329,17 +329,24 @@ INSERT INTO
     )
 VALUES (
         'Patricia',
-        'González',
+        'González Parda',
         'patricia@edu.xunta.gal',
         11,
         true
     ),
     (
         'Marta',
-        'Rey',
-        'marta@edu.xunta.gal.com',
+        'Reina López',
+        'marta@edu.xunta.gal',
         14,
         true
+    ),
+    (
+        'Juan Carlos',
+        'Pérez Rodríguez',
+        'carlos@edu.xunta.gal',
+        13,
+        false
     );
 
 INSERT INTO

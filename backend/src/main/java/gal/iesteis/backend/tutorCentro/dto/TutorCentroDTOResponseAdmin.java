@@ -1,4 +1,4 @@
-package gal.iesteis.backend.tutorCentro;
+package gal.iesteis.backend.tutorCentro.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,11 +9,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class TutorCentroDTO {
+public class TutorCentroDTOResponseAdmin extends TutorCentroDTO {
     private Long id;
     private String nombre;
     private String apellidos;
     private String email;
     private String curso;
-    private String activo;
+    private boolean activo;
 }
