@@ -107,6 +107,7 @@ Table "usuarios" {
 
   Indexes {
     email [unique, name: "idx_usuarios_email"]
+    tutor_id [unique, name: "idx_usuarios_tutor_id"]
   }
 }
 
@@ -127,15 +128,17 @@ Table "fct" {
   "fecha_fin" DATE
 }
 
-Ref "fk_cursos_especialidad":"especialidades"."id" < "cursos"."especialidad_id" [delete: cascade]
-
 Ref "fk_alumnos_concello":"concellos"."id" < "alumnos"."concello_id"
 
 Ref "fk_alumnos_estado_alumnos":"estados_alumnos"."id" < "alumnos"."estado_id"
 
 Ref "fk_alumnos_tutor_centro":"tutores_centro"."id" < "alumnos"."tutor_centro_id"
 
-Ref "fk_skills_especialidad":"especialidades"."id" < "skills"."especialidad_id"
+Ref "fk_correos_empresa":"empresas"."id" < "correos"."empresa_id"
+
+Ref "fk_cursos_especialidad":"especialidades"."id" < "cursos"."especialidad_id" [delete: cascade]
+
+Ref "fk_correos_usuario":"usuarios"."id" < "correos"."usuario_id"
 
 Ref "fk_empresas_concello":"concellos"."id" < "empresas"."concello_id"
 
@@ -145,18 +148,16 @@ Ref "fk_empresas_skills_empresa":"empresas"."id" < "empresas_skills"."empresa_id
 
 Ref "fk_empresas_skills_skill":"skills"."id" < "empresas_skills"."skill_id" [delete: cascade]
 
-Ref "fk_tutores_empresa":"empresas"."id" < "tutores_empresa"."empresa_id" [delete: cascade]
-
-Ref "fk_tutor_centro_curso":"cursos"."id" < "tutores_centro"."curso_id"
-
-Ref "fk_usuarios_rol":"roles_usuarios"."id" < "usuarios"."rol_id"
-
-Ref "fk_usuario_tutor":"tutores_centro"."id" < "usuarios"."tutor_id"
-
 Ref "fk_fct_alumno":"alumnos"."id" < "fct"."alumno_id" [delete: cascade]
 
 Ref "fk_fct_tutor_empresa_id":"tutores_empresa"."id" < "fct"."tutor_empresa_id" [delete: cascade]
 
-Ref "fk_correos_usuario":"usuarios"."id" < "correos"."usuario_id"
+Ref "fk_skills_especialidad":"especialidades"."id" < "skills"."especialidad_id"
 
-Ref "fk_correos_empresa":"empresas"."id" < "correos"."empresa_id"
+Ref "fk_tutor_centro_curso":"cursos"."id" < "tutores_centro"."curso_id"
+
+Ref "fk_tutores_empresa":"empresas"."id" < "tutores_empresa"."empresa_id" [delete: cascade]
+
+Ref "fk_usuarios_rol":"roles_usuarios"."id" < "usuarios"."rol_id"
+
+Ref "fk_usuario_tutor":"tutores_centro"."id" < "usuarios"."tutor_id"

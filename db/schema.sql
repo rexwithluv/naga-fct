@@ -111,9 +111,6 @@ CREATE TABLE IF NOT EXISTS fct (
 );
 
 -- Claves foráneas (ALTER TABLE - FK)
-ALTER TABLE cursos
-ADD CONSTRAINT fk_cursos_especialidad FOREIGN KEY (especialidad_id) REFERENCES especialidades (id) ON DELETE CASCADE;
-
 ALTER TABLE alumnos
 ADD CONSTRAINT fk_alumnos_concello FOREIGN KEY (concello_id) REFERENCES concellos (id);
 
@@ -123,8 +120,14 @@ ADD CONSTRAINT fk_alumnos_estado_alumnos FOREIGN KEY (estado_id) REFERENCES esta
 ALTER TABLE alumnos
 ADD CONSTRAINT fk_alumnos_tutor_centro FOREIGN KEY (tutor_centro_id) REFERENCES tutores_centro (id);
 
-ALTER TABLE skills
-ADD CONSTRAINT fk_skills_especialidad FOREIGN KEY (especialidad_id) REFERENCES especialidades (id);
+ALTER TABLE correos
+ADD CONSTRAINT fk_correos_empresa FOREIGN KEY (empresa_id) REFERENCES empresas (id);
+
+ALTER TABLE cursos
+ADD CONSTRAINT fk_cursos_especialidad FOREIGN KEY (especialidad_id) REFERENCES especialidades (id) ON DELETE CASCADE;
+
+ALTER TABLE correos
+ADD CONSTRAINT fk_correos_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios (id);
 
 ALTER TABLE empresas
 ADD CONSTRAINT fk_empresas_concello FOREIGN KEY (concello_id) REFERENCES concellos (id);
@@ -138,11 +141,20 @@ ADD CONSTRAINT fk_empresas_skills_empresa FOREIGN KEY (empresa_id) REFERENCES em
 ALTER TABLE empresas_skills
 ADD CONSTRAINT fk_empresas_skills_skill FOREIGN KEY (skill_id) REFERENCES skills (id) ON DELETE CASCADE;
 
-ALTER TABLE tutores_empresa
-ADD CONSTRAINT fk_tutores_empresa FOREIGN KEY (empresa_id) REFERENCES empresas (id) ON DELETE CASCADE;
+ALTER TABLE fct
+ADD CONSTRAINT fk_fct_alumno FOREIGN KEY (alumno_id) REFERENCES alumnos (id) ON DELETE CASCADE;
+
+ALTER TABLE fct
+ADD CONSTRAINT fk_fct_tutor_empresa_id FOREIGN KEY (tutor_empresa_id) REFERENCES tutores_empresa (id) ON DELETE CASCADE;
+
+ALTER TABLE skills
+ADD CONSTRAINT fk_skills_especialidad FOREIGN KEY (especialidad_id) REFERENCES especialidades (id);
 
 ALTER TABLE tutores_centro
 ADD CONSTRAINT fk_tutor_centro_curso FOREIGN KEY (curso_id) REFERENCES cursos (id);
+
+ALTER TABLE tutores_empresa
+ADD CONSTRAINT fk_tutores_empresa FOREIGN KEY (empresa_id) REFERENCES empresas (id) ON DELETE CASCADE;
 
 ALTER TABLE usuarios
 ADD CONSTRAINT fk_usuarios_rol FOREIGN KEY (rol_id) REFERENCES roles_usuarios (id);
@@ -150,25 +162,15 @@ ADD CONSTRAINT fk_usuarios_rol FOREIGN KEY (rol_id) REFERENCES roles_usuarios (i
 ALTER TABLE usuarios
 ADD CONSTRAINT fk_usuario_tutor FOREIGN KEY (tutor_id) REFERENCES tutores_centro (id);
 
-ALTER TABLE fct
-ADD CONSTRAINT fk_fct_alumno FOREIGN KEY (alumno_id) REFERENCES alumnos (id) ON DELETE CASCADE;
-
-ALTER TABLE fct
-ADD CONSTRAINT fk_fct_tutor_empresa_id FOREIGN KEY (tutor_empresa_id) REFERENCES tutores_empresa (id) ON DELETE CASCADE;
-
-ALTER TABLE correos
-ADD CONSTRAINT fk_correos_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios (id);
-
-ALTER TABLE correos
-ADD CONSTRAINT fk_correos_empresa FOREIGN KEY (empresa_id) REFERENCES empresas (id);
-
 -- Índices únicos (UNIQUE INDEX)
-CREATE UNIQUE INDEX idx_usuarios_email ON usuarios (email);
-
-CREATE UNIQUE INDEX idx_tutores_centro_email ON tutores_centro (email);
-
 CREATE UNIQUE INDEX idx_alumnos_dni_nie ON alumnos (dni_nie);
 
 CREATE UNIQUE INDEX idx_alumnos_numero_seguridad_social ON alumnos (numero_seguridad_social);
 
 CREATE UNIQUE INDEX idx_cursos_codigo ON cursos (codigo);
+
+CREATE UNIQUE INDEX idx_tutores_centro_email ON tutores_centro (email);
+
+CREATE UNIQUE INDEX idx_usuarios_email ON usuarios (email);
+
+CREATE UNIQUE INDEX idx_usuarios_tutor_id ON usuarios (tutor_id);
