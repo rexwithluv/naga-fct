@@ -79,12 +79,14 @@ Table "tutores_centro" {
   "id" BIGINT [pk, increment]
   "nombre" VARCHAR(500) [not null]
   "apellidos" VARCHAR(500) [not null]
+  "usuario_id" BIGINT
   "email" VARCHAR(500) [not null]
   "curso_id" SMALLINT [not null]
   "activo" BOOLEAN [not null]
 
   Indexes {
     email [unique, name: "idx_tutores_centro_email"]
+    usuario_id [unique, name: "idx_tutores_centro_usuario_id"]
   }
 }
 
@@ -102,12 +104,10 @@ Table "usuarios" {
   "email" VARCHAR(500) [not null]
   "password" VARCHAR(500) [not null]
   "rol_id" TINYINT [not null]
-  "tutor_id" BIGINT
   "activo" BOOLEAN [not null]
 
   Indexes {
     email [unique, name: "idx_usuarios_email"]
-    tutor_id [unique, name: "idx_usuarios_tutor_id"]
   }
 }
 
@@ -156,8 +156,8 @@ Ref "fk_skills_especialidad":"especialidades"."id" < "skills"."especialidad_id"
 
 Ref "fk_tutor_centro_curso":"cursos"."id" < "tutores_centro"."curso_id"
 
+Ref "fk_tutor_centro_usuario_id":"usuarios"."id" < "tutores_centro"."usuario_id"
+
 Ref "fk_tutores_empresa":"empresas"."id" < "tutores_empresa"."empresa_id" [delete: cascade]
 
 Ref "fk_usuarios_rol":"roles_usuarios"."id" < "usuarios"."rol_id"
-
-Ref "fk_usuario_tutor":"tutores_centro"."id" < "usuarios"."tutor_id"

@@ -25,7 +25,6 @@ import lombok.Setter;
 @Setter
 @Table(name = "usuarios", uniqueConstraints = {
         @UniqueConstraint(name = "idx_usuarios_email", columnNames = { "email" }),
-        @UniqueConstraint(name = "idx_usuarios_tutor_id", columnNames = { "tutor_id" })
 })
 public class Usuario {
 
@@ -43,10 +42,9 @@ public class Usuario {
     @JoinColumn(name = "rol_id", nullable = false, foreignKey = @ForeignKey(name = "fk_usuarios_rol"))
     private RolUsuario rol;
 
-    @OneToOne
-    @JoinColumn(name = "tutor_id", foreignKey = @ForeignKey(name = "fk_usuario_tutor"))
-    private TutorCentro tutor;
-
     @Column(name = "activo", nullable = false)
     private Boolean activo;
+
+    @OneToOne(mappedBy = "usuario")
+    private TutorCentro tutor;
 }

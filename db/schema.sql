@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS tutores_centro (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL,
     apellidos VARCHAR(500) NOT NULL,
+    usuario_id BIGINT,
     email VARCHAR(500) NOT NULL,
     curso_id SMALLINT NOT NULL,
     activo BOOLEAN NOT NULL
@@ -91,7 +92,6 @@ CREATE TABLE IF NOT EXISTS usuarios (
     email VARCHAR(500) NOT NULL,
     password VARCHAR(500) NOT NULL,
     rol_id TINYINT NOT NULL,
-    tutor_id BIGINT,
     activo BOOLEAN NOT NULL
 );
 
@@ -153,14 +153,14 @@ ADD CONSTRAINT fk_skills_especialidad FOREIGN KEY (especialidad_id) REFERENCES e
 ALTER TABLE tutores_centro
 ADD CONSTRAINT fk_tutor_centro_curso FOREIGN KEY (curso_id) REFERENCES cursos (id);
 
+ALTER TABLE tutores_centro
+ADD CONSTRAINT fk_tutor_centro_usuario_id FOREIGN KEY (usuario_id) REFERENCES usuarios (id);
+
 ALTER TABLE tutores_empresa
 ADD CONSTRAINT fk_tutores_empresa FOREIGN KEY (empresa_id) REFERENCES empresas (id) ON DELETE CASCADE;
 
 ALTER TABLE usuarios
 ADD CONSTRAINT fk_usuarios_rol FOREIGN KEY (rol_id) REFERENCES roles_usuarios (id);
-
-ALTER TABLE usuarios
-ADD CONSTRAINT fk_usuario_tutor FOREIGN KEY (tutor_id) REFERENCES tutores_centro (id);
 
 -- Índices únicos (UNIQUE INDEX)
 CREATE UNIQUE INDEX idx_alumnos_dni_nie ON alumnos (dni_nie);
@@ -171,6 +171,6 @@ CREATE UNIQUE INDEX idx_cursos_codigo ON cursos (codigo);
 
 CREATE UNIQUE INDEX idx_tutores_centro_email ON tutores_centro (email);
 
-CREATE UNIQUE INDEX idx_usuarios_email ON usuarios (email);
+CREATE UNIQUE INDEX idx_tutores_centro_usuario_id ON tutores_centro (usuario_id);
 
-CREATE UNIQUE INDEX idx_usuarios_tutor_id ON usuarios (tutor_id);
+CREATE UNIQUE INDEX idx_usuarios_email ON usuarios (email);
