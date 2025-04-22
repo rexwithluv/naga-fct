@@ -165,6 +165,10 @@ ADD CONSTRAINT fk_correos_empresa FOREIGN KEY (empresa_id) REFERENCES empresas (
 -- Índices únicos (UNIQUE INDEX)
 CREATE UNIQUE INDEX idx_usuarios_email ON usuarios (email);
 
+CREATE UNIQUE INDEX idx_tutores_centro_email ON tutores_centro (email);
+
 CREATE UNIQUE INDEX idx_alumnos_dni_nie ON alumnos (dni_nie);
 
 CREATE UNIQUE INDEX idx_alumnos_numero_seguridad_social ON alumnos (numero_seguridad_social);
+
+CREATE UNIQUE INDEX idx_cursos_codigo ON cursos (codigo);

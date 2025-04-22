@@ -49,6 +49,10 @@ Table "cursos" {
   "codigo" VARCHAR(20) [not null]
   "nombre" VARCHAR(500) [not null]
   "especialidad_id" TINYINT [not null]
+
+  Indexes {
+    codigo [unique, name: "idx_cursos_codigo"]
+  }
 }
 
 Table "empresas" {
@@ -78,6 +82,10 @@ Table "tutores_centro" {
   "email" VARCHAR(500) [not null]
   "curso_id" SMALLINT [not null]
   "activo" BOOLEAN [not null]
+
+  Indexes {
+    email [unique, name: "idx_tutores_centro_email"]
+  }
 }
 
 Table "tutores_empresa" {

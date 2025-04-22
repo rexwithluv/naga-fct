@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "tutores_centro")
+@Table(name = "tutores_centro", uniqueConstraints = {
+        @UniqueConstraint(name = "idx_tutores_centro_email", columnNames = { "email" }),
+})
 public class TutorCentro {
 
     @Id
