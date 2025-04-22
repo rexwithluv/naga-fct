@@ -320,9 +320,36 @@ VALUES ('Python', 1),
     ('Tratamientos capilares', 2);
 
 INSERT INTO
+    usuarios (
+        email,
+        password,
+        rol_id,
+        activo
+    )
+VALUES (
+        'admin@edu.xunta.gal',
+        '$2a$12$Gxa5XO.b0rvew79tIBrYMO55PXw1pVDyTRPXs3/rGyYhc2wosC7zO', -- abc123.
+        1,
+        true
+    ),
+    (
+        'marta@edu.xunta.gal',
+        '$2a$12$i0Jo1orADsIW08bF.pGshuRXQyCVeqOSzJarfE8NPMBtYsw1smAJK', -- nigiri
+        2,
+        false
+    ),
+    (
+        'patricia@edu.xunta.gal',
+        '$2a$12$frnjU.CRV0Ic/LDJMVaNXOGUFdo8lHBvKSezjYTm2vbmiuP6UwdDG', -- springboot
+        2,
+        true
+    );
+
+INSERT INTO
     tutores_centro (
         nombre,
         apellidos,
+        usuario_id,
         email,
         curso_id,
         activo
@@ -330,6 +357,7 @@ INSERT INTO
 VALUES (
         'Patricia',
         'González Parda',
+        3,
         'patricia@edu.xunta.gal',
         11,
         true
@@ -337,6 +365,7 @@ VALUES (
     (
         'Marta',
         'Reina López',
+        2,
         'marta@edu.xunta.gal',
         14,
         true
@@ -344,6 +373,7 @@ VALUES (
     (
         'Juan Carlos',
         'Pérez Rodríguez',
+        null,
         'carlos@edu.xunta.gal',
         13,
         false
@@ -527,36 +557,6 @@ VALUES (
         667788990,
         4,
         2
-    );
-
-INSERT INTO
-    usuarios (
-        email,
-        password,
-        rol_id,
-        tutor_id,
-        activo
-    )
-VALUES (
-        'admin@edu.xunta.gal',
-        '$2a$12$Gxa5XO.b0rvew79tIBrYMO55PXw1pVDyTRPXs3/rGyYhc2wosC7zO', -- abc123.
-        1,
-        null,
-        true
-    ),
-    (
-        'marta@edu.xunta.gal',
-        '$2a$12$i0Jo1orADsIW08bF.pGshuRXQyCVeqOSzJarfE8NPMBtYsw1smAJK', -- nigiri
-        2,
-        2,
-        false
-    ),
-    (
-        'patricia@edu.xunta.gal',
-        '$2a$12$frnjU.CRV0Ic/LDJMVaNXOGUFdo8lHBvKSezjYTm2vbmiuP6UwdDG', -- springboot
-        2,
-        1,
-        true
     );
 
 ---
