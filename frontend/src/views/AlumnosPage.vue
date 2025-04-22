@@ -15,10 +15,10 @@
   const dialogDetalles: Ref<boolean> = ref(false)
   const dialogCrear: Ref<boolean> = ref(false)
 
-  const getAlumnos = async (): Promise<void> => {
+  const getAlumnos = async () => {
     try {
       const response = await apiClient.get('/alumnos')
-      alumnos.value = response.data
+      return response.data
     } catch (error: any) {
       toast.add({
         severity: 'error',
@@ -38,7 +38,9 @@
     dialogCrear.value = true
   }
 
-  onMounted(getAlumnos)
+  onMounted(async () => {
+    alumnos.value = await getAlumnos()
+  })
 </script>
 
 <template>

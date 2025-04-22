@@ -11,10 +11,10 @@
   const tutorID: Ref<number> = ref(0)
   const dialogDetalles: Ref<boolean> = ref(false)
 
-  const getTutores = async (): Promise<void> => {
+  const getTutores = async () => {
     try {
       const response = await apiClient.get('/tutores-centro')
-      tutores.value = response.data
+      return response.data
     } catch (error: any) {
       toast.add({
         severity: 'error',
@@ -30,7 +30,9 @@
     dialogDetalles.value = true
   }
 
-  onMounted(getTutores)
+  onMounted(async () => {
+    tutores.value = await getTutores()
+  })
 </script>
 
 <template>

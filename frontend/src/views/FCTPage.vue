@@ -11,10 +11,10 @@
   const FCTID: Ref<number> = ref(0)
   const dialogDetalles: Ref<boolean> = ref(false)
 
-  const getFCT = async (): Promise<void> => {
+  const getFCT = async () => {
     try {
       const response = await apiClient.get('/fct')
-      FCTs.value = response.data
+      return response.data
     } catch (error: any) {
       toast.add({
         severity: 'error',
@@ -30,7 +30,9 @@
     dialogDetalles.value = true
   }
 
-  onMounted(getFCT)
+  onMounted(async () => {
+    FCTs.value = await getFCT()
+  })
 </script>
 
 <template>

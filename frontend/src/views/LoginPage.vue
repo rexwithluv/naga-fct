@@ -3,12 +3,13 @@
   import { LoginForm } from '@/types/models/LoginForm'
   import { yupResolver } from '@primevue/forms/resolvers/yup'
   import { StoreGeneric } from 'pinia'
+  import { ToastServiceMethods } from 'primevue'
   import { useToast } from 'primevue/usetoast'
   import { Ref, ref } from 'vue'
   import { Router, useRouter } from 'vue-router'
   import { object, ObjectSchema, string } from 'yup'
 
-  const toast = useToast()
+  const toast: ToastServiceMethods = useToast()
   const router: Router = useRouter()
   const auth: StoreGeneric = useAuthStore()
 

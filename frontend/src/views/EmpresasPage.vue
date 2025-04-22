@@ -3,10 +3,11 @@
   import formatList from '@/helpers/formatList'
   import { ContactoEmpresa } from '@/types/models/ContactoEmpresa'
   import { Empresa } from '@/types/models/Empresa'
+  import { ToastServiceMethods } from 'primevue'
   import { useToast } from 'primevue/usetoast'
   import { onMounted, Ref, ref } from 'vue'
 
-  const toast = useToast()
+  const toast: ToastServiceMethods = useToast()
 
   const empresas: Ref<Empresa[]> = ref([])
   const empresaID: Ref<number> = ref(0)
@@ -14,10 +15,10 @@
   const datosContacto: Ref<ContactoEmpresa | null> = ref(null)
   const dialogDetalles: Ref<boolean> = ref(false)
 
-  const getEmpresas = async (): Promise<void> => {
+  const getEmpresas = async () => {
     try {
       const response = await apiClient.get('/empresas')
-      empresas.value = response.data
+      return response.data
     } catch (error: any) {
       toast.add({
         severity: 'error',
@@ -38,7 +39,9 @@
     dialogDetalles.value = true
   }
 
-  onMounted(getEmpresas)
+  onMounted(async () => {
+    empresas.value = await getEmpresas()
+  })
 </script>
 
 <template>

@@ -24,10 +24,10 @@
     router.push({ name: 'inicio' })
   }
 
-  const getUserData = async (): Promise<void> => {
+  const getUserData = async () => {
     try {
       const response = await apiClient.get('/usuarios/yo')
-      usuario.value = response.data
+      return response.data
     } catch (error: any) {
       toast.add({
         severity: 'error',
@@ -38,7 +38,9 @@
     }
   }
 
-  onMounted(getUserData)
+  onMounted(async () => {
+    usuario.value = await getUserData()
+  })
 </script>
 
 <template>

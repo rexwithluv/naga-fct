@@ -12,10 +12,10 @@
   const usuarioID: Ref<number> = ref(0)
   const dialogDetalles: Ref<boolean> = ref(false)
 
-  const getUsuarios = async (): Promise<void> => {
+  const getUsuarios = async () => {
     try {
       const response = await apiClient.get('/usuarios')
-      usuarios.value = response.data
+      return response.data
     } catch (error: any) {
       toast.add({
         severity: 'error',
@@ -31,7 +31,9 @@
     dialogDetalles.value = true
   }
 
-  onMounted(getUsuarios)
+  onMounted(async () => {
+    usuarios.value = await getUsuarios()
+  })
 </script>
 
 <template>
