@@ -3,6 +3,8 @@ package gal.iesteis.backend.empresa;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ import gal.iesteis.backend.tutorCentro.TutorCentroRepository;
 
 @Service
 public class EmpresaService {
+
+    private static final Logger logger = LoggerFactory.getLogger(EmpresaService.class);
 
     @Autowired
     private EmpresaRepository repository;
@@ -49,13 +53,15 @@ public class EmpresaService {
         Empresa empresa = repository.findById(id).orElseThrow(() -> new EmpresaNotFoundException(id));
 
         boolean isAdmin = AuthUtils.isAdmin(userDetails);
-        TutorCentro tutor = tutorCentroRepository.findById(userDetails.getTutorCentroId())
-                .orElseThrow(() -> new TutorCentroNotFoundException(userDetails.getTutorCentroId()));
-        boolean esEmpresaEspecialidad = empresa.getEspecialidad().getId()
-                .equals(tutor.getCurso().getEspecialidad().getId());
+        if (!isAdmin) {
+            TutorCentro tutor = tutorCentroRepository.findById(userDetails.getTutorCentroId())
+                    .orElseThrow(() -> new TutorCentroNotFoundException(userDetails.getTutorCentroId()));
+            boolean esEmpresaEspecialidad = empresa.getEspecialidad().getId()
+                    .equals(tutor.getCurso().getEspecialidad().getId());
 
-        if (!isAdmin && !esEmpresaEspecialidad) {
-            throw new EmpresaForbiddenException(id);
+            if (!esEmpresaEspecialidad) {
+                throw new EmpresaForbiddenException(id);
+            }
         }
         return dtoConverter.empresaADTOResponse(empresa, isAdmin);
     }

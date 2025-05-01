@@ -25,8 +25,8 @@
     }
   }
 
-  const verDetalles = (e: { data: TutorCentro }) => {
-    tutorID.value = e.data.id
+  const verDetalles = (id: number) => {
+    tutorID.value = id
     dialogDetalles.value = true
   }
 
@@ -39,12 +39,17 @@
   <div>
     <DialogDetallesTutor v-model:tutorID="tutorID" v-model:visible="dialogDetalles" />
 
-    <DataTable :value="tutores" @row-click="verDetalles" rowHover>
+    <DataTable :value="tutores" rowHover>
       <Column field="nombre" header="Nombre" />
       <Column field="apellidos" header="Apellidos" />
       <Column field="email" header="Email" />
       <Column field="curso" header="Curso" />
       <Column field="activo" header="Activo" />
+      <Column header="Acciones">
+        <template #body="{ data }">
+          <Button label="Detalles" @click="verDetalles(data.id)" />
+        </template>
+      </Column>
     </DataTable>
   </div>
 </template>

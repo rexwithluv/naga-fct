@@ -7,7 +7,7 @@ SQL_FILE: str = "db/schema.sql"
 DBML_FILE: str = "db/database.dbml"
 
 
-def write_dbml(sql_filename: str, dbml_filename: str):
+def write_dbml(sql_filename: str, dbml_filename: str) -> None:
     subprocess.run(f"sql2dbml --mysql {SQL_FILE} -o {DBML_FILE}".split(" "))
 
     with open(DBML_FILE, "r") as f:
@@ -24,7 +24,7 @@ def write_dbml(sql_filename: str, dbml_filename: str):
         f.writelines(lines)
 
 
-def remove_dbml_error_log():
+def remove_dbml_error_log() -> None:
     if os.path.getsize("dbml-error.log") == 0:
         os.remove("dbml-error.log")
     else:

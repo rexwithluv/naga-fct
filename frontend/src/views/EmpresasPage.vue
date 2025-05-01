@@ -34,8 +34,8 @@
     dialogContacto.value = true
   }
 
-  const verDetalles = (e: { data: Empresa }) => {
-    empresaID.value = e.data.id
+  const verDetalles = (id: number) => {
+    empresaID.value = id
     dialogDetalles.value = true
   }
 
@@ -49,7 +49,7 @@
     <DialogContactoEmpresa v-model:visible="dialogContacto" v-model:datosContacto="datosContacto" />
     <DialogDetallesEmpresa v-model:empresaID="empresaID" v-model:visible="dialogDetalles" />
 
-    <DataTable :value="empresas" @row-click="verDetalles" rowHover>
+    <DataTable :value="empresas" rowHover>
       <Column field="nombre" header="Nombre" />
       <Column field="concello" header="Concello" />
       <Column header="Nombre de contacto">
@@ -64,6 +64,11 @@
       <Column header="Skills">
         <template #body="slotProps">
           {{ formatList(slotProps.data.skills) }}
+        </template>
+      </Column>
+      <Column header="Acciones">
+        <template #body="{ data }">
+          <Button label="Detalles" @click="verDetalles(data.id)" />
         </template>
       </Column>
     </DataTable>

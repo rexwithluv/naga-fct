@@ -25,8 +25,8 @@
     }
   }
 
-  const verDetalles = (e: { data: FCT }) => {
-    FCTID.value = e.data.id
+  const verDetalles = (id: number) => {
+    FCTID.value = id
     dialogDetalles.value = true
   }
 
@@ -39,12 +39,17 @@
   <div>
     <DialogDetallesFCT v-model:FCTID="FCTID" v-model:visible="dialogDetalles" />
 
-    <DataTable :value="FCTs" @row-click="verDetalles" rowHover>
+    <DataTable :value="FCTs" rowHover>
       <Column field="alumno" header="Alumno" />
       <Column field="tutorEmpresa" header="Tutor en la empresa" />
       <Column field="empresa" header="Empresa" />
       <Column field="fechaInicio" header="Fecha de inicio" />
       <Column field="fechaFin" header="Fecha de fin" />
+      <Column header="Acciones">
+        <template #body="{ data }">
+          <Button label="Detalles" @click="verDetalles(data.id)" />
+        </template>
+      </Column>
     </DataTable>
   </div>
 </template>
