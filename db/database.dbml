@@ -156,7 +156,7 @@ Ref "fk_skills_especialidad":"especialidades"."id" < "skills"."especialidad_id"
 
 Ref "fk_tutor_centro_curso":"cursos"."id" < "tutores_centro"."curso_id"
 
-Ref "fk_tutor_centro_usuario_id":"usuarios"."id" < "tutores_centro"."usuario_id"
+Ref "fk_tutor_centro_usuario_id":"usuarios"."id" - "tutores_centro"."usuario_id"
 
 Ref "fk_tutores_empresa":"empresas"."id" < "tutores_empresa"."empresa_id" [delete: cascade]
 
