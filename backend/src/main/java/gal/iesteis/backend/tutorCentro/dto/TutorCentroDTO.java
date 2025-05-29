@@ -1,5 +1,3 @@
 package gal.iesteis.backend.tutorCentro.dto;
 
-public abstract class TutorCentroDTO {
-
-}
+public abstract class TutorCentroDTO {}

@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/tutores-empresa")
 public class TutorEmpresaController {
 
-    @Autowired
-    private TutorEmpresaService service;
+  @Autowired private TutorEmpresaService service;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.obtenerPorId(id));
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<?> getById(@PathVariable Long id) {
+    return ResponseEntity.status(HttpStatus.OK).body(service.obtenerPorId(id));
+  }
 }

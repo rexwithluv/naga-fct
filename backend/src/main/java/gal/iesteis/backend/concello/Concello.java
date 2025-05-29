@@ -18,10 +18,10 @@ import lombok.Setter;
 @Setter
 @Table(name = "concellos")
 public class Concello {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
 
-    @Column(name = "nombre", length = 500, nullable = false)
-    private String nombre;
+  @Column(name = "nombre", length = 500, nullable = false)
+  private String nombre;
 }

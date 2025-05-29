@@ -23,28 +23,32 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "usuarios", uniqueConstraints = {
-        @UniqueConstraint(name = "idx_usuarios_email", columnNames = { "email" }),
-})
+@Table(
+    name = "usuarios",
+    uniqueConstraints = {
+      @UniqueConstraint(
+          name = "idx_usuarios_email",
+          columnNames = {"email"}),
+    })
 public class Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(name = "email", length = 500, nullable = false)
-    private String email;
+  @Column(name = "email", length = 500, nullable = false)
+  private String email;
 
-    @Column(name = "password", length = 500, nullable = false)
-    private String password;
+  @Column(name = "password", length = 500, nullable = false)
+  private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "rol_id", nullable = false, foreignKey = @ForeignKey(name = "fk_usuarios_rol"))
-    private RolUsuario rol;
+  @ManyToOne
+  @JoinColumn(name = "rol_id", nullable = false, foreignKey = @ForeignKey(name = "fk_usuarios_rol"))
+  private RolUsuario rol;
 
-    @Column(name = "activo", nullable = false)
-    private Boolean activo;
+  @Column(name = "activo", nullable = false)
+  private Boolean activo;
 
-    @OneToOne(mappedBy = "usuario")
-    private TutorCentro tutor;
+  @OneToOne(mappedBy = "usuario")
+  private TutorCentro tutor;
 }

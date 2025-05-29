@@ -10,14 +10,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AlumnoDTOResponseAdmin extends AlumnoDTO {
-    private Long id;
-    private String dniNie;
-    private String nombre;
-    private String apellidos;
-    private String email;
-    private String telefono;
-    private String concello;
-    private String numeroSeguridadSocial;
-    private String estado;
-    private String tutorCentro;
+  private Long id;
+  private String dniNie;
+  private String nombre;
+  private String apellidos;
+  private String email;
+  private String telefono;
+  private String concello;
+  private String numeroSeguridadSocial;
+  private String estado;
+  private String tutorCentro;
 }

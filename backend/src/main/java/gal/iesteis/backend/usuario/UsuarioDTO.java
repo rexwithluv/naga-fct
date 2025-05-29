@@ -10,9 +10,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UsuarioDTO {
-    private Long id;
-    private String email;
-    private String rol;
-    private String tutor;
-    private boolean activo;
+  private Long id;
+  private String email;
+  private String rol;
+  private String tutor;
+  private boolean activo;
 }

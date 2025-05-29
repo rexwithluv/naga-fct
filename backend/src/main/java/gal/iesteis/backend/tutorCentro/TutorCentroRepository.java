@@ -1,12 +1,12 @@
 package gal.iesteis.backend.tutorCentro;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import java.util.List;
 
 @Repository
 public interface TutorCentroRepository extends JpaRepository<TutorCentro, Long> {
-    List<TutorCentro> findByActivoTrue();
+  List<TutorCentro> findByActivoTrue();
 
-    List<TutorCentro> findByActivoTrueAndNombreContaining(String nombre);
+  List<TutorCentro> findByActivoTrueAndNombreContaining(String nombre);
 }

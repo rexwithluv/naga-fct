@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/estados-alumno")
 public class EstadoAlumnoController {
 
-    @Autowired
-    private EstadoAlumnoService service;
+  @Autowired private EstadoAlumnoService service;
 
-    @GetMapping("")
-    public ResponseEntity<?> obtenerTodos() {
-        return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodos());
-    }
-
+  @GetMapping("")
+  public ResponseEntity<?> obtenerTodos() {
+    return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodos());
+  }
 }

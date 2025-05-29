@@ -10,6 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TutorCentroDTOResponseSelect extends TutorCentroDTO {
-    private Long id;
-    private String nombreCompletoCurso;
+  private Long id;
+  private String nombreCompletoCurso;
 }

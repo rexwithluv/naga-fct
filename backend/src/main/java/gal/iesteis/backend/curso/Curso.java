@@ -23,25 +23,32 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "cursos", uniqueConstraints = {
-        @UniqueConstraint(name = "idx_cursos_codigo", columnNames = { "codigo" }),
-})
+@Table(
+    name = "cursos",
+    uniqueConstraints = {
+      @UniqueConstraint(
+          name = "idx_cursos_codigo",
+          columnNames = {"codigo"}),
+    })
 public class Curso {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Short id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Short id;
 
-    @Column(name = "codigo", length = 20, nullable = false)
-    private String codigo;
+  @Column(name = "codigo", length = 20, nullable = false)
+  private String codigo;
 
-    @Column(name = "nombre", length = 500, nullable = false)
-    private String nombre;
+  @Column(name = "nombre", length = 500, nullable = false)
+  private String nombre;
 
-    @ManyToOne
-    @JoinColumn(name = "especialidad_id", nullable = false, foreignKey = @ForeignKey(name = "fk_cursos_especialidad"))
-    private Especialidad especialidad;
+  @ManyToOne
+  @JoinColumn(
+      name = "especialidad_id",
+      nullable = false,
+      foreignKey = @ForeignKey(name = "fk_cursos_especialidad"))
+  private Especialidad especialidad;
 
-    @OneToOne(mappedBy = "curso")
-    private TutorCentro tutor;
+  @OneToOne(mappedBy = "curso")
+  private TutorCentro tutor;
 }

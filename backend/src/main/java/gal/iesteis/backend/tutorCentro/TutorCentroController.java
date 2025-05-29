@@ -1,7 +1,7 @@
 package gal.iesteis.backend.tutorCentro;
 
+import gal.iesteis.backend.config.security.UserDetailsImpl;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,28 +12,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import gal.iesteis.backend.config.security.UserDetailsImpl;
-
 @RestController
 @RequestMapping("/tutores-centro")
 public class TutorCentroController {
 
-    @Autowired
-    private TutorCentroService service;
+  @Autowired private TutorCentroService service;
 
-    @GetMapping("")
-    public ResponseEntity<?> getAll(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodos(userDetails));
-    }
+  @GetMapping("")
+  public ResponseEntity<?> getAll(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodos(userDetails));
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.obtenerPorId(userDetails, id));
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<?> getById(
+      @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
+    return ResponseEntity.status(HttpStatus.OK).body(service.obtenerPorId(userDetails, id));
+  }
 
-    @GetMapping("/select")
-    public ResponseEntity<?> obtenerParaSelect(@RequestParam Optional<String> nombreTutor) {
-        return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodosSelect(nombreTutor));
-    }
-
+  @GetMapping("/select")
+  public ResponseEntity<?> obtenerParaSelect(@RequestParam Optional<String> nombreTutor) {
+    return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodosSelect(nombreTutor));
+  }
 }

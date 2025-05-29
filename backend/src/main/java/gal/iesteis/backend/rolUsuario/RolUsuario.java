@@ -19,11 +19,10 @@ import lombok.Setter;
 @Table(name = "roles_usuarios")
 public class RolUsuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Byte id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Byte id;
 
-    @Column(name = "nombre", length = 500, nullable = false)
-    private String nombre;
-
+  @Column(name = "nombre", length = 500, nullable = false)
+  private String nombre;
 }

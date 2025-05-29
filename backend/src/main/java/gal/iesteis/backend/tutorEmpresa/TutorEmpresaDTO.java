@@ -10,9 +10,9 @@ import lombok.Setter;
 @Setter
 @Getter
 public class TutorEmpresaDTO {
-    private String empresa;
-    private String nombre;
-    private String apellidos;
-    private String email;
-    private String telefono;
+  private String empresa;
+  private String nombre;
+  private String apellidos;
+  private String email;
+  private String telefono;
 }

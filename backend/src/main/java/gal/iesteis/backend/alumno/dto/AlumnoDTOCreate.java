@@ -10,13 +10,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AlumnoDTOCreate extends AlumnoDTO {
-    private String dniNie;
-    private String nombre;
-    private String apellidos;
-    private String email;
-    private String telefono;
-    private Integer concello;
-    private String numeroSeguridadSocial;
-    private Byte estado;
-    private Long tutorCentro;
+  private String dniNie;
+  private String nombre;
+  private String apellidos;
+  private String email;
+  private String telefono;
+  private Integer concello;
+  private String numeroSeguridadSocial;
+  private Byte estado;
+  private Long tutorCentro;
 }

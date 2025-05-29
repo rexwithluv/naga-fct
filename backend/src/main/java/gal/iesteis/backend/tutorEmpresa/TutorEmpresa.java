@@ -22,23 +22,26 @@ import lombok.Setter;
 @Setter
 @Table(name = "tutores_empresa")
 public class TutorEmpresa {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "empresa_id", nullable = false, foreignKey = @ForeignKey(name = "fk_tutores_empresa"))
-    private Empresa empresa;
+  @ManyToOne
+  @JoinColumn(
+      name = "empresa_id",
+      nullable = false,
+      foreignKey = @ForeignKey(name = "fk_tutores_empresa"))
+  private Empresa empresa;
 
-    @Column(name = "nombre", length = 500, nullable = false)
-    private String nombre;
+  @Column(name = "nombre", length = 500, nullable = false)
+  private String nombre;
 
-    @Column(name = "apellidos", length = 500, nullable = false)
-    private String apellidos;
+  @Column(name = "apellidos", length = 500, nullable = false)
+  private String apellidos;
 
-    @Column(name = "email", length = 500, nullable = false)
-    private String email;
+  @Column(name = "email", length = 500, nullable = false)
+  private String email;
 
-    @Column(name = "telefono", length = 500, nullable = false)
-    private String telefono;
+  @Column(name = "telefono", length = 500, nullable = false)
+  private String telefono;
 }
