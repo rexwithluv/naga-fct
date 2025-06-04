@@ -1,58 +1,93 @@
 package gal.iesteis.backend.fct;
 
-import gal.iesteis.backend.alumno.AlumnoRepository;
-import gal.iesteis.backend.config.security.AuthUtils;
-import gal.iesteis.backend.config.security.UserDetailsImpl;
 import java.util.List;
-import org.modelmapper.ModelMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import gal.iesteis.backend.alumno.Alumno;
+import gal.iesteis.backend.alumno.AlumnoRepository;
+import gal.iesteis.backend.alumno.AlumnoService;
+import gal.iesteis.backend.config.security.AuthUtils;
+import gal.iesteis.backend.config.security.UserDetailsImpl;
+import gal.iesteis.backend.fct.dto.FCTDTO;
+import gal.iesteis.backend.fct.dto.FCTDTOCreate;
+import gal.iesteis.backend.fct.exceptions.FCTForbiddenCreateException;
+import gal.iesteis.backend.fct.exceptions.FCTForbiddenException;
+import gal.iesteis.backend.fct.exceptions.FCTNotFoundException;
+import gal.iesteis.backend.tutorCentro.TutorCentro;
+import gal.iesteis.backend.tutorCentro.TutorCentroService;
+import gal.iesteis.backend.tutorEmpresa.TutorEmpresa;
+import gal.iesteis.backend.tutorEmpresa.TutorEmpresaService;
 
 @Service
 public class FCTService {
 
-  @Autowired private FCTRepository repository;
+  @Autowired
+  private FCTRepository repository;
 
-  @Autowired private AlumnoRepository alumnoRepository;
+  @Autowired
+  private AlumnoRepository alumnoRepository;
 
-  @Autowired private ModelMapper modelMapper;
+  @Autowired
+  private AlumnoService alumnoService;
 
-  private FCTDTO FCTADTO(FCT fct) {
-    FCTDTO dto = modelMapper.map(fct, FCTDTO.class);
+  @Autowired
+  private TutorEmpresaService tutorEmpresaService;
 
-    dto.setAlumno(fct.getAlumno().getNombre());
-    dto.setTutorEmpresa(
-        fct.getTutorEmpresa().getNombre() + " " + fct.getTutorEmpresa().getApellidos());
-    dto.setEmpresa(fct.getTutorEmpresa().getEmpresa().getNombre());
+  @Autowired
+  private TutorCentroService tutorCentroService;
 
-    return dto;
-  }
+  @Autowired
+  private FCTDTOConverter dtoConverter;
 
   public List<FCTDTO> obtenerTodas(UserDetailsImpl userDetails) {
     boolean isAdmin = AuthUtils.isAdmin(userDetails);
-    List<FCT> fcts =
-        isAdmin
-            ? repository.findAll()
-            : repository.findByAlumnoIn(
-                alumnoRepository.findByTutorCentroId(userDetails.getTutorCentroId()));
+    List<FCT> fcts = isAdmin
+        ? repository.findAll()
+        : repository.findByAlumnoIn(
+            alumnoRepository.findByTutorCentroId(userDetails.getTutorCentroId()));
 
-    return fcts.stream().map(fct -> FCTADTO(fct)).toList();
+    return fcts.stream().map(fct -> dtoConverter.fctADtoResponse(fct, isAdmin)).toList();
   }
 
   public FCTDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
     FCT fct = repository.findById(id).orElseThrow(() -> new FCTNotFoundException(id));
     boolean isAdmin = AuthUtils.isAdmin(userDetails);
-    List<FCT> fcts =
-        isAdmin
-            ? repository.findAll()
-            : repository.findByAlumnoIn(
-                alumnoRepository.findByTutorCentroId(userDetails.getTutorCentroId()));
+    List<FCT> fcts = isAdmin
+        ? repository.findAll()
+        : repository.findByAlumnoIn(
+            alumnoRepository.findByTutorCentroId(userDetails.getTutorCentroId()));
 
     boolean fctInFcts = fcts.stream().anyMatch(f -> f.getId().equals(id));
     if (!fctInFcts) {
       throw new FCTForbiddenException(id);
     }
 
-    return FCTADTO(fct);
+    return dtoConverter.fctADtoResponse(fct, isAdmin);
+  }
+
+  public FCTDTO crearFct(UserDetailsImpl userDetails, FCTDTOCreate dto) {
+    boolean isAdmin = AuthUtils.isAdmin(userDetails);
+
+    if (isAdmin) {
+      FCT nuevaFct = repository.save(dtoConverter.dtoCreateAFct(userDetails, dto));
+      return dtoConverter.fctADtoResponse(nuevaFct, isAdmin);
+    }
+
+    TutorCentro tutor = tutorCentroService.obtenerTutorCentroPorid(userDetails.getTutorCentroId());
+    Alumno alumno = alumnoService.obtenerAlumnoPorId(dto.getAlumnoId());
+    TutorEmpresa tutorEmpresa = tutorEmpresaService.obtenerTutorEmpresaPorId(dto.getTutorEmpresaId());
+    boolean esTutorDelAlumno = alumno.getTutorCentro().equals(tutor);
+    boolean esEmpresaEspecialidad = tutor.getCurso().getEspecialidad()
+        .equals(tutorEmpresa.getEmpresa().getEspecialidad());
+
+    if (!esTutorDelAlumno || !esEmpresaEspecialidad) {
+      throw new FCTForbiddenCreateException();
+    }
+
+    FCT nuevaFct = repository.save(dtoConverter.dtoCreateAFct(userDetails, dto));
+    return dtoConverter.fctADtoResponse(nuevaFct, isAdmin);
+
   }
 }

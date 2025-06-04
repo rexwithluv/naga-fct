@@ -1,4 +1,4 @@
-package gal.iesteis.backend.empresa;
+package gal.iesteis.backend.empresa.exceptions;
 
 public class EmpresaForbiddenException extends RuntimeException {
   public EmpresaForbiddenException(Long id) {

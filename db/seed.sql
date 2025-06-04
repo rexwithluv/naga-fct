@@ -343,6 +343,12 @@ VALUES (
         '$2a$12$frnjU.CRV0Ic/LDJMVaNXOGUFdo8lHBvKSezjYTm2vbmiuP6UwdDG', -- springboot
         2,
         true
+    ),
+    (
+        'estela@edu.xunta.gal',
+        '$2a$12$Lx4GW.bFm3ZnK0T8ES6eweVNenU6wKcifK1.7sMPee5coPJfKnhm2', -- tesoro
+        2,
+        true
     );
 
 INSERT INTO
@@ -377,7 +383,15 @@ VALUES (
         'carlos@edu.xunta.gal',
         13,
         false
-    );
+    ),(
+        'Estela',
+        'Acuña Ferreira',
+        4,
+        'estela@edu.xunta.gal',
+        1,
+        true
+    )
+    ;
 
 INSERT INTO
     tutores_empresa (

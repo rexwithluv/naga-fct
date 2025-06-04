@@ -1,4 +1,4 @@
-package gal.iesteis.backend.tutorCentro;
+package gal.iesteis.backend.tutorCentro.exceptions;
 
 public class TutorCentroNotFoundException extends RuntimeException {
   public TutorCentroNotFoundException(Long id) {

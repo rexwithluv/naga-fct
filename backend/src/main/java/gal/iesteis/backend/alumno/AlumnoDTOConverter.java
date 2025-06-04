@@ -11,8 +11,9 @@ import gal.iesteis.backend.config.security.UserDetailsImpl;
 import gal.iesteis.backend.estadoAlumno.EstadoAlumno;
 import gal.iesteis.backend.estadoAlumno.EstadoAlumnoService;
 import gal.iesteis.backend.tutorCentro.TutorCentro;
-import gal.iesteis.backend.tutorCentro.TutorCentroNotFoundException;
 import gal.iesteis.backend.tutorCentro.TutorCentroRepository;
+import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,11 +22,8 @@ import org.springframework.stereotype.Component;
 public class AlumnoDTOConverter {
 
   @Autowired private ModelMapper modelMapper;
-
   @Autowired private TutorCentroRepository tutorCentroRepository;
-
   @Autowired private ConcelloService concelloService;
-
   @Autowired private EstadoAlumnoService estadoAlumnoService;
 
   // Esto está fatal montado pero hasta ahora me parece la forma más sencilla de

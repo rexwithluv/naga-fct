@@ -1,4 +1,4 @@
-package gal.iesteis.backend.fct;
+package gal.iesteis.backend.fct.exceptions;
 
 public class FCTForbiddenException extends RuntimeException {
   public FCTForbiddenException(Long id) {

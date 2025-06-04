@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class TutorEmpresaService {
 
-  @Autowired private TutorEmpresaRepository repository;
+  @Autowired
+  private TutorEmpresaRepository repository;
 
-  @Autowired private ModelMapper modelMapper;
+  @Autowired
+  private ModelMapper modelMapper;
 
   private TutorEmpresaDTO tutorEmpresaADTO(TutorEmpresa tutor) {
     TutorEmpresaDTO dto = modelMapper.map(tutor, TutorEmpresaDTO.class);
@@ -19,9 +21,12 @@ public class TutorEmpresaService {
     return dto;
   }
 
+  public TutorEmpresa obtenerTutorEmpresaPorId(Long id) {
+    return repository.findById(id).orElseThrow(() -> new TutorEmpresaNotFoundException(id));
+  }
+
   public TutorEmpresaDTO obtenerPorId(Long id) {
-    TutorEmpresa tutor =
-        repository.findById(id).orElseThrow(() -> new TutorEmpresaNotFoundException(id));
+    TutorEmpresa tutor = obtenerTutorEmpresaPorId(id);
     return tutorEmpresaADTO(tutor);
   }
 }
