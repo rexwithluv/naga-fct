@@ -1,17 +1,19 @@
 package gal.iesteis.backend.config.security;
 
-import gal.iesteis.backend.usuario.Usuario;
-import gal.iesteis.backend.usuario.UsuarioRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import gal.iesteis.backend.usuario.Usuario;
+import gal.iesteis.backend.usuario.UsuarioRepository;
+import jakarta.transaction.Transactional;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-  @Autowired private UsuarioRepository usuarioRepository;
+  @Autowired
+  private UsuarioRepository usuarioRepository;
 
   @Override
   @Transactional

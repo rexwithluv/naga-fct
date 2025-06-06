@@ -1,15 +1,17 @@
 package gal.iesteis.backend.tutorCentro;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import gal.iesteis.backend.config.security.AuthUtils;
 import gal.iesteis.backend.config.security.UserDetailsImpl;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTO;
+import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTOCreate;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroForbiddenException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
-
-import java.util.List;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class TutorCentroService {
@@ -26,7 +28,7 @@ public class TutorCentroService {
     }
 
     List<TutorCentro> tutores = repository.findAll();
-    return tutores.stream().map(tutor -> dtoConverter.tutorCentroADTOResponseAdmin(tutor)).toList();
+    return tutores.stream().map(tutor -> dtoConverter.tutorCentroADtoResponseAdmin(tutor)).toList();
   }
 
   public TutorCentro obtenerTutorCentroPorid(Long id) {
@@ -39,19 +41,24 @@ public class TutorCentroService {
     }
 
     TutorCentro tutor = obtenerTutorCentroPorid(id);
-    return dtoConverter.tutorCentroADTOResponseAdmin(tutor);
+    return dtoConverter.tutorCentroADtoResponseAdmin(tutor);
   }
 
   public List<TutorCentroDTO> obtenerTodosSelect(Optional<String> nombre) {
     if (nombre.isEmpty()) {
       List<TutorCentro> tutoresActivos = repository.findByActivoTrue();
       return tutoresActivos.stream()
-          .map(t -> dtoConverter.tutorCentroADTOResponseSelect(t))
+          .map(t -> dtoConverter.tutorCentroADtoResponseSelect(t))
           .toList();
     }
     List<TutorCentro> tutoresFiltrados = repository.findByActivoTrueAndNombreContaining(nombre.get());
     return tutoresFiltrados.stream()
-        .map(t -> dtoConverter.tutorCentroADTOResponseSelect(t))
+        .map(t -> dtoConverter.tutorCentroADtoResponseSelect(t))
         .toList();
+  }
+
+  public TutorCentroDTO crearTutorCentro(UserDetailsImpl userDetails, TutorCentroDTOCreate dto) {
+    TutorCentro nuevoTutorCentro = repository.save(dtoConverter.dtoCreateATutorCentro(dto));
+    return dtoConverter.tutorCentroADtoResponseAdmin(nuevoTutorCentro);
   }
 }
