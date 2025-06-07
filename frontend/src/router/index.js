@@ -1,13 +1,14 @@
+import AlumnosPage from '@/components/alumnos/AlumnosPage.vue'
+import EmpresasPage from '@/components/empresas/EmpresasPage.vue'
+import FCTPage from '@/components/fct/FCTPage.vue'
+import HomePage from '@/components/home/HomePage.vue'
+import LandingPage from '@/components/LandingPage.vue'
+import LoginPage from '@/components/LoginPage.vue'
+import PerfilPage from '@/components/PerfilPage.vue'
+import TutoresCentroPage from '@/components/tutoresCentro/TutoresCentroPage.vue'
+import TutoresEmpresaPage from '@/components/tutoresEmpresa/TutoresEmpresaPage.vue'
+import UsuariosPage from '@/components/usuarios/UsuariosPage.vue'
 import { useAuthStore } from '@/stores/authStore'
-import AlumnosPage from '@/views/AlumnosPage.vue'
-import EmpresasPage from '@/views/EmpresasPage.vue'
-import FCTPage from '@/views/FCTPage.vue'
-import HomePage from '@/views/HomePage.vue'
-import LandingPage from '@/views/LandingPage.vue'
-import LoginPage from '@/views/LoginPage.vue'
-import PerfilPage from '@/views/PerfilPage.vue'
-import TutoresPage from '@/views/TutoresPage.vue'
-import UsuariosPage from '@/views/UsuariosPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -39,9 +40,14 @@ const router = createRouter({
       component: EmpresasPage,
     },
     {
-      path: '/tutores',
-      name: 'tutores',
-      component: TutoresPage,
+      path: '/tutores-centro',
+      name: 'tutoresCentro',
+      component: TutoresCentroPage,
+    },
+    {
+      path: '/tutores-empresa',
+      name: 'tutoresEmpresa',
+      component: TutoresEmpresaPage,
     },
     {
       path: '/usuarios',

@@ -1,24 +1,24 @@
 <script setup lang="ts">
   import apiClient from '@/apiClient'
-  import { TutorCentro } from '@/types/models/TutorCentro'
   import { ToastServiceMethods } from 'primevue'
   import { useToast } from 'primevue/usetoast'
   import { onMounted, Ref, ref } from 'vue'
+  import DialogDetallesTutorEmpresa from './DialogDetallesTutorEmpresa.vue'
 
   const toast: ToastServiceMethods = useToast()
 
-  const tutores: Ref<TutorCentro[]> = ref([])
+  const tutores = ref([])
   const tutorID: Ref<number> = ref(0)
   const dialogDetalles: Ref<boolean> = ref(false)
 
-  const getTutores = async () => {
+  const getTutoresEmpresa = async () => {
     try {
-      const response = await apiClient.get('/tutores-centro')
+      const response = await apiClient.get('/tutores-empresa')
       return response.data
     } catch (error: any) {
       toast.add({
         severity: 'error',
-        summary: 'Error al cargar los tutores',
+        summary: 'Error al cargar los tutores de empresa.',
         detail: error.message,
         life: 5000,
       })
@@ -31,20 +31,20 @@
   }
 
   onMounted(async () => {
-    tutores.value = await getTutores()
+    tutores.value = await getTutoresEmpresa()
   })
 </script>
 
 <template>
   <div>
-    <DialogDetallesTutor v-model:tutorID="tutorID" v-model:visible="dialogDetalles" />
+    <DialogDetallesTutorEmpresa v-model:tutorID="tutorID" v-model:visible="dialogDetalles" />
 
     <DataTable :value="tutores" rowHover>
       <Column field="nombre" header="Nombre" />
       <Column field="apellidos" header="Apellidos" />
+      <Column field="empresa" header="Empresa" />
       <Column field="email" header="Email" />
-      <Column field="curso" header="Curso" />
-      <Column field="activo" header="Activo" />
+      <Column field="Telefono" header="Teléfono" />
       <Column header="Acciones">
         <template #body="{ data }">
           <Button label="Detalles" @click="verDetalles(data.id)" />

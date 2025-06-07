@@ -26,14 +26,19 @@
       needAdmin: false,
     },
     {
-      label: 'Tutores',
-      name: 'tutores',
+      label: 'Tutores del centro',
+      name: 'tutoresCentro',
       needAdmin: true,
     },
     {
       label: 'Usuarios',
       name: 'usuarios',
       needAdmin: true,
+    },
+    {
+      label: 'Tutores de empresa',
+      name: 'tutoresEmpresa',
+      needAdmin: false,
     },
     {
       label: 'FCT',
