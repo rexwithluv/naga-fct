@@ -171,6 +171,4 @@ CREATE UNIQUE INDEX idx_cursos_codigo ON cursos (codigo);
 
 CREATE UNIQUE INDEX idx_tutores_centro_email ON tutores_centro (email);
 
-CREATE UNIQUE INDEX idx_tutores_centro_usuario_id ON tutores_centro (usuario_id);
-
 CREATE UNIQUE INDEX idx_usuarios_email ON usuarios (email);

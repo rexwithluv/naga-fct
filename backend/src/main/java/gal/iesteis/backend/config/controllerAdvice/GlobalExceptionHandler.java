@@ -22,8 +22,8 @@ import gal.iesteis.backend.fct.exceptions.FCTForbiddenException;
 import gal.iesteis.backend.fct.exceptions.FCTNotFoundException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroForbiddenException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
-import gal.iesteis.backend.usuario.UsuarioForbiddenException;
-import gal.iesteis.backend.usuario.UsuarioNotFoundException;
+import gal.iesteis.backend.usuario.exceptions.UsuarioForbiddenException;
+import gal.iesteis.backend.usuario.exceptions.UsuarioNotFoundException;
 
 // RFC 9457 - Estándar moderno sobre el formato de los problemas HTTP, actualización del RFC 7807
 @ControllerAdvice

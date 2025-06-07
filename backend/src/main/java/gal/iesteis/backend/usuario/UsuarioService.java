@@ -1,14 +1,23 @@
 package gal.iesteis.backend.usuario;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import gal.iesteis.backend.config.security.AuthUtils;
 import gal.iesteis.backend.config.security.UserDetailsImpl;
+import gal.iesteis.backend.rolUsuario.RolUsuario;
+import gal.iesteis.backend.rolUsuario.RolUsuarioService;
+import gal.iesteis.backend.tutorCentro.TutorCentro;
+import gal.iesteis.backend.tutorCentro.TutorCentroService;
+import gal.iesteis.backend.usuario.dto.UsuarioDTO;
+import gal.iesteis.backend.usuario.dto.UsuarioDTOCreate;
+import gal.iesteis.backend.usuario.exceptions.UsuarioForbiddenException;
+import gal.iesteis.backend.usuario.exceptions.UsuarioNotFoundException;
 
 @Service
 public class UsuarioService {
@@ -17,23 +26,14 @@ public class UsuarioService {
   private UsuarioRepository repository;
 
   @Autowired
-  private ModelMapper modelMapper;
+  private UsuarioDTOConverter dtoConverter;
 
-  private UsuarioDTO usuarioADTO(Usuario usuario) {
-    UsuarioDTO dto = modelMapper.map(usuario, UsuarioDTO.class);
+  @Autowired
+  private RolUsuarioService rolUsuarioService;
 
-    dto.setRol(usuario.getRol().getNombre());
-
-    // Si .getTutor() da nulo, no da la excepción sino que simplemente asgina nulo.
-    // Encadenamos .map() con funciones anónimas porque Optional funciona así
-    dto.setTutor(
-        Optional.ofNullable(usuario.getTutor())
-            .map(tutor -> tutor.getCurso())
-            .map(curso -> curso.getNombre())
-            .orElse(null));
-
-    return dto;
-  }
+  @Lazy
+  @Autowired
+  private TutorCentroService tutorCentroService;
 
   public List<UsuarioDTO> obtenerTodos(UserDetailsImpl userDetails) {
     if (!AuthUtils.isAdmin(userDetails)) {
@@ -41,7 +41,7 @@ public class UsuarioService {
     }
 
     List<Usuario> usuarios = repository.findAll();
-    return usuarios.stream().map(usuario -> usuarioADTO(usuario)).toList();
+    return usuarios.stream().map(usuario -> dtoConverter.usuarioADtoResponseAdmin(usuario)).toList();
   }
 
   public Usuario obtenerUsuarioPorId(Long id) {
@@ -54,12 +54,29 @@ public class UsuarioService {
     }
 
     Usuario usuario = obtenerUsuarioPorId(id);
-    return usuarioADTO(usuario);
+    return dtoConverter.usuarioADtoResponseAdmin(usuario);
   }
 
   public UsuarioDTO obtenerMisDatos(UserDetailsImpl userDetails) {
     Long id = userDetails.getId();
     Usuario usuario = obtenerUsuarioPorId(id);
-    return usuarioADTO(usuario);
+    return dtoConverter.usuarioADtoResponseAdmin(usuario);
+  }
+
+  // Necesitamos poner @Transactional en varios puntos del código que intervienen
+  // aquí porque necesitamos que todo se ejecute en una sola transacción a nivel
+  // DB. Sin la anotación, Hibernate realiza varias operaciones que pueden dejar
+  // en este caso la DB en un estado inconsistente
+  @Transactional
+  public UsuarioDTO crearUsuario(UsuarioDTOCreate dto) {
+    final Long tutorId = dto.getTutorId();
+    TutorCentro tutorCentro = tutorId != null ? tutorCentroService.obtenerTutorCentroPorid(dto.getTutorId()) : null;
+
+    RolUsuario rolUsuario = rolUsuarioService.obtenerRolUsuarioPorId(dto.getRolId());
+
+    Usuario nuevoUsuario = dtoConverter.dtoAUsuario(dto, tutorCentro, rolUsuario);
+    Usuario usuarioGuardado = repository.save(nuevoUsuario);
+
+    return dtoConverter.usuarioADtoResponseAdmin(usuarioGuardado);
   }
 }

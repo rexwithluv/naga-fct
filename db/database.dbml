@@ -86,7 +86,6 @@ Table "tutores_centro" {
 
   Indexes {
     email [unique, name: "idx_tutores_centro_email"]
-    usuario_id [unique, name: "idx_tutores_centro_usuario_id"]
   }
 }
 

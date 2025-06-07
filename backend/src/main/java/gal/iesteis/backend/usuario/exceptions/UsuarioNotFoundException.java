@@ -1,4 +1,4 @@
-package gal.iesteis.backend.usuario;
+package gal.iesteis.backend.usuario.exceptions;
 
 public class UsuarioNotFoundException extends RuntimeException {
   public UsuarioNotFoundException(Long id) {
