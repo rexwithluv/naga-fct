@@ -22,6 +22,7 @@ import gal.iesteis.backend.fct.exceptions.FCTForbiddenException;
 import gal.iesteis.backend.fct.exceptions.FCTNotFoundException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroForbiddenException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
+import gal.iesteis.backend.tutorEmpresa.exceptions.TutorEmpresaForbiddenCreateException;
 import gal.iesteis.backend.usuario.exceptions.UsuarioForbiddenException;
 import gal.iesteis.backend.usuario.exceptions.UsuarioNotFoundException;
 
@@ -119,6 +120,15 @@ public class GlobalExceptionHandler {
     ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.getMessage());
     problemDetail.setTitle("No tienes permiso para ver los datos de este tutor de centro.");
     problemDetail.setType(URI.create(BASE_URL + "tutores-centro/acceso-denegado"));
+    return problemDetail;
+  }
+
+  // Tutores de empresa
+  @ExceptionHandler(TutorEmpresaForbiddenCreateException.class)
+  public ProblemDetail handleTutorEmpresaForbiddenCreate(TutorEmpresaForbiddenCreateException e) {
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.getMessage());
+    problemDetail.setTitle("No tienes permiso para crear tutor de empresa.");
+    problemDetail.setType(URI.create(BASE_URL + "tutores-empresa/creacion-denegada"));
     return problemDetail;
   }
 

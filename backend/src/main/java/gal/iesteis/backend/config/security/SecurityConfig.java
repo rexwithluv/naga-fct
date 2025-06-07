@@ -59,6 +59,7 @@ public class SecurityConfig {
             auth -> auth
                 .requestMatchers("/", "/login").permitAll()
                 .requestMatchers("/tutores-centro/**").hasRole("1")
+                .requestMatchers("/usuarios/yo").authenticated()
                 .requestMatchers("/usuarios/**").hasRole("1")
                 .anyRequest().authenticated());
 
