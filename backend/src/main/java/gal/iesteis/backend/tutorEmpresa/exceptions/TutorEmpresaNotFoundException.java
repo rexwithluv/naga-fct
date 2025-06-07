@@ -1,4 +1,4 @@
-package gal.iesteis.backend.tutorEmpresa;
+package gal.iesteis.backend.tutorEmpresa.exceptions;
 
 public class TutorEmpresaNotFoundException extends RuntimeException {
   public TutorEmpresaNotFoundException(Long id) {

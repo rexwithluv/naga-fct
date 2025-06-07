@@ -1,8 +1,17 @@
 package gal.iesteis.backend.tutorEmpresa;
 
-import org.modelmapper.ModelMapper;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import gal.iesteis.backend.alumno.Alumno;
+import gal.iesteis.backend.config.security.AuthUtils;
+import gal.iesteis.backend.config.security.UserDetailsImpl;
+import gal.iesteis.backend.especialidad.Especialidad;
+import gal.iesteis.backend.tutorCentro.TutorCentroService;
+import gal.iesteis.backend.tutorEmpresa.dto.TutorEmpresaDTO;
+import gal.iesteis.backend.tutorEmpresa.exceptions.TutorEmpresaNotFoundException;
 
 @Service
 public class TutorEmpresaService {
@@ -11,22 +20,34 @@ public class TutorEmpresaService {
   private TutorEmpresaRepository repository;
 
   @Autowired
-  private ModelMapper modelMapper;
+  private TutorEmpresaDTOConverter dtoConverter;
 
-  private TutorEmpresaDTO tutorEmpresaADTO(TutorEmpresa tutor) {
-    TutorEmpresaDTO dto = modelMapper.map(tutor, TutorEmpresaDTO.class);
-
-    dto.setEmpresa(tutor.getEmpresa().getNombre());
-
-    return dto;
-  }
+  @Autowired
+  private TutorCentroService tutorCentroService;
 
   public TutorEmpresa obtenerTutorEmpresaPorId(Long id) {
     return repository.findById(id).orElseThrow(() -> new TutorEmpresaNotFoundException(id));
   }
 
+  public List<TutorEmpresaDTO> obtenerTodos(UserDetailsImpl userDetails) {
+    boolean isAdmin = AuthUtils.isAdmin(userDetails);
+
+    List<TutorEmpresa> tutores = repository.findAll();
+
+    if (isAdmin) {
+      return tutores.stream().map(tutor -> dtoConverter.tutorEmpresaADtoResponse(tutor)).toList();
+    }
+
+    Especialidad miEspecialidad = tutorCentroService.obtenerTutorCentroPorid(userDetails.getTutorCentroId()).getCurso()
+        .getEspecialidad();
+    List<TutorEmpresa> tutoresEspecialidad = tutores.stream()
+        .filter(tutor -> tutor.getEmpresa().getEspecialidad().equals(miEspecialidad)).toList();
+
+    return tutoresEspecialidad.stream().map(tutor -> dtoConverter.tutorEmpresaADtoResponse(tutor)).toList();
+  }
+
   public TutorEmpresaDTO obtenerPorId(Long id) {
     TutorEmpresa tutor = obtenerTutorEmpresaPorId(id);
-    return tutorEmpresaADTO(tutor);
+    return dtoConverter.tutorEmpresaADtoResponse(tutor);
   }
 }
