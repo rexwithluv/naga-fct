@@ -55,7 +55,14 @@ public class SecurityConfig {
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             auth ->
-                auth.requestMatchers("/", "/login")
+                auth.requestMatchers(
+                        "/",
+                        "/login",
+                        "/swagger-ui.html",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/swagger-resources/**",
+                        "/swagger-resources")
                     .permitAll()
                     .requestMatchers("/tutores-centro/**")
                     .hasRole("1")
