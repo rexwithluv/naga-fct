@@ -1,5 +1,3 @@
 package gal.iesteis.backend.skill.dto;
 
-public abstract class SkillDTO {
-
-}
+public abstract class SkillDTO {}

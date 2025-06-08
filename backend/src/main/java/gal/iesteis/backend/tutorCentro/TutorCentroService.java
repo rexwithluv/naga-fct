@@ -1,13 +1,5 @@
 package gal.iesteis.backend.tutorCentro;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import gal.iesteis.backend.config.security.AuthUtils;
 import gal.iesteis.backend.config.security.UserDetailsImpl;
 import gal.iesteis.backend.curso.Curso;
@@ -20,22 +12,23 @@ import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroForbiddenException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
 import gal.iesteis.backend.usuario.Usuario;
 import gal.iesteis.backend.usuario.UsuarioService;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TutorCentroService {
 
-  @Autowired
-  private TutorCentroDTOConverter dtoConverter;
+  @Autowired private TutorCentroDTOConverter dtoConverter;
 
-  @Autowired
-  private TutorCentroRepository repository;
+  @Autowired private TutorCentroRepository repository;
 
-  @Autowired
-  private CursoService cursoService;
+  @Autowired private CursoService cursoService;
 
-  @Lazy
-  @Autowired
-  private UsuarioService usuarioService;
+  @Lazy @Autowired private UsuarioService usuarioService;
 
   public List<TutorCentroDTO> obtenerTodos(UserDetailsImpl userDetails) {
     if (!AuthUtils.isAdmin(userDetails)) {
@@ -67,7 +60,8 @@ public class TutorCentroService {
           .map(t -> dtoConverter.tutorCentroADtoResponseSelect(t))
           .toList();
     }
-    List<TutorCentro> tutoresFiltrados = repository.findByActivoTrueAndNombreContaining(nombre.get());
+    List<TutorCentro> tutoresFiltrados =
+        repository.findByActivoTrueAndNombreContaining(nombre.get());
     return tutoresFiltrados.stream()
         .map(t -> dtoConverter.tutorCentroADtoResponseSelect(t))
         .toList();
@@ -93,9 +87,10 @@ public class TutorCentroService {
 
     Curso curso = cursoService.obtenerCursoPorId(dto.getCursoId());
     if (curso.getTutor() != null) {
-      throw new TutorCentroConflictCursoException();  
+      throw new TutorCentroConflictCursoException();
     }
-    TutorCentro nuevoTutorCentro = repository.save(dtoConverter.dtoCreateATutorCentro(dto, curso, usuario));
+    TutorCentro nuevoTutorCentro =
+        repository.save(dtoConverter.dtoCreateATutorCentro(dto, curso, usuario));
 
     if (usuario != null) {
       asignarUsuarioATutor(nuevoTutorCentro.getId(), usuarioId);

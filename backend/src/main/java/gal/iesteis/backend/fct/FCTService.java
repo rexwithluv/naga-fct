@@ -1,10 +1,5 @@
 package gal.iesteis.backend.fct;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import gal.iesteis.backend.alumno.Alumno;
 import gal.iesteis.backend.alumno.AlumnoRepository;
 import gal.iesteis.backend.alumno.AlumnoService;
@@ -19,34 +14,32 @@ import gal.iesteis.backend.tutorCentro.TutorCentro;
 import gal.iesteis.backend.tutorCentro.TutorCentroService;
 import gal.iesteis.backend.tutorEmpresa.TutorEmpresa;
 import gal.iesteis.backend.tutorEmpresa.TutorEmpresaService;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class FCTService {
 
-  @Autowired
-  private FCTRepository repository;
+  @Autowired private FCTRepository repository;
 
-  @Autowired
-  private AlumnoRepository alumnoRepository;
+  @Autowired private AlumnoRepository alumnoRepository;
 
-  @Autowired
-  private AlumnoService alumnoService;
+  @Autowired private AlumnoService alumnoService;
 
-  @Autowired
-  private TutorEmpresaService tutorEmpresaService;
+  @Autowired private TutorEmpresaService tutorEmpresaService;
 
-  @Autowired
-  private TutorCentroService tutorCentroService;
+  @Autowired private TutorCentroService tutorCentroService;
 
-  @Autowired
-  private FCTDTOConverter dtoConverter;
+  @Autowired private FCTDTOConverter dtoConverter;
 
   public List<FCTDTO> obtenerTodas(UserDetailsImpl userDetails) {
     boolean isAdmin = AuthUtils.isAdmin(userDetails);
-    List<FCT> fcts = isAdmin
-        ? repository.findAll()
-        : repository.findByAlumnoIn(
-            alumnoRepository.findByTutorCentroId(userDetails.getTutorCentroId()));
+    List<FCT> fcts =
+        isAdmin
+            ? repository.findAll()
+            : repository.findByAlumnoIn(
+                alumnoRepository.findByTutorCentroId(userDetails.getTutorCentroId()));
 
     return fcts.stream().map(fct -> dtoConverter.fctADtoResponse(fct, isAdmin)).toList();
   }
@@ -54,10 +47,11 @@ public class FCTService {
   public FCTDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
     FCT fct = repository.findById(id).orElseThrow(() -> new FCTNotFoundException(id));
     boolean isAdmin = AuthUtils.isAdmin(userDetails);
-    List<FCT> fcts = isAdmin
-        ? repository.findAll()
-        : repository.findByAlumnoIn(
-            alumnoRepository.findByTutorCentroId(userDetails.getTutorCentroId()));
+    List<FCT> fcts =
+        isAdmin
+            ? repository.findAll()
+            : repository.findByAlumnoIn(
+                alumnoRepository.findByTutorCentroId(userDetails.getTutorCentroId()));
 
     boolean fctInFcts = fcts.stream().anyMatch(f -> f.getId().equals(id));
     if (!fctInFcts) {
@@ -77,10 +71,11 @@ public class FCTService {
 
     TutorCentro tutor = tutorCentroService.obtenerTutorCentroPorid(userDetails.getTutorCentroId());
     Alumno alumno = alumnoService.obtenerAlumnoPorId(dto.getAlumnoId());
-    TutorEmpresa tutorEmpresa = tutorEmpresaService.obtenerTutorEmpresaPorId(dto.getTutorEmpresaId());
+    TutorEmpresa tutorEmpresa =
+        tutorEmpresaService.obtenerTutorEmpresaPorId(dto.getTutorEmpresaId());
     boolean esTutorDelAlumno = alumno.getTutorCentro().equals(tutor);
-    boolean esEmpresaEspecialidad = tutor.getCurso().getEspecialidad()
-        .equals(tutorEmpresa.getEmpresa().getEspecialidad());
+    boolean esEmpresaEspecialidad =
+        tutor.getCurso().getEspecialidad().equals(tutorEmpresa.getEmpresa().getEspecialidad());
 
     if (!esTutorDelAlumno || !esEmpresaEspecialidad) {
       throw new FCTForbiddenCreateException();
@@ -88,6 +83,5 @@ public class FCTService {
 
     FCT nuevaFct = repository.save(dtoConverter.dtoCreateAFct(userDetails, dto));
     return dtoConverter.fctADtoResponse(nuevaFct, isAdmin);
-
   }
 }

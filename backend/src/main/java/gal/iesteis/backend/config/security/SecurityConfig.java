@@ -19,11 +19,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-  @Autowired
-  private UserDetailsService userDetailsService;
+  @Autowired private UserDetailsService userDetailsService;
 
-  @Autowired
-  private AuthEntryPointJWT authEntryPointJwt;
+  @Autowired private AuthEntryPointJWT authEntryPointJwt;
 
   @Bean
   AuthTokenFilter authenticationJwtTokenFilter() {
@@ -56,12 +54,17 @@ public class SecurityConfig {
         .sessionManagement(
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
-            auth -> auth
-                .requestMatchers("/", "/login").permitAll()
-                .requestMatchers("/tutores-centro/**").hasRole("1")
-                .requestMatchers("/usuarios/yo").authenticated()
-                .requestMatchers("/usuarios/**").hasRole("1")
-                .anyRequest().authenticated());
+            auth ->
+                auth.requestMatchers("/", "/login")
+                    .permitAll()
+                    .requestMatchers("/tutores-centro/**")
+                    .hasRole("1")
+                    .requestMatchers("/usuarios/yo")
+                    .authenticated()
+                    .requestMatchers("/usuarios/**")
+                    .hasRole("1")
+                    .anyRequest()
+                    .authenticated());
 
     http.authenticationProvider(authenticationProvider());
     http.addFilterBefore(

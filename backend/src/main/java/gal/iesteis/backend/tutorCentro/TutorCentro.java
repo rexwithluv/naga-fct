@@ -22,32 +22,42 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "tutores_centro", uniqueConstraints = {
-        @UniqueConstraint(name = "idx_tutores_centro_email", columnNames = { "email" })
-})
+@Table(
+    name = "tutores_centro",
+    uniqueConstraints = {
+      @UniqueConstraint(
+          name = "idx_tutores_centro_email",
+          columnNames = {"email"})
+    })
 public class TutorCentro {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @Column(name = "nombre", length = 500, nullable = false)
-    private String nombre;
+  @Column(name = "nombre", length = 500, nullable = false)
+  private String nombre;
 
-    @Column(name = "apellidos", length = 500, nullable = false)
-    private String apellidos;
+  @Column(name = "apellidos", length = 500, nullable = false)
+  private String apellidos;
 
-    @Column(name = "email", length = 500, nullable = false)
-    private String email;
+  @Column(name = "email", length = 500, nullable = false)
+  private String email;
 
-    @OneToOne
-    @JoinColumn(name = "curso_id", nullable = false, foreignKey = @ForeignKey(name = "fk_tutor_centro_curso"))
-    private Curso curso;
+  @OneToOne
+  @JoinColumn(
+      name = "curso_id",
+      nullable = false,
+      foreignKey = @ForeignKey(name = "fk_tutor_centro_curso"))
+  private Curso curso;
 
-    @Column(name = "activo", nullable = false)
-    private Boolean activo;
+  @Column(name = "activo", nullable = false)
+  private Boolean activo;
 
-    @OneToOne
-    @JoinColumn(name = "usuario_id", nullable = true, foreignKey = @ForeignKey(name = "fk_tutor_centro_usuario_id"))
-    private Usuario usuario;
+  @OneToOne
+  @JoinColumn(
+      name = "usuario_id",
+      nullable = true,
+      foreignKey = @ForeignKey(name = "fk_tutor_centro_usuario_id"))
+  private Usuario usuario;
 }

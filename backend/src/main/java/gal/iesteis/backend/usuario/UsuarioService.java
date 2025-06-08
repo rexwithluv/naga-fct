@@ -1,12 +1,5 @@
 package gal.iesteis.backend.usuario;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import gal.iesteis.backend.config.security.AuthUtils;
 import gal.iesteis.backend.config.security.UserDetailsImpl;
 import gal.iesteis.backend.rolUsuario.RolUsuario;
@@ -18,22 +11,22 @@ import gal.iesteis.backend.usuario.dto.UsuarioDTOCreate;
 import gal.iesteis.backend.usuario.exceptions.UsuarioConflictException;
 import gal.iesteis.backend.usuario.exceptions.UsuarioForbiddenException;
 import gal.iesteis.backend.usuario.exceptions.UsuarioNotFoundException;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UsuarioService {
 
-  @Autowired
-  private UsuarioRepository repository;
+  @Autowired private UsuarioRepository repository;
 
-  @Autowired
-  private UsuarioDTOConverter dtoConverter;
+  @Autowired private UsuarioDTOConverter dtoConverter;
 
-  @Autowired
-  private RolUsuarioService rolUsuarioService;
+  @Autowired private RolUsuarioService rolUsuarioService;
 
-  @Lazy
-  @Autowired
-  private TutorCentroService tutorCentroService;
+  @Lazy @Autowired private TutorCentroService tutorCentroService;
 
   public List<UsuarioDTO> obtenerTodos(UserDetailsImpl userDetails) {
     if (!AuthUtils.isAdmin(userDetails)) {
@@ -41,7 +34,9 @@ public class UsuarioService {
     }
 
     List<Usuario> usuarios = repository.findAll();
-    return usuarios.stream().map(usuario -> dtoConverter.usuarioADtoResponseAdmin(usuario)).toList();
+    return usuarios.stream()
+        .map(usuario -> dtoConverter.usuarioADtoResponseAdmin(usuario))
+        .toList();
   }
 
   public Usuario obtenerUsuarioPorId(Long id) {

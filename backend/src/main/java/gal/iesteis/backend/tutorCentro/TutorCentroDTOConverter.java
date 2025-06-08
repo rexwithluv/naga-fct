@@ -1,21 +1,19 @@
 package gal.iesteis.backend.tutorCentro;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import gal.iesteis.backend.curso.Curso;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTO;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTOCreate;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTOResponseAdmin;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTOResponseSelect;
 import gal.iesteis.backend.usuario.Usuario;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class TutorCentroDTOConverter {
 
-  @Autowired
-  private ModelMapper modelMapper;
+  @Autowired private ModelMapper modelMapper;
 
   public TutorCentroDTO tutorCentroADtoResponseAdmin(TutorCentro tutor) {
     TutorCentroDTOResponseAdmin dto = modelMapper.map(tutor, TutorCentroDTOResponseAdmin.class);
@@ -50,6 +48,5 @@ public class TutorCentroDTOConverter {
     tutorCentro.setActivo(true);
 
     return tutorCentro;
-
   }
 }

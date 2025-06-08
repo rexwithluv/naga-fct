@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SkillDTOResponse extends SkillDTO {
-    private Integer id;
-    private String nombre;
-    private Byte especialidadId;
+  private Integer id;
+  private String nombre;
+  private Byte especialidadId;
 }

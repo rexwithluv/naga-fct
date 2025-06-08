@@ -14,13 +14,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UsuarioDTOCreate extends UsuarioDTO {
-    @NotBlank
-    @Email
-    private String email;
+  @NotBlank(message = "El email no puede estar vacío.")
+  @Email(message = "El formato del email no es válido.")
+  private String email;
 
-    @NotNull
-    private Byte rolId;
+  @NotNull(message = "El ID de rol no puede ser nulo.")
+  private Byte rolId;
 
-    @Nullable
-    private Long tutorId;
+  @Nullable private Long tutorId;
 }

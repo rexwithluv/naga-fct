@@ -1,33 +1,30 @@
 package gal.iesteis.backend.alumno;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import gal.iesteis.backend.alumno.dto.AlumnoDTO;
 import gal.iesteis.backend.alumno.dto.AlumnoDTOCreate;
 import gal.iesteis.backend.alumno.exceptions.AlumnoForbiddenException;
 import gal.iesteis.backend.alumno.exceptions.AlumnoNotFoundException;
 import gal.iesteis.backend.config.security.AuthUtils;
 import gal.iesteis.backend.config.security.UserDetailsImpl;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AlumnoService {
 
-  @Autowired
-  private AlumnoRepository repository;
+  @Autowired private AlumnoRepository repository;
 
-  @Autowired
-  private AlumnoDTOConverter dtoConverter;
+  @Autowired private AlumnoDTOConverter dtoConverter;
 
   public List<AlumnoDTO> obtenerTodos(UserDetailsImpl userDetails) {
     boolean isAdmin = AuthUtils.isAdmin(userDetails);
 
     // Si es admin, devolvemos todos, sino solo los del tutor correspondiente
-    List<Alumno> alumnos = isAdmin
-        ? repository.findAll()
-        : repository.findByTutorCentroId(userDetails.getTutorCentroId());
+    List<Alumno> alumnos =
+        isAdmin
+            ? repository.findAll()
+            : repository.findByTutorCentroId(userDetails.getTutorCentroId());
 
     return alumnos.stream()
         .map(alumno -> dtoConverter.alumnoADTOResponse(alumno, isAdmin))

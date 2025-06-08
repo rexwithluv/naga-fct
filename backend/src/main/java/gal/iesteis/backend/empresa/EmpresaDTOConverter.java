@@ -15,7 +15,6 @@ import gal.iesteis.backend.skill.SkillNotFoundException;
 import gal.iesteis.backend.skill.SkillRepository;
 import gal.iesteis.backend.tutorCentro.TutorCentroRepository;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
-
 import java.util.HashMap;
 import java.util.Set;
 import java.util.stream.Collectors;

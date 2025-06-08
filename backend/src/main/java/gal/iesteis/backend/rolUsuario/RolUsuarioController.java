@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/roles-usuario")
 public class RolUsuarioController {
-    @Autowired
-    private RolUsuarioService service;
+  @Autowired private RolUsuarioService service;
 
-    @GetMapping("")
-    public ResponseEntity<?> obtenerTodos() {
-        return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodos());
-    }
+  @GetMapping("")
+  public ResponseEntity<?> obtenerTodos() {
+    return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodos());
+  }
 }

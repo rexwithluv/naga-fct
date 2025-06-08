@@ -1,11 +1,5 @@
 package gal.iesteis.backend.empresa;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import gal.iesteis.backend.config.security.AuthUtils;
 import gal.iesteis.backend.config.security.UserDetailsImpl;
 import gal.iesteis.backend.empresa.dto.EmpresaDTO;
@@ -16,18 +10,19 @@ import gal.iesteis.backend.especialidad.Especialidad;
 import gal.iesteis.backend.tutorCentro.TutorCentro;
 import gal.iesteis.backend.tutorCentro.TutorCentroRepository;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class EmpresaService {
 
-  @Autowired
-  private EmpresaRepository repository;
+  @Autowired private EmpresaRepository repository;
 
-  @Autowired
-  private TutorCentroRepository tutorCentroRepository;
+  @Autowired private TutorCentroRepository tutorCentroRepository;
 
-  @Autowired
-  private EmpresaDTOConverter dtoConverter;
+  @Autowired private EmpresaDTOConverter dtoConverter;
 
   public List<EmpresaDTO> obtenerTodas(UserDetailsImpl userDetails) {
     boolean isAdmin = AuthUtils.isAdmin(userDetails);
@@ -36,9 +31,10 @@ public class EmpresaService {
     if (isAdmin) {
       empresas = repository.findAll();
     } else {
-      TutorCentro tutor = tutorCentroRepository
-          .findById(userDetails.getTutorCentroId())
-          .orElseThrow(() -> new TutorCentroNotFoundException(userDetails.getTutorCentroId()));
+      TutorCentro tutor =
+          tutorCentroRepository
+              .findById(userDetails.getTutorCentroId())
+              .orElseThrow(() -> new TutorCentroNotFoundException(userDetails.getTutorCentroId()));
       Especialidad especialidad = tutor.getCurso().getEspecialidad();
 
       empresas = repository.findByEspecialidad(especialidad);
@@ -58,11 +54,12 @@ public class EmpresaService {
 
     boolean isAdmin = AuthUtils.isAdmin(userDetails);
     if (!isAdmin) {
-      TutorCentro tutor = tutorCentroRepository
-          .findById(userDetails.getTutorCentroId())
-          .orElseThrow(() -> new TutorCentroNotFoundException(userDetails.getTutorCentroId()));
-      boolean esEmpresaEspecialidad = empresa.getEspecialidad().getId()
-          .equals(tutor.getCurso().getEspecialidad().getId());
+      TutorCentro tutor =
+          tutorCentroRepository
+              .findById(userDetails.getTutorCentroId())
+              .orElseThrow(() -> new TutorCentroNotFoundException(userDetails.getTutorCentroId()));
+      boolean esEmpresaEspecialidad =
+          empresa.getEspecialidad().getId().equals(tutor.getCurso().getEspecialidad().getId());
 
       if (!esEmpresaEspecialidad) {
         throw new EmpresaForbiddenException(id);
