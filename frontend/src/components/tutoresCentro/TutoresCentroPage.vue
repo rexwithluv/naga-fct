@@ -4,6 +4,7 @@
   import { ToastServiceMethods } from 'primevue'
   import { useToast } from 'primevue/usetoast'
   import { onMounted, Ref, ref } from 'vue'
+  import DialogCrearTutorCentro from './DialogCrearTutorCentro.vue'
   import DialogDetallesTutorCentro from './DialogDetallesTutorCentro.vue'
 
   const toast: ToastServiceMethods = useToast()
@@ -11,11 +12,12 @@
   const tutores: Ref<TutorCentro[]> = ref([])
   const tutorID: Ref<number> = ref(0)
   const dialogDetalles: Ref<boolean> = ref(false)
+  const dialogCrear: Ref<boolean> = ref(false)
 
-  const getTutores = async () => {
+  const getTutoresCentro = async () => {
     try {
       const response = await apiClient.get('/tutores-centro')
-      return response.data
+      tutores.value = response.data
     } catch (error: any) {
       toast.add({
         severity: 'error',
@@ -31,14 +33,24 @@
     dialogDetalles.value = true
   }
 
+  const verCrear = () => {
+    dialogCrear.value = true
+  }
+
   onMounted(async () => {
-    tutores.value = await getTutores()
+    await getTutoresCentro()
   })
 </script>
 
 <template>
   <div>
     <DialogDetallesTutorCentro v-model:tutorID="tutorID" v-model:visible="dialogDetalles" />
+    <DialogCrearTutorCentro v-model:visible="dialogCrear" @tutorCentroCreado="getTutoresCentro" />
+
+    <div class="mb-5 text-center">
+      <h1 class="text-2xl font-bold mb-3">Tutores de centro</h1>
+      <Button label="Crear tutor de centro" @click="verCrear" />
+    </div>
 
     <DataTable :value="tutores" rowHover>
       <Column field="nombre" header="Nombre" />

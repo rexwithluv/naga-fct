@@ -1,5 +1,7 @@
 package gal.iesteis.backend.curso;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import gal.iesteis.backend.especialidad.Especialidad;
 import gal.iesteis.backend.tutorCentro.TutorCentro;
 import jakarta.persistence.Column;
@@ -23,13 +25,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(
-    name = "cursos",
-    uniqueConstraints = {
-      @UniqueConstraint(
-          name = "idx_cursos_codigo",
-          columnNames = {"codigo"}),
-    })
+@Table(name = "cursos", uniqueConstraints = {
+    @UniqueConstraint(name = "idx_cursos_codigo", columnNames = { "codigo" }),
+})
 public class Curso {
 
   @Id
@@ -43,12 +41,10 @@ public class Curso {
   private String nombre;
 
   @ManyToOne
-  @JoinColumn(
-      name = "especialidad_id",
-      nullable = false,
-      foreignKey = @ForeignKey(name = "fk_cursos_especialidad"))
+  @JoinColumn(name = "especialidad_id", nullable = false, foreignKey = @ForeignKey(name = "fk_cursos_especialidad"))
   private Especialidad especialidad;
 
   @OneToOne(mappedBy = "curso")
+  @JsonIgnore
   private TutorCentro tutor;
 }

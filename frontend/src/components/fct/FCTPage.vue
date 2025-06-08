@@ -10,6 +10,7 @@
   const FCTs: Ref<FCT[]> = ref([])
   const FCTID: Ref<number> = ref(0)
   const dialogDetalles: Ref<boolean> = ref(false)
+  const dialogCrear: Ref<boolean> = ref(false)
 
   const getFCT = async () => {
     try {
@@ -30,6 +31,10 @@
     dialogDetalles.value = true
   }
 
+  const verCrear = () => {
+    dialogCrear.value = true
+  }
+
   onMounted(async () => {
     FCTs.value = await getFCT()
   })
@@ -38,6 +43,12 @@
 <template>
   <div>
     <DialogDetallesFCT v-model:FCTID="FCTID" v-model:visible="dialogDetalles" />
+    <DialogCrearFCT v-model:visible="dialogCrear" @fctCreada="getFCT"></DialogCrearFCT>
+
+    <div class="mb-5 text-center">
+      <h1 class="text-2xl font-bold mb-3">FCT</h1>
+      <Button label="Crear FCT" @click="verCrear" />
+    </div>
 
     <DataTable :value="FCTs" rowHover>
       <Column field="alumno" header="Alumno" />

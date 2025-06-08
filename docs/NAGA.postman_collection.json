@@ -1,0 +1,906 @@
+{
+	"info": {
+		"_postman_id": "9504182f-3e9d-43b1-9582-9f0a9efddf51",
+		"name": "NAGA",
+		"description": "Colección de solicitudes POST al backend de NAGA-FCT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42534630"
+	},
+	"item": [
+		{
+			"name": "/login",
+			"item": [
+				{
+					"name": "Loguearse como usuario admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@edu.xunta.gal\",\r\n    \"password\": \"abc123.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loguearse como usuario estándar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"estela@edu.xunta.gal\",\r\n    \"password\": \"tesoro\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login incorrecto",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"badgyal@edu.xunta.gal\",\r\n    \"password\": \"lqnsm\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/login",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "/alumnos",
+			"item": [
+				{
+					"name": "C - Create",
+					"item": [
+						{
+							"name": "Crear un alumno como usuario admin",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"dniNie\": \"1233567E\",\n    \"nombre\": \"Jose\",\n    \"apellidos\": \"Alonso Jiménez\",\n    \"email\": \"jose@email.com\",\n    \"telefono\": \"111111112\",\n    \"concello\": 19,\n    \"numeroSeguridadSocial\": \"451456457\",\n    \"estado\": 1,\n    \"tutorCentro\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/alumnos",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"alumnos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear un alumno como usuario estándar",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"dniNie\": \"1233567T\",\n    \"nombre\": \"María\",\n    \"apellidos\": \"Alonso Gómez\",\n    \"email\": \"maria@email.com\",\n    \"telefono\": \"111111111\",\n    \"concello\": 7,\n    \"numeroSeguridadSocial\": \"451456456\",\n    \"estado\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/alumnos",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"alumnos"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "R - Read",
+					"item": [
+						{
+							"name": "Obtener todos los alumnos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/alumnos",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"alumnos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener un alumno por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/alumnos/1",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"alumnos",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "/empresas",
+			"item": [
+				{
+					"name": "C - Create",
+					"item": [
+						{
+							"name": "Crear una empresa como usuario común",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nombre\": \"Informática Ditto\",\n    \"concello\": 2,\n    \"direccion\": \"Hierba alta S/N\",\n    \"observaciones\": \"Acepta a cualquier tipo de alumno.\",\n    \"contacto\": {\n        \"nombre\": \"Kukui de la Santísima Trinidad\",\n        \"email\": \"kukui@email.com\",\n        \"telefono\": \"654789321\"\n    },\n    \"activa\": true,\n    \"plazas\": 4,\n    \"skills\": [\n        1,\n        3,\n        5\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/empresas",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"empresas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Crear una empresa como administrador",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nombre\": \"Estética Jessica\",\n    \"concello\": 22,\n    \"direccion\": \"Avenida del tigre, 7\",\n    \"observaciones\": \"Especialistas en visagismo.\",\n    \"contacto\": {\n        \"nombre\": \"Jessica González Ramírez\",\n        \"email\": \"lajessi@email.com\",\n        \"telefono\": \"654789359\"\n    },\n    \"activa\": true,\n    \"plazas\": 1,\n    \"skills\": [\n        11,\n        12,\n        15\n    ],\n    \"especialidad\":2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/empresas",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"empresas"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "R - Read",
+					"item": [
+						{
+							"name": "Obtener todas las empresas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/empresas",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"empresas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener una empresa por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/empresas/1",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"empresas",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "/tutores-centro",
+			"item": [
+				{
+					"name": "R - Read",
+					"item": [
+						{
+							"name": "Obtener todos los tutores del centro",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/tutores-centro",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"tutores-centro"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener un tutor del centro por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/tutores-centro/1",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"tutores-centro",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener todos los tutores con formato de Select",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/tutores-centro/select",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"tutores-centro",
+										"select"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener  tutores con formato de Select filtrados",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/tutores-centro/select?nombreTutor=P",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"tutores-centro",
+										"select"
+									],
+									"query": [
+										{
+											"key": "nombreTutor",
+											"value": "P"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "C - Create",
+					"item": [
+						{
+							"name": "Crear un tutor del centro",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nombre\": \"Victoria\",\n    \"apellidos\": \"Secreto\",\n    \"email\": \"vicsecret@email.com\",\n    \"cursoId\": 2,\n    \"usuarioId\": null\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/tutores-centro",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"tutores-centro"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "/usuarios",
+			"item": [
+				{
+					"name": "R - Read",
+					"item": [
+						{
+							"name": "Obtener todos los usuarios",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/usuarios",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener un usuario por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/usuarios/3",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener mis datos de usuario",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/usuarios/yo",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios",
+										"yo"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "C - Create",
+					"item": [
+						{
+							"name": "Crear un usuario",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"agustito@email.com\",\n    \"rolId\": 2,\n    \"tutorId\": null\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/usuarios",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "/fct",
+			"item": [
+				{
+					"name": "R - Read",
+					"item": [
+						{
+							"name": "Obtener una FCT por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/fct/1",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"fct",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener todas las FCT",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/fct",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"fct"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "C - Create",
+					"item": [
+						{
+							"name": "Crear una FCT",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"alumnoId\": 2,\r\n    \"tutorEmpresaId\": 2,\r\n    \"fechaInicio\": \"2025-12-12\",\r\n    \"fechaFin\": null\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/fct",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"fct"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "/tutores-empresa",
+			"item": [
+				{
+					"name": "R - Read",
+					"item": [
+						{
+							"name": "Obtener todos los tutores de empresa",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/tutores-empresa",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"tutores-empresa"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener un tutor de empresa por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/tutores-empresa/1",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"tutores-empresa",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "C - Create",
+					"item": [
+						{
+							"name": "Crear un tutor de empresa",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"empresaId\": 5,\n    \"nombre\": \"Esteban\",\n    \"apellidos\": \"Quito Pérez\",\n    \"email\": \"banquito@email.com\",\n    \"telefono\": \"123456789\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/tutores-empresa",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"tutores-empresa"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "/concellos",
+			"item": [
+				{
+					"name": "R - Read",
+					"item": [
+						{
+							"name": "Obtener todos los concellos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/concellos",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"concellos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener concellos filtrados",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/concellos?nombre=",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"concellos"
+									],
+									"query": [
+										{
+											"key": "nombre",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "/estados-alumno",
+			"item": [
+				{
+					"name": "R - Read",
+					"item": [
+						{
+							"name": "Obtener todos los estados que puede tener un alumno",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/estados-alumno",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"estados-alumno"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "/roles-usuario",
+			"item": [
+				{
+					"name": "R - Read",
+					"item": [
+						{
+							"name": "Obtener los roles de usuario disponibles",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/roles-usuario",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"roles-usuario"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "/especialidades",
+			"item": [
+				{
+					"name": "R - Read",
+					"item": [
+						{
+							"name": "Obtener todas las especialidades",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/especialidades",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"especialidades"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "/roles-usuario",
+			"item": [
+				{
+					"name": "R - Read",
+					"item": [
+						{
+							"name": "Obtener todas los roles de usuario",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/roles-usuario",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"roles-usuario"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "/skills",
+			"item": [
+				{
+					"name": "R - Read",
+					"item": [
+						{
+							"name": "Obtener todas las skills",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/skills",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"skills"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "/cursos",
+			"item": [
+				{
+					"name": "R - Read",
+					"item": [
+						{
+							"name": "Obtener todos los cursos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/cursos",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"cursos"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{bearerToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

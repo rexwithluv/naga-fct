@@ -5,7 +5,7 @@
   import { ToastServiceMethods, useToast } from 'primevue'
   import { ModelRef, ref, Ref, watch } from 'vue'
 
-  const emit = defineEmits(['empresaCreada'])
+  const emit = defineEmits(['tutorCentroCreado'])
   const visible: ModelRef<boolean | undefined> = defineModel('visible')
 
   const auth: StoreGeneric = useAuthStore()
@@ -41,7 +41,7 @@
         detail: 'Se ha creado la empresa con la información proporcionada',
         life: 5000,
       })
-      emit('empresaCreada')
+      emit('tutorCentroCreado')
       visible.value = false
     } catch (error: any) {
       toast.add({

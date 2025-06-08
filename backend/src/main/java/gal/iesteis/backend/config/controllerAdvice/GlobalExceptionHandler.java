@@ -20,9 +20,12 @@ import gal.iesteis.backend.empresa.exceptions.EmpresaNotFoundException;
 import gal.iesteis.backend.fct.exceptions.FCTForbiddenCreateException;
 import gal.iesteis.backend.fct.exceptions.FCTForbiddenException;
 import gal.iesteis.backend.fct.exceptions.FCTNotFoundException;
+import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroConflictCursoException;
+import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroConflictUsuarioException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroForbiddenException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
 import gal.iesteis.backend.tutorEmpresa.exceptions.TutorEmpresaForbiddenCreateException;
+import gal.iesteis.backend.usuario.exceptions.UsuarioConflictException;
 import gal.iesteis.backend.usuario.exceptions.UsuarioForbiddenException;
 import gal.iesteis.backend.usuario.exceptions.UsuarioNotFoundException;
 
@@ -123,6 +126,22 @@ public class GlobalExceptionHandler {
     return problemDetail;
   }
 
+  @ExceptionHandler(TutorCentroConflictUsuarioException.class)
+  public ProblemDetail handleTutorCentroConflictUsuario(TutorCentroConflictUsuarioException e) {
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
+    problemDetail.setTitle("Ya existe un tutor con ese usuario.");
+    problemDetail.setType(URI.create(BASE_URL + "tutores-centro/conflicto-usuario"));
+    return problemDetail;
+  }
+
+  @ExceptionHandler(TutorCentroConflictCursoException.class)
+  public ProblemDetail handleTutorCentroConflictCurso(TutorCentroConflictCursoException e) {
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
+    problemDetail.setTitle("Ya existe un tutor con ese curso.");
+    problemDetail.setType(URI.create(BASE_URL + "tutores-centro/conflicto-curso"));
+    return problemDetail;
+  }
+
   // Tutores de empresa
   @ExceptionHandler(TutorEmpresaForbiddenCreateException.class)
   public ProblemDetail handleTutorEmpresaForbiddenCreate(TutorEmpresaForbiddenCreateException e) {
@@ -146,6 +165,14 @@ public class GlobalExceptionHandler {
     ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, e.getMessage());
     problemDetail.setTitle("No tienes permiso para ver los datos de este usuario.");
     problemDetail.setType(URI.create(BASE_URL + "usuarios/acceso-denegado"));
+    return problemDetail;
+  }
+
+  @ExceptionHandler(UsuarioConflictException.class)
+  public ProblemDetail handleUsuarioConflict(UsuarioConflictException e) {
+    ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
+    problemDetail.setTitle("Ya existe un usuario con estos datos.");
+    problemDetail.setType(URI.create(BASE_URL + "usuarios/conflicto"));
     return problemDetail;
   }
 

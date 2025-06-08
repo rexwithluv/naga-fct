@@ -14,6 +14,8 @@ import gal.iesteis.backend.curso.Curso;
 import gal.iesteis.backend.curso.CursoService;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTO;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTOCreate;
+import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroConflictCursoException;
+import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroConflictUsuarioException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroForbiddenException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
 import gal.iesteis.backend.usuario.Usuario;
@@ -80,10 +82,25 @@ public class TutorCentroService {
 
   public TutorCentroDTO crearTutorCentro(UserDetailsImpl userDetails, TutorCentroDTOCreate dto) {
     final Long usuarioId = dto.getUsuarioId();
-    Usuario usuario = usuarioId != null ? usuarioService.obtenerUsuarioPorId(usuarioId) : null;
-    Curso curso = cursoService.obtenerCursoPorId(dto.getCursoId());
+    Usuario usuario = null;
 
+    if (usuarioId != null) {
+      usuario = usuarioService.obtenerUsuarioPorId(usuarioId);
+      if (usuario.getTutor() != null) {
+        throw new TutorCentroConflictUsuarioException();
+      }
+    }
+
+    Curso curso = cursoService.obtenerCursoPorId(dto.getCursoId());
+    if (curso.getTutor() != null) {
+      throw new TutorCentroConflictCursoException();  
+    }
     TutorCentro nuevoTutorCentro = repository.save(dtoConverter.dtoCreateATutorCentro(dto, curso, usuario));
+
+    if (usuario != null) {
+      asignarUsuarioATutor(nuevoTutorCentro.getId(), usuarioId);
+    }
+
     return dtoConverter.tutorCentroADtoResponseAdmin(nuevoTutorCentro);
   }
 }
