@@ -349,6 +349,12 @@ VALUES (
         '$2a$12$Lx4GW.bFm3ZnK0T8ES6eweVNenU6wKcifK1.7sMPee5coPJfKnhm2', -- tesoro
         2,
         true
+    ),
+    (
+        'david@edu.xunta.gal',
+        '$2a$12$NRKut6ZowZZvjVE02oIMou/aSmrBWzMHFbsPwUg3Zxxq7wLQuRp7q', -- coffee
+        2,
+        true
     );
 
 INSERT INTO
@@ -383,15 +389,23 @@ VALUES (
         'carlos@edu.xunta.gal',
         13,
         false
-    ),(
+    ),
+    (
+        'David',
+        'Pérez Sangriña',
+        5,
+        'david@edu.xunta.gal',
+        12,
+        false
+    ),
+    (
         'Estela',
         'Acuña Ferreira',
         4,
         'estela@edu.xunta.gal',
         1,
         true
-    )
-    ;
+    );
 
 INSERT INTO
     tutores_empresa (

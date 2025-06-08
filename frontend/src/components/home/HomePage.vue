@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useAuthStore } from '@/stores/authStore'
-import { StoreGeneric } from 'pinia'
+  import { StoreGeneric } from 'pinia'
   import { ref, Ref } from 'vue'
 
   const auth: StoreGeneric = useAuthStore()

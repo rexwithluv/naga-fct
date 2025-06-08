@@ -5,17 +5,19 @@
   import { ToastServiceMethods } from 'primevue'
   import { useToast } from 'primevue/usetoast'
   import { onMounted, Ref, ref } from 'vue'
+  import DialogCrearUsuario from './DialogCrearUsuario.vue'
 
   const toast: ToastServiceMethods = useToast()
 
   const usuarios: Ref<Usuario[]> = ref([])
   const usuarioID: Ref<number> = ref(0)
   const dialogDetalles: Ref<boolean> = ref(false)
+  const dialogCrear: Ref<boolean> = ref(false)
 
   const getUsuarios = async () => {
     try {
       const response = await apiClient.get('/usuarios')
-      return response.data
+      usuarios.value = response.data
     } catch (error: any) {
       toast.add({
         severity: 'error',
@@ -31,14 +33,24 @@
     dialogDetalles.value = true
   }
 
+  const verCrear = () => {
+    dialogCrear.value = true
+  }
+
   onMounted(async () => {
-    usuarios.value = await getUsuarios()
+    await getUsuarios()
   })
 </script>
 
 <template>
   <div>
     <DialogDetallesUsuario v-model:usuarioID="usuarioID" v-model:visible="dialogDetalles" />
+    <DialogCrearUsuario v-model:visible="dialogCrear" @usuarioCreado="getUsuarios" />
+
+    <div class="mb-5 text-center">
+      <h1 class="text-2xl font-bold mb-3">Usuarios</h1>
+      <Button label="Crear usuario" @click="verCrear" />
+    </div>
 
     <DataTable :value="usuarios" rowHover>
       <Column field="email" header="Email" />

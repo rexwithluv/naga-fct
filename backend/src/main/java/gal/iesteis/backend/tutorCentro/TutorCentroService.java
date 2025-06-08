@@ -71,6 +71,13 @@ public class TutorCentroService {
         .toList();
   }
 
+  public TutorCentro asignarUsuarioATutor(Long tutorCentroId, Long usuarioId) {
+    TutorCentro tutor = obtenerTutorCentroPorid(tutorCentroId);
+    Usuario usuario = usuarioService.obtenerUsuarioPorId(usuarioId);
+    tutor.setUsuario(usuario);
+    return repository.save(tutor);
+  }
+
   public TutorCentroDTO crearTutorCentro(UserDetailsImpl userDetails, TutorCentroDTOCreate dto) {
     final Long usuarioId = dto.getUsuarioId();
     Usuario usuario = usuarioId != null ? usuarioService.obtenerUsuarioPorId(usuarioId) : null;

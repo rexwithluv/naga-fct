@@ -13,6 +13,9 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,12 +36,10 @@ public class Skill {
   private String nombre;
 
   @ManyToOne
-  @JoinColumn(
-      name = "especialidad_id",
-      nullable = false,
-      foreignKey = @ForeignKey(name = "fk_skills_especialidad"))
+  @JoinColumn(name = "especialidad_id", nullable = false, foreignKey = @ForeignKey(name = "fk_skills_especialidad"))
   private Especialidad especialidad;
 
   @ManyToMany(mappedBy = "skills")
+  @JsonIgnore
   private List<Empresa> empresas;
 }

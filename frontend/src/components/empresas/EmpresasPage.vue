@@ -14,11 +14,12 @@
   const dialogContacto: Ref<boolean> = ref(false)
   const datosContacto: Ref<ContactoEmpresa | null> = ref(null)
   const dialogDetalles: Ref<boolean> = ref(false)
+  const dialogCrear: Ref<boolean> = ref(false)
 
   const getEmpresas = async () => {
     try {
       const response = await apiClient.get('/empresas')
-      return response.data
+      empresas.value = response.data
     } catch (error: any) {
       toast.add({
         severity: 'error',
@@ -39,8 +40,12 @@
     dialogDetalles.value = true
   }
 
+  const verCrear = () => {
+    dialogCrear.value = true
+  }
+
   onMounted(async () => {
-    empresas.value = await getEmpresas()
+    await getEmpresas()
   })
 </script>
 
@@ -48,6 +53,15 @@
   <div>
     <DialogContactoEmpresa v-model:visible="dialogContacto" v-model:datosContacto="datosContacto" />
     <DialogDetallesEmpresa v-model:empresaID="empresaID" v-model:visible="dialogDetalles" />
+    <DialogCrearEmpresa
+      v-model:visible="dialogCrear"
+      @empresaCreada="getEmpresas"
+    ></DialogCrearEmpresa>
+
+    <div class="mb-5 text-center">
+      <h1 class="text-2xl font-bold mb-3">Empresas</h1>
+      <Button label="Crear empresa" @click="verCrear" />
+    </div>
 
     <DataTable :value="empresas" rowHover>
       <Column field="nombre" header="Nombre" />

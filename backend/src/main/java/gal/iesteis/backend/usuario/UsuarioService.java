@@ -15,6 +15,7 @@ import gal.iesteis.backend.tutorCentro.TutorCentro;
 import gal.iesteis.backend.tutorCentro.TutorCentroService;
 import gal.iesteis.backend.usuario.dto.UsuarioDTO;
 import gal.iesteis.backend.usuario.dto.UsuarioDTOCreate;
+import gal.iesteis.backend.usuario.exceptions.UsuarioConflictException;
 import gal.iesteis.backend.usuario.exceptions.UsuarioForbiddenException;
 import gal.iesteis.backend.usuario.exceptions.UsuarioNotFoundException;
 
@@ -69,12 +70,21 @@ public class UsuarioService {
   @Transactional
   public UsuarioDTO crearUsuario(UsuarioDTOCreate dto) {
     final Long tutorId = dto.getTutorId();
-    TutorCentro tutorCentro = tutorId != null ? tutorCentroService.obtenerTutorCentroPorid(dto.getTutorId()) : null;
+    TutorCentro tutorCentro = null;
+    if (tutorId != null) {
+      tutorCentro = tutorCentroService.obtenerTutorCentroPorid(dto.getTutorId());
+      if (tutorCentro.getUsuario() != null) {
+        throw new UsuarioConflictException();
+      }
+    }
 
     RolUsuario rolUsuario = rolUsuarioService.obtenerRolUsuarioPorId(dto.getRolId());
-
     Usuario nuevoUsuario = dtoConverter.dtoAUsuario(dto, tutorCentro, rolUsuario);
     Usuario usuarioGuardado = repository.save(nuevoUsuario);
+
+    if (tutorCentro != null) {
+      tutorCentroService.asignarUsuarioATutor(tutorId, usuarioGuardado.getId());
+    }
 
     return dtoConverter.usuarioADtoResponseAdmin(usuarioGuardado);
   }

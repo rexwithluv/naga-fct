@@ -10,7 +10,7 @@
   const visible: ModelRef<boolean | undefined> = defineModel('visible')
   const tutor: Ref<TutorEmpresa | null> = ref(null)
 
-  const getTutorData = async (): Promise<void> => {
+  const getTutorEmpresaData = async (): Promise<void> => {
     try {
       const response = await apiClient.get(`/tutores-empresa/${tutorID.value}`)
       tutor.value = response.data
@@ -27,7 +27,7 @@
   // Solo cuando el Dialog es visible intentamos cargar los datos
   watch(visible, async (newValue) => {
     if (newValue === true) {
-      await getTutorData()
+      await getTutorEmpresaData()
     }
   })
 </script>

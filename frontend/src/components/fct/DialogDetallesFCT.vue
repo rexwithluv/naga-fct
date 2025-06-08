@@ -10,7 +10,7 @@
   const visible: ModelRef<boolean | undefined> = defineModel('visible')
   const fct: Ref<FCT | null> = ref(null)
 
-  const getTutorData = async (): Promise<void> => {
+  const getFctData = async (): Promise<void> => {
     try {
       const response = await apiClient.get(`/fct/${FCTID.value}`)
       fct.value = response.data
@@ -27,7 +27,7 @@
   // Solo cuando el Dialog es visible intentamos cargar los datos
   watch(visible, async (newValue) => {
     if (newValue === true) {
-      await getTutorData()
+      await getFctData()
     }
   })
 </script>
