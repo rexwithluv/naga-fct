@@ -10,6 +10,7 @@ import gal.iesteis.backend.especialidad.Especialidad;
 import gal.iesteis.backend.tutorCentro.TutorCentro;
 import gal.iesteis.backend.tutorCentro.TutorCentroRepository;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,12 +73,14 @@ public class EmpresaService {
     return dtoConverter.empresaADTOResponse(empresa, isAdmin);
   }
 
+  @Transactional
   public EmpresaDTO crearEmpresa(UserDetailsImpl userDetails, EmpresaDTOCreate dto) {
     Empresa nuevaEmpresa = repository.save(dtoConverter.DTOCreateAEmpresa(dto, userDetails));
 
     return dtoConverter.empresaADTOResponse(nuevaEmpresa, AuthUtils.isAdmin(userDetails));
   }
 
+  @Transactional
   public void deleteEmpresa(UserDetailsImpl userDetails, Long id) {
     Empresa empresa = obtenerEmpresaPorId(userDetails, id);
 

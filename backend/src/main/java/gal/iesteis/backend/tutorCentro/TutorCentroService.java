@@ -13,6 +13,7 @@ import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroForbiddenException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
 import gal.iesteis.backend.usuario.Usuario;
 import gal.iesteis.backend.usuario.UsuarioService;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,7 @@ public class TutorCentroService {
         .toList();
   }
 
+  @Transactional
   public TutorCentro asignarUsuarioATutor(Long tutorCentroId, Long usuarioId) {
     TutorCentro tutor = obtenerTutorCentroPorid(tutorCentroId);
     Usuario usuario = usuarioService.obtenerUsuarioPorId(usuarioId);
@@ -69,6 +71,7 @@ public class TutorCentroService {
     return repository.save(tutor);
   }
 
+  @Transactional
   public TutorCentroDTO crearTutorCentro(TutorCentroDTOCreate dto) {
     final Long usuarioId = dto.getUsuarioId();
     Usuario usuario = null;
@@ -94,6 +97,7 @@ public class TutorCentroService {
     return dtoConverter.tutorCentroADtoResponseAdmin(nuevoTutorCentro);
   }
 
+  @Transactional
   public void deleteTutorCentro(UserDetailsImpl userDetails, Long id) {
     TutorCentro tutor = obtenerTutorCentroPorid(id);
 

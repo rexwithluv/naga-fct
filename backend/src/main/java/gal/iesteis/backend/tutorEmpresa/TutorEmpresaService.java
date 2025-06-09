@@ -10,6 +10,7 @@ import gal.iesteis.backend.tutorEmpresa.dto.TutorEmpresaDTO;
 import gal.iesteis.backend.tutorEmpresa.dto.TutorEmpresaDTOCreate;
 import gal.iesteis.backend.tutorEmpresa.exceptions.TutorEmpresaForbiddenCreateException;
 import gal.iesteis.backend.tutorEmpresa.exceptions.TutorEmpresaNotFoundException;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,7 @@ public class TutorEmpresaService {
     return dtoConverter.tutorEmpresaADtoResponse(tutor);
   }
 
+  @Transactional
   public TutorEmpresaDTO crearTutorEmpresa(UserDetailsImpl userDetails, TutorEmpresaDTOCreate dto) {
     boolean isAdmin = AuthUtils.isAdmin(userDetails);
     Empresa empresa = empresaService.obtenerEmpresaPorId(userDetails, dto.getEmpresaId());

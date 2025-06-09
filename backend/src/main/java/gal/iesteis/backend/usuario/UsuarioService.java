@@ -82,6 +82,7 @@ public class UsuarioService {
     return dtoConverter.usuarioADtoResponseAdmin(usuarioGuardado);
   }
 
+  @Transactional
   public void deleteUsuario(Long id) {
     Usuario usuario = obtenerUsuarioPorId(id);
     usuario.setActivo(false);

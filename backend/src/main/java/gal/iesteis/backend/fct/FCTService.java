@@ -14,6 +14,7 @@ import gal.iesteis.backend.tutorCentro.TutorCentro;
 import gal.iesteis.backend.tutorCentro.TutorCentroService;
 import gal.iesteis.backend.tutorEmpresa.TutorEmpresa;
 import gal.iesteis.backend.tutorEmpresa.TutorEmpresaService;
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,7 @@ public class FCTService {
     return dtoConverter.fctADtoResponse(fct, isAdmin);
   }
 
+  @Transactional
   public FCTDTO crearFct(UserDetailsImpl userDetails, FCTDTOCreate dto) {
     boolean isAdmin = AuthUtils.isAdmin(userDetails);
 
@@ -94,6 +96,7 @@ public class FCTService {
     return dtoConverter.fctADtoResponse(nuevaFct, isAdmin);
   }
 
+  @Transactional
   public void deleteFct(UserDetailsImpl userDetails, Long id) {
     FCT fct = getFctById(userDetails, id);
 
