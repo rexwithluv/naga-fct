@@ -1,7 +1,6 @@
 package gal.iesteis.backend.tutorEmpresa;
 
 import gal.iesteis.backend.empresa.Empresa;
-import gal.iesteis.backend.empresa.EmpresaService;
 import gal.iesteis.backend.tutorEmpresa.dto.TutorEmpresaDTO;
 import gal.iesteis.backend.tutorEmpresa.dto.TutorEmpresaDTOCreate;
 import gal.iesteis.backend.tutorEmpresa.dto.TutorEmpresaDTOResponse;
@@ -14,8 +13,6 @@ public class TutorEmpresaDTOConverter {
 
   @Autowired private ModelMapper modelMapper;
 
-  @Autowired private EmpresaService empresaService;
-
   public TutorEmpresaDTO tutorEmpresaADtoResponse(TutorEmpresa tutor) {
     TutorEmpresaDTOResponse dto = modelMapper.map(tutor, TutorEmpresaDTOResponse.class);
 
@@ -24,11 +21,8 @@ public class TutorEmpresaDTOConverter {
     return dto;
   }
 
-  public TutorEmpresa dtoATutorEmpresa(TutorEmpresaDTOCreate dto) {
+  public TutorEmpresa dtoATutorEmpresa(TutorEmpresaDTOCreate dto, Empresa empresa) {
     TutorEmpresa tutor = modelMapper.map(dto, TutorEmpresa.class);
-
-    Empresa empresa = empresaService.obtenerEmpresaPorId(dto.getEmpresaId());
-
     tutor.setId(null);
     tutor.setEmpresa(empresa);
 

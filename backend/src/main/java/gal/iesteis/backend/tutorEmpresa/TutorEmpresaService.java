@@ -2,6 +2,8 @@ package gal.iesteis.backend.tutorEmpresa;
 
 import gal.iesteis.backend.config.security.AuthUtils;
 import gal.iesteis.backend.config.security.UserDetailsImpl;
+import gal.iesteis.backend.empresa.Empresa;
+import gal.iesteis.backend.empresa.EmpresaService;
 import gal.iesteis.backend.especialidad.Especialidad;
 import gal.iesteis.backend.tutorCentro.TutorCentroService;
 import gal.iesteis.backend.tutorEmpresa.dto.TutorEmpresaDTO;
@@ -20,6 +22,8 @@ public class TutorEmpresaService {
   @Autowired private TutorEmpresaDTOConverter dtoConverter;
 
   @Autowired private TutorCentroService tutorCentroService;
+
+  @Autowired private EmpresaService empresaService;
 
   public List<TutorEmpresaDTO> obtenerTodos(UserDetailsImpl userDetails) {
     boolean isAdmin = AuthUtils.isAdmin(userDetails);
@@ -56,9 +60,10 @@ public class TutorEmpresaService {
 
   public TutorEmpresaDTO crearTutorEmpresa(UserDetailsImpl userDetails, TutorEmpresaDTOCreate dto) {
     boolean isAdmin = AuthUtils.isAdmin(userDetails);
+    Empresa empresa = empresaService.obtenerEmpresaPorId(userDetails, dto.getEmpresaId());
 
     if (isAdmin) {
-      TutorEmpresa nuevoTutorEmpresa = repository.save(dtoConverter.dtoATutorEmpresa(dto));
+      TutorEmpresa nuevoTutorEmpresa = repository.save(dtoConverter.dtoATutorEmpresa(dto, empresa));
       return dtoConverter.tutorEmpresaADtoResponse(nuevoTutorEmpresa);
     }
 
@@ -68,14 +73,14 @@ public class TutorEmpresaService {
             .getCurso()
             .getEspecialidad();
     Especialidad especialidadNuevoTutor =
-        dtoConverter.dtoATutorEmpresa(dto).getEmpresa().getEspecialidad();
+        dtoConverter.dtoATutorEmpresa(dto, empresa).getEmpresa().getEspecialidad();
     boolean mismaEspecialidad = miEspecialidad.equals(especialidadNuevoTutor);
 
     if (!mismaEspecialidad) {
       throw new TutorEmpresaForbiddenCreateException();
     }
 
-    TutorEmpresa nuevoTutorEmpresa = repository.save(dtoConverter.dtoATutorEmpresa(dto));
+    TutorEmpresa nuevoTutorEmpresa = repository.save(dtoConverter.dtoATutorEmpresa(dto, empresa));
     return dtoConverter.tutorEmpresaADtoResponse(nuevoTutorEmpresa);
   }
 }

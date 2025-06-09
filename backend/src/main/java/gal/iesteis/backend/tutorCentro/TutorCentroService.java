@@ -6,6 +6,7 @@ import gal.iesteis.backend.curso.Curso;
 import gal.iesteis.backend.curso.CursoService;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTO;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTOCreate;
+import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroConflictCursoAsignadoException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroConflictCursoException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroConflictUsuarioException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroForbiddenException;
@@ -17,7 +18,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TutorCentroService {
@@ -39,16 +39,11 @@ public class TutorCentroService {
     return tutores.stream().map(tutor -> dtoConverter.tutorCentroADtoResponseAdmin(tutor)).toList();
   }
 
-  @Transactional
   public TutorCentro obtenerTutorCentroPorid(Long id) {
     return repository.findById(id).orElseThrow(() -> new TutorCentroNotFoundException(id));
   }
 
-  public TutorCentroDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
-    if (!AuthUtils.isAdmin(userDetails)) {
-      throw new TutorCentroForbiddenException();
-    }
-
+  public TutorCentroDTO obtenerPorId(Long id) {
     TutorCentro tutor = obtenerTutorCentroPorid(id);
     return dtoConverter.tutorCentroADtoResponseAdmin(tutor);
   }
@@ -74,7 +69,7 @@ public class TutorCentroService {
     return repository.save(tutor);
   }
 
-  public TutorCentroDTO crearTutorCentro(UserDetailsImpl userDetails, TutorCentroDTOCreate dto) {
+  public TutorCentroDTO crearTutorCentro(TutorCentroDTOCreate dto) {
     final Long usuarioId = dto.getUsuarioId();
     Usuario usuario = null;
 
@@ -87,7 +82,7 @@ public class TutorCentroService {
 
     Curso curso = cursoService.obtenerCursoPorId(dto.getCursoId());
     if (curso.getTutor() != null) {
-      throw new TutorCentroConflictCursoException();
+      throw new TutorCentroConflictCursoAsignadoException();
     }
     TutorCentro nuevoTutorCentro =
         repository.save(dtoConverter.dtoCreateATutorCentro(dto, curso, usuario));
@@ -97,5 +92,17 @@ public class TutorCentroService {
     }
 
     return dtoConverter.tutorCentroADtoResponseAdmin(nuevoTutorCentro);
+  }
+
+  public void deleteTutorCentro(UserDetailsImpl userDetails, Long id) {
+    TutorCentro tutor = obtenerTutorCentroPorid(id);
+
+    if (tutor.getCurso() != null) {
+      throw new TutorCentroConflictCursoException();
+    }
+
+    tutor.setActivo(false);
+
+    repository.save(tutor);
   }
 }

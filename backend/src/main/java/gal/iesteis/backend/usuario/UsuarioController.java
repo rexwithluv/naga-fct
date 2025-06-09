@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,9 +27,8 @@ public class UsuarioController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<?> getById(
-      @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
-    return ResponseEntity.status(HttpStatus.OK).body(service.obtenerPorId(userDetails, id));
+  public ResponseEntity<?> getById(@PathVariable Long id) {
+    return ResponseEntity.status(HttpStatus.OK).body(service.obtenerPorId(id));
   }
 
   @GetMapping("/yo")
@@ -39,5 +39,11 @@ public class UsuarioController {
   @PostMapping("")
   public ResponseEntity<?> createFct(@RequestBody @Valid UsuarioDTOCreate dto) {
     return ResponseEntity.status(HttpStatus.OK).body(service.crearUsuario(dto));
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> delete(@PathVariable Long id) {
+    service.deleteUsuario(id);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }

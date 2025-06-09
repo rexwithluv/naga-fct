@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS tutores_centro (
     apellidos VARCHAR(500) NOT NULL,
     usuario_id BIGINT,
     email VARCHAR(500) NOT NULL,
-    curso_id SMALLINT NOT NULL,
+    curso_id SMALLINT,
     activo BOOLEAN NOT NULL
 );
 

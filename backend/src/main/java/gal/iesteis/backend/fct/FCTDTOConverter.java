@@ -49,7 +49,7 @@ public class FCTDTOConverter {
   public FCT dtoCreateAFct(UserDetailsImpl userDetails, FCTDTOCreate dto) {
     FCT fct = modelMapper.map(dto, FCT.class);
 
-    Alumno alumno = alumnoService.obtenerAlumnoPorId(dto.getAlumnoId());
+    Alumno alumno = alumnoService.obtenerAlumnoPorId(userDetails, dto.getAlumnoId());
     TutorEmpresa tutorEmpresa =
         tutorEmpresaService.obtenerTutorEmpresaPorId(dto.getTutorEmpresaId());
 

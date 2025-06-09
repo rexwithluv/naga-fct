@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,5 +35,12 @@ public class AlumnoController {
   public ResponseEntity<?> create(
       @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody AlumnoDTOCreate dto) {
     return ResponseEntity.status(HttpStatus.CREATED).body(service.crearAlumno(userDetails, dto));
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> delete(
+      @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
+    service.deleteAlumno(userDetails, id);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 }

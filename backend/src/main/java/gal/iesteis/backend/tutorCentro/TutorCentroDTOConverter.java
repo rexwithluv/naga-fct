@@ -18,7 +18,9 @@ public class TutorCentroDTOConverter {
   public TutorCentroDTO tutorCentroADtoResponseAdmin(TutorCentro tutor) {
     TutorCentroDTOResponseAdmin dto = modelMapper.map(tutor, TutorCentroDTOResponseAdmin.class);
 
-    dto.setCurso(tutor.getCurso().getNombre());
+    if (tutor.getCurso() != null) {
+      dto.setCurso(tutor.getCurso().getNombre());
+    }
 
     return dto;
   }

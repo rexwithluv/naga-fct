@@ -1,5 +1,6 @@
 package gal.iesteis.backend.config.controllerAdvice;
 
+import gal.iesteis.backend.alumno.exceptions.AlumnoConflictGraduadoException;
 import gal.iesteis.backend.alumno.exceptions.AlumnoForbiddenException;
 import gal.iesteis.backend.alumno.exceptions.AlumnoNotFoundException;
 import gal.iesteis.backend.empresa.exceptions.EmpresaForbiddenException;
@@ -7,7 +8,7 @@ import gal.iesteis.backend.empresa.exceptions.EmpresaNotFoundException;
 import gal.iesteis.backend.fct.exceptions.FCTForbiddenCreateException;
 import gal.iesteis.backend.fct.exceptions.FCTForbiddenException;
 import gal.iesteis.backend.fct.exceptions.FCTNotFoundException;
-import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroConflictCursoException;
+import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroConflictCursoAsignadoException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroConflictUsuarioException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroForbiddenException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
@@ -97,6 +98,15 @@ public class GlobalExceptionHandler {
     return problemDetail;
   }
 
+  @ExceptionHandler(AlumnoConflictGraduadoException.class)
+  public ProblemDetail handleAlumnoConflictGraduado(AlumnoConflictGraduadoException e) {
+    ProblemDetail problemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
+    problemDetail.setTitle("No puedes dar de baja este alumno.");
+    problemDetail.setType(URI.create(BASE_URL + "alumnos/baja-graduado"));
+    return problemDetail;
+  }
+
   // Empresas
   @ExceptionHandler(EmpresaNotFoundException.class)
   public ProblemDetail handleEmpresaNotFound(EmpresaNotFoundException e) {
@@ -144,8 +154,8 @@ public class GlobalExceptionHandler {
     return problemDetail;
   }
 
-  @ExceptionHandler(TutorCentroConflictCursoException.class)
-  public ProblemDetail handleTutorCentroConflictCurso(TutorCentroConflictCursoException e) {
+  @ExceptionHandler(TutorCentroConflictCursoAsignadoException.class)
+  public ProblemDetail handleTutorCentroConflictCurso(TutorCentroConflictCursoAsignadoException e) {
     ProblemDetail problemDetail =
         ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
     problemDetail.setTitle("Ya existe un tutor con ese curso.");

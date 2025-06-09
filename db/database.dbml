@@ -81,7 +81,7 @@ Table "tutores_centro" {
   "apellidos" VARCHAR(500) [not null]
   "usuario_id" BIGINT
   "email" VARCHAR(500) [not null]
-  "curso_id" SMALLINT [not null]
+  "curso_id" SMALLINT
   "activo" BOOLEAN [not null]
 
   Indexes {

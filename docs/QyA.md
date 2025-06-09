@@ -30,3 +30,11 @@ Existen dos contenedores adicionales:
 ## Algunas entidades del backend tienen varios DTOs
 
 En algunos casos no mostramos los mismos datos a los usuarios comunes que a los administradores. Por ejemplo, en el caso de un alumno, no es lógico enviarle el tutor del centro a un usuario común cuando el mismo será el tutor, en cambio, si es necesario mandarselo a un usuario administrador para que sepa quien es el tutor de ese alumno.
+
+## La entidad `TutoresEmpresa` no tiene ningún endpoint DELETE
+
+No tenemos una forma real de saber que un trabajador en la empresa ya no se encuentra disponible para tutorizar alumnos. Puede seguir trabajando en la empresa pero no tutorizarlos ahora, puede haber cambiado de empresa, puede tutorizar solo en ciertos periódos o puede solo hacerlo una única vez.
+
+## En algunos métodos del backend existe al anotación `@Transactional` pero no en todos
+
+La anotación `@Transactional` ayuda a que todas las operaciones que se hagan contra la DB sean una única transacción y además facilita los rollbacks en caso de operaciones fallidas. Con todo esto aseguramos al máximo posible que todas las transacciones cumplan el principio ACID y por lo tanto que la posiblidad de que la base de datos quede en un estado inconsistente sea mínima.

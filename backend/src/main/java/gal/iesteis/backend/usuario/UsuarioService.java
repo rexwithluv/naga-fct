@@ -40,13 +40,11 @@ public class UsuarioService {
   }
 
   public Usuario obtenerUsuarioPorId(Long id) {
+
     return repository.findById(id).orElseThrow(() -> new UsuarioNotFoundException(id));
   }
 
-  public UsuarioDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
-    if (!AuthUtils.isAdmin(userDetails)) {
-      throw new UsuarioForbiddenException();
-    }
+  public UsuarioDTO obtenerPorId(Long id) {
 
     Usuario usuario = obtenerUsuarioPorId(id);
     return dtoConverter.usuarioADtoResponseAdmin(usuario);
@@ -82,5 +80,11 @@ public class UsuarioService {
     }
 
     return dtoConverter.usuarioADtoResponseAdmin(usuarioGuardado);
+  }
+
+  public void deleteUsuario(Long id) {
+    Usuario usuario = obtenerUsuarioPorId(id);
+    usuario.setActivo(false);
+    repository.save(usuario);
   }
 }

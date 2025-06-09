@@ -377,10 +377,10 @@ VALUES (
     (
         'Marta',
         'Reina López',
-        2,
+        null,
         'marta@edu.xunta.gal',
         14,
-        true
+        false
     ),
     (
         'Juan Carlos',
@@ -388,7 +388,7 @@ VALUES (
         null,
         'carlos@edu.xunta.gal',
         13,
-        false
+        true
     ),
     (
         'David',

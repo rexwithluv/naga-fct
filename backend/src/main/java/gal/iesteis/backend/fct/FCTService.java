@@ -14,6 +14,7 @@ import gal.iesteis.backend.tutorCentro.TutorCentro;
 import gal.iesteis.backend.tutorCentro.TutorCentroService;
 import gal.iesteis.backend.tutorEmpresa.TutorEmpresa;
 import gal.iesteis.backend.tutorEmpresa.TutorEmpresaService;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,8 +45,9 @@ public class FCTService {
     return fcts.stream().map(fct -> dtoConverter.fctADtoResponse(fct, isAdmin)).toList();
   }
 
-  public FCTDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
+  public FCT getFctById(UserDetailsImpl userDetails, Long id) {
     FCT fct = repository.findById(id).orElseThrow(() -> new FCTNotFoundException(id));
+
     boolean isAdmin = AuthUtils.isAdmin(userDetails);
     List<FCT> fcts =
         isAdmin
@@ -57,6 +59,13 @@ public class FCTService {
     if (!fctInFcts) {
       throw new FCTForbiddenException(id);
     }
+
+    return fct;
+  }
+
+  public FCTDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
+    FCT fct = getFctById(userDetails, id);
+    boolean isAdmin = AuthUtils.isAdmin(userDetails);
 
     return dtoConverter.fctADtoResponse(fct, isAdmin);
   }
@@ -70,7 +79,7 @@ public class FCTService {
     }
 
     TutorCentro tutor = tutorCentroService.obtenerTutorCentroPorid(userDetails.getTutorCentroId());
-    Alumno alumno = alumnoService.obtenerAlumnoPorId(dto.getAlumnoId());
+    Alumno alumno = alumnoService.obtenerAlumnoPorId(userDetails, dto.getAlumnoId());
     TutorEmpresa tutorEmpresa =
         tutorEmpresaService.obtenerTutorEmpresaPorId(dto.getTutorEmpresaId());
     boolean esTutorDelAlumno = alumno.getTutorCentro().equals(tutor);
@@ -83,5 +92,14 @@ public class FCTService {
 
     FCT nuevaFct = repository.save(dtoConverter.dtoCreateAFct(userDetails, dto));
     return dtoConverter.fctADtoResponse(nuevaFct, isAdmin);
+  }
+
+  public void deleteFct(UserDetailsImpl userDetails, Long id) {
+    FCT fct = getFctById(userDetails, id);
+
+    LocalDate hoy = LocalDate.now();
+    fct.setFechaFin(hoy);
+
+    repository.save(fct);
   }
 }

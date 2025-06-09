@@ -16,4 +16,10 @@ public class EstadoAlumnoService {
   public EstadoAlumno obtenerPorId(Byte id) {
     return repository.findById(id).orElseThrow(() -> new EstadoAlumnoNotFoundException(id));
   }
+
+  public EstadoAlumno getByNombre(String nombre) {
+    return repository
+        .findByNombre(nombre)
+        .orElseThrow(() -> new EstadoAlumnoNotFoundException(nombre));
+  }
 }

@@ -45,12 +45,8 @@ public class EmpresaService {
         .toList();
   }
 
-  public Empresa obtenerEmpresaPorId(Long id) {
-    return repository.findById(id).orElseThrow(() -> new EmpresaNotFoundException(id));
-  }
-
-  public EmpresaDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
-    Empresa empresa = obtenerEmpresaPorId(id);
+  public Empresa obtenerEmpresaPorId(UserDetailsImpl userDetails, Long id) {
+    Empresa empresa = repository.findById(id).orElseThrow(() -> new EmpresaNotFoundException(id));
 
     boolean isAdmin = AuthUtils.isAdmin(userDetails);
     if (!isAdmin) {
@@ -65,6 +61,14 @@ public class EmpresaService {
         throw new EmpresaForbiddenException(id);
       }
     }
+
+    return empresa;
+  }
+
+  public EmpresaDTO obtenerPorId(UserDetailsImpl userDetails, Long id) {
+    Empresa empresa = obtenerEmpresaPorId(userDetails, id);
+    boolean isAdmin = AuthUtils.isAdmin(userDetails);
+
     return dtoConverter.empresaADTOResponse(empresa, isAdmin);
   }
 
@@ -72,5 +76,13 @@ public class EmpresaService {
     Empresa nuevaEmpresa = repository.save(dtoConverter.DTOCreateAEmpresa(dto, userDetails));
 
     return dtoConverter.empresaADTOResponse(nuevaEmpresa, AuthUtils.isAdmin(userDetails));
+  }
+
+  public void deleteEmpresa(UserDetailsImpl userDetails, Long id) {
+    Empresa empresa = obtenerEmpresaPorId(userDetails, id);
+
+    empresa.setActiva(false);
+
+    repository.save(empresa);
   }
 }

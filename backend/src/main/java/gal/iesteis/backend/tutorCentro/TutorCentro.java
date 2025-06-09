@@ -47,7 +47,7 @@ public class TutorCentro {
   @OneToOne
   @JoinColumn(
       name = "curso_id",
-      nullable = false,
+      nullable = true,
       foreignKey = @ForeignKey(name = "fk_tutor_centro_curso"))
   private Curso curso;
 
