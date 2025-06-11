@@ -3,11 +3,12 @@
   import formatList from '@/helpers/formatList'
   import { ContactoEmpresa } from '@/types/models/ContactoEmpresa'
   import { Empresa } from '@/types/models/Empresa'
-  import { ToastServiceMethods } from 'primevue'
+  import { ToastServiceMethods, useConfirm } from 'primevue'
   import { useToast } from 'primevue/usetoast'
   import { onMounted, Ref, ref } from 'vue'
 
   const toast: ToastServiceMethods = useToast()
+  const confirm = useConfirm()
 
   const empresas: Ref<Empresa[]> = ref([])
   const empresaID: Ref<number> = ref(0)
@@ -28,6 +29,40 @@
         life: 5000,
       })
     }
+  }
+
+  const deleteEmpresa = async (id: number): Promise<void> => {
+    confirm.require({
+      message: '¿Estás seguro de que quieres dar de baja a esta empresa?',
+      header: 'Dar de baja a una empresa',
+      /* icon: 'pipi', */
+      rejectProps: {
+        label: 'Cancelar',
+      },
+      acceptProps: {
+        label: 'Dar de baja',
+      },
+
+      accept: async () => {
+        try {
+          await apiClient.delete(`/empresas/${id}`)
+          toast.add({
+            severity: 'success',
+            summary: 'Empresa dada de baja correctamente.',
+            detail: `Se ha dado de baja la empresa con el id ${id}.`,
+            life: 5000,
+          })
+          getEmpresas()
+        } catch (error: any) {
+          toast.add({
+            severity: 'error',
+            summary: 'Error al eliminar la empresa.',
+            detail: error.message,
+            life: 5000,
+          })
+        }
+      },
+    })
   }
 
   const verContacto = (datos: ContactoEmpresa) => {
@@ -51,6 +86,7 @@
 
 <template>
   <div>
+    <ConfirmDialog />
     <DialogContactoEmpresa v-model:visible="dialogContacto" v-model:datosContacto="datosContacto" />
     <DialogDetallesEmpresa v-model:empresaID="empresaID" v-model:visible="dialogDetalles" />
     <DialogCrearEmpresa
@@ -82,7 +118,8 @@
       </Column>
       <Column header="Acciones">
         <template #body="{ data }">
-          <Button label="Detalles" @click="verDetalles(data.id)" />
+          <Button label="Ver detalles" @click="verDetalles(data.id)" />
+          <Button label="Marcar como inactiva" @click="deleteEmpresa(data.id)" />
         </template>
       </Column>
     </DataTable>

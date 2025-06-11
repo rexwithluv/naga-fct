@@ -3,12 +3,13 @@
   import { useAuthStore } from '@/stores/authStore'
   import { Alumno } from '@/types/models/Alumno'
   import { StoreGeneric } from 'pinia'
-  import { ToastServiceMethods } from 'primevue'
+  import { ToastServiceMethods, useConfirm } from 'primevue'
   import { useToast } from 'primevue/usetoast'
   import { onMounted, Ref, ref } from 'vue'
 
   const auth: StoreGeneric = useAuthStore()
   const toast: ToastServiceMethods = useToast()
+  const confirm = useConfirm()
 
   const alumnos: Ref<Alumno[]> = ref([])
   const alumnoID: Ref<number> = ref(0)
@@ -18,7 +19,7 @@
   const getAlumnos = async () => {
     try {
       const response = await apiClient.get('/alumnos')
-      return response.data
+      alumnos.value = response.data
     } catch (error: any) {
       toast.add({
         severity: 'error',
@@ -27,6 +28,40 @@
         life: 5000,
       })
     }
+  }
+
+  const deleteAlumno = async (id: number): Promise<void> => {
+    confirm.require({
+      message: '¿Estás seguro de que quieres eliminar a este alumno?',
+      header: 'Eliminar alumno',
+      /* icon: 'pipi', */
+      rejectProps: {
+        label: 'Cancelar',
+      },
+      acceptProps: {
+        label: 'Eliminar',
+      },
+
+      accept: async () => {
+        try {
+          await apiClient.delete(`/alumnos/${id}`)
+          toast.add({
+            severity: 'success',
+            summary: 'Alumno eliminado correctamente.',
+            detail: `Se ha eliminado el alumno con id ${id}.`,
+            life: 5000,
+          })
+          getAlumnos()
+        } catch (error: any) {
+          toast.add({
+            severity: 'error',
+            summary: 'Error al eliminar el alumno.',
+            detail: error.message,
+            life: 5000,
+          })
+        }
+      },
+    })
   }
 
   const verDetalles = (id: number) => {
@@ -39,12 +74,13 @@
   }
 
   onMounted(async () => {
-    alumnos.value = await getAlumnos()
+    await getAlumnos()
   })
 </script>
 
 <template>
   <div>
+    <ConfirmDialog />
     <DialogDetallesAlumno v-model:alumnoID="alumnoID" v-model:visible="dialogDetalles" />
     <DialogCrearAlumno v-model:visible="dialogCrear" @alumnoCreado="getAlumnos" />
 
@@ -64,7 +100,8 @@
       <Column field="tutorCentro" header="Tutor" v-if="auth.isAdmin" />
       <Column header="Acciones">
         <template #body="{ data }">
-          <Button label="Detalles" @click="verDetalles(data.id)" />
+          <Button label="Ver detalles" @click="verDetalles(data.id)" />
+          <Button label="Dar de baja" @click="deleteAlumno(data.id)" />
         </template>
       </Column>
     </DataTable>
