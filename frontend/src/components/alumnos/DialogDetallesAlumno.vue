@@ -1,36 +1,23 @@
 <script setup lang="ts">
-  import apiClient from '@/apiClient'
+  import { useAlumno } from '@/helpers/useAlumno'
   import { useAuthStore } from '@/stores/authStore'
   import { Alumno } from '@/types/models/Alumno'
   import { StoreGeneric } from 'pinia'
-  import { ToastServiceMethods, useToast } from 'primevue'
   import { ModelRef, Ref, ref, watch } from 'vue'
 
   const auth: StoreGeneric = useAuthStore()
-  const toast: ToastServiceMethods = useToast()
+  const { getAlumno } = useAlumno()
 
   const alumnoID: ModelRef<number | undefined> = defineModel('alumnoID')
   const visible: ModelRef<boolean | undefined> = defineModel('visible')
   const alumno: Ref<Alumno | null> = ref(null)
 
-  const getAlumno = async (): Promise<void> => {
-    try {
-      const response = await apiClient.get(`/alumnos/${alumnoID.value}`)
-      alumno.value = response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al cargar la/el alumna/o',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
-
   // Solo cuando el Dialog es visible intentamos cargar los datos
   watch(visible, async (newValue) => {
     if (newValue === true) {
-      await getAlumno()
+      if (alumnoID.value !== undefined) {
+        alumno.value = await getAlumno(alumnoID.value)
+      }
     }
   })
 </script>

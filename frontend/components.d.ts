@@ -32,6 +32,7 @@ declare module 'vue' {
     DialogDetallesTutorCentro: typeof import('./src/components/tutoresCentro/DialogDetallesTutorCentro.vue')['default']
     DialogDetallesTutorEmpresa: typeof import('./src/components/tutoresEmpresa/DialogDetallesTutorEmpresa.vue')['default']
     DialogDetallesUsuario: typeof import('./src/components/usuarios/DialogDetallesUsuario.vue')['default']
+    DialogUpdateAlumno: typeof import('./src/components/alumnos/DialogUpdateAlumno.vue')['default']
     Divider: typeof import('primevue/divider')['default']
     EmpresasPage: typeof import('./src/components/empresas/EmpresasPage.vue')['default']
     FCTPage: typeof import('./src/components/fct/FCTPage.vue')['default']

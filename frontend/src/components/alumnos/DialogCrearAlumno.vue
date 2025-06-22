@@ -1,6 +1,10 @@
 <script setup lang="ts">
   import apiClient from '@/apiClient'
   import { useAuthStore } from '@/stores/authStore'
+  import { Alumno } from '@/types/models/Alumno'
+  import { Concello } from '@/types/models/Concello'
+  import { EstadoAlumno } from '@/types/models/EstadoAlumno'
+  import { TutorCentro } from '@/types/models/TutorCentro'
   import { StoreGeneric } from 'pinia'
   import { ToastServiceMethods, useToast } from 'primevue'
   import { ModelRef, ref, Ref, watch } from 'vue'
@@ -15,18 +19,18 @@
   const estadosAlumno: Ref<any[]> = ref([])
   const tutoresCentro: Ref<any[]> = ref([])
 
-  const nuevoAlumno = () => ({
-    dniNie: null,
-    nombre: null,
-    apellidos: null,
-    email: null,
-    telefono: null,
-    concello: null,
-    numeroSeguridadSocial: null,
-    estado: null,
-    tutorCentro: null,
+  const alumno: Ref<Alumno> = ref({
+    id: 0,
+    dniNie: '',
+    nombre: '',
+    apellidos: '',
+    email: '',
+    telefono: '',
+    concello: {} as Concello,
+    numeroSeguridadSocial: '',
+    estado: {} as EstadoAlumno,
+    tutorCentro: {} as TutorCentro,
   })
-  const alumno = ref(nuevoAlumno())
 
   const crearAlumno = async (): Promise<void> => {
     try {
@@ -94,8 +98,10 @@
     if (newValue === true) {
       concellos.value = await obtenerConcellos()
       estadosAlumno.value = await obtenerEstadosAlumno()
-      tutoresCentro.value = await obtenerTutoresCentro()
-      alumno.value = nuevoAlumno()
+
+      if (auth.isAdmin) {
+        tutoresCentro.value = await obtenerTutoresCentro()
+      }
     }
   })
 </script>

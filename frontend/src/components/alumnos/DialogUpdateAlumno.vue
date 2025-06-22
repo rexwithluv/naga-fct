@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import apiClient from '@/apiClient'
+  import { useAlumno } from '@/helpers/useAlumno'
   import { useAuthStore } from '@/stores/authStore'
   import { StoreGeneric } from 'pinia'
   import { ToastServiceMethods, useToast } from 'primevue'
@@ -11,6 +12,7 @@
 
   const auth: StoreGeneric = useAuthStore()
   const toast: ToastServiceMethods = useToast()
+  const { getAlumno } = useAlumno()
 
   const concellos: Ref<any[]> = ref([])
   const estadosAlumno: Ref<any[]> = ref([])
@@ -43,25 +45,6 @@
       toast.add({
         severity: 'error',
         summary: 'Error al actualizar la información del alumno.',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
-
-  const getAlumnoData = async (): Promise<void> => {
-    try {
-      const data = (await apiClient.get(`/alumnos/${alumnoID.value}`)).data
-      alumno.value = {
-        ...data,
-        concello: data.concello ? data.concello.id : null,
-        estado: data.estado ? data.estado.id : null,
-        tutorCentro: data.tutorCentro ? data.tutorCentro.id : null,
-      }
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al cargar la/el alumna/o',
         detail: error.message,
         life: 5000,
       })
@@ -112,10 +95,24 @@
 
   watch(visible, async (newValue) => {
     if (newValue === true) {
+      alumno.value = nuevoAlumno()
+
       concellos.value = await obtenerConcellos()
       estadosAlumno.value = await obtenerEstadosAlumno()
-      tutoresCentro.value = await obtenerTutoresCentro()
-      await getAlumnoData()
+
+      if (auth.isAdmin) {
+        tutoresCentro.value = await obtenerTutoresCentro()
+      }
+
+      if (alumnoID.value !== undefined) {
+        const data = await getAlumno(alumnoID.value)
+        alumno.value = {
+          ...data,
+          concello: data.concello ? data.concello.id : null,
+          estado: data.estado ? data.estado.id : null,
+          tutorCentro: data.tutorCentro ? data.tutorCentro.id : null,
+        }
+      }
     }
   })
 </script>
