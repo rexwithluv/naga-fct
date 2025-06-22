@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +42,15 @@ public class TutorCentroController {
   @PostMapping("")
   public ResponseEntity<?> createTutorCentro(@RequestBody @Valid TutorCentroDTOCreate dto) {
     return ResponseEntity.status(HttpStatus.OK).body(service.crearTutorCentro(dto));
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<?> put(
+      @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @RequestBody TutorCentroDTOCreate dto,
+      @PathVariable Long id) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(service.updateTutorCentro(userDetails, dto, id));
   }
 
   @DeleteMapping("/{id}")

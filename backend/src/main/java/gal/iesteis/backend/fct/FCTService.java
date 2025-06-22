@@ -97,6 +97,17 @@ public class FCTService {
   }
 
   @Transactional
+  public FCTDTO updateFct(UserDetailsImpl userDetails, FCTDTOCreate dto, Long id) {
+    boolean isAdmin = AuthUtils.isAdmin(userDetails);
+    FCT fct = dtoConverter.dtoCreateAFct(userDetails, dto);
+
+    fct.setId(id);
+    fct = repository.save(fct);
+
+    return dtoConverter.fctADtoResponse(fct, isAdmin);
+  }
+
+  @Transactional
   public void deleteFct(UserDetailsImpl userDetails, Long id) {
     FCT fct = getFctById(userDetails, id);
 

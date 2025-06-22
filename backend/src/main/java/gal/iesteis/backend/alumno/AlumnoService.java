@@ -9,6 +9,8 @@ import gal.iesteis.backend.config.security.AuthUtils;
 import gal.iesteis.backend.config.security.UserDetailsImpl;
 import gal.iesteis.backend.estadoAlumno.EstadoAlumno;
 import gal.iesteis.backend.estadoAlumno.EstadoAlumnoService;
+import gal.iesteis.backend.tutorCentro.TutorCentro;
+import gal.iesteis.backend.tutorCentro.TutorCentroService;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ public class AlumnoService {
   @Autowired private EstadoAlumnoService estadoAlumnoService;
 
   @Autowired private AlumnoDTOConverter dtoConverter;
+
+  @Autowired private TutorCentroService tutorCentroService;
 
   private boolean isAlumnoEstadoGraduado(Alumno alumno) {
     EstadoAlumno graduado = estadoAlumnoService.getByNombre("Graduado");
@@ -69,6 +73,22 @@ public class AlumnoService {
     Alumno nuevoAlumno = repository.save(dtoConverter.DTOCreateAAlumno(dto, userDetails));
 
     return dtoConverter.alumnoADTOResponse(nuevoAlumno, AuthUtils.isAdmin(userDetails));
+  }
+
+  @Transactional
+  public AlumnoDTO updateAlumno(UserDetailsImpl userDetails, AlumnoDTOCreate dto, Long id) {
+    Alumno alumno = dtoConverter.DTOCreateAAlumno(dto, userDetails);
+    alumno.setId(id);
+
+    boolean isAdmin = AuthUtils.isAdmin(userDetails);
+    if (!isAdmin) {
+      TutorCentro tutorCentro =
+          tutorCentroService.obtenerTutorCentroPorid(userDetails.getTutorCentroId());
+      alumno.setTutorCentro(tutorCentro);
+    }
+
+    alumno = repository.save(alumno);
+    return dtoConverter.alumnoADTOResponse(alumno, false);
   }
 
   @Transactional

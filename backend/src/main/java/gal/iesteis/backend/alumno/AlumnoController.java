@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +36,14 @@ public class AlumnoController {
   public ResponseEntity<?> create(
       @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody AlumnoDTOCreate dto) {
     return ResponseEntity.status(HttpStatus.CREATED).body(service.crearAlumno(userDetails, dto));
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<?> put(
+      @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @RequestBody AlumnoDTOCreate dto,
+      @PathVariable Long id) {
+    return ResponseEntity.status(HttpStatus.OK).body(service.updateAlumno(userDetails, dto, id));
   }
 
   @DeleteMapping("/{id}")

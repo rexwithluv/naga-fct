@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class TutorCentroService {
@@ -95,6 +96,21 @@ public class TutorCentroService {
     }
 
     return dtoConverter.tutorCentroADtoResponseAdmin(nuevoTutorCentro);
+  }
+
+  @Transactional
+  public TutorCentroDTO updateTutorCentro(
+      UserDetailsImpl userDetails, @RequestBody TutorCentroDTOCreate dto, Long id) {
+    Curso curso = cursoService.obtenerCursoPorId(dto.getCursoId());
+    Usuario usuario = null;
+    if (dto.getUsuarioId() != null) {
+      usuario = usuarioService.obtenerUsuarioPorId(dto.getUsuarioId());
+    }
+    TutorCentro tutorCentro = dtoConverter.dtoCreateATutorCentro(dto, curso, usuario);
+    tutorCentro.setId(id);
+
+    tutorCentro = repository.save(tutorCentro);
+    return dtoConverter.tutorCentroADtoResponseAdmin(tutorCentro);
   }
 
   @Transactional

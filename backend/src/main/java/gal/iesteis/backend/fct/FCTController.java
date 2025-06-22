@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +37,14 @@ public class FCTController {
   public ResponseEntity<?> createFct(
       @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody @Valid FCTDTOCreate dto) {
     return ResponseEntity.status(HttpStatus.OK).body(service.crearFct(userDetails, dto));
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<?> put(
+      @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @RequestBody FCTDTOCreate dto,
+      @PathVariable Long id) {
+    return ResponseEntity.status(HttpStatus.OK).body(service.updateFct(userDetails, dto, id));
   }
 
   @DeleteMapping("/{id}")

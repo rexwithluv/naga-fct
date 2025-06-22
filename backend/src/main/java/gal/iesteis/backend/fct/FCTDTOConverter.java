@@ -47,15 +47,16 @@ public class FCTDTOConverter {
   }
 
   public FCT dtoCreateAFct(UserDetailsImpl userDetails, FCTDTOCreate dto) {
-    FCT fct = modelMapper.map(dto, FCT.class);
+    FCT fct = new FCT();
 
     Alumno alumno = alumnoService.obtenerAlumnoPorId(userDetails, dto.getAlumnoId());
     TutorEmpresa tutorEmpresa =
         tutorEmpresaService.obtenerTutorEmpresaPorId(dto.getTutorEmpresaId());
 
-    fct.setId(null); // En ocasiones asigna como id de FCT el id de alumno
     fct.setAlumno(alumno);
     fct.setTutorEmpresa(tutorEmpresa);
+    fct.setFechaInicio(dto.getFechaInicio());
+    fct.setFechaFin(dto.getFechaFin());
 
     return fct;
   }

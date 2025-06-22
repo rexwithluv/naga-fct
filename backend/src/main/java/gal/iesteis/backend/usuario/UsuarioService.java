@@ -83,6 +83,21 @@ public class UsuarioService {
   }
 
   @Transactional
+  public UsuarioDTO updateUsuario(UserDetailsImpl userDetails, UsuarioDTOCreate dto, Long id) {
+    TutorCentro tutorCentro = null;
+    if (dto.getTutorId() != null) {
+      tutorCentro = tutorCentroService.obtenerTutorCentroPorid(dto.getTutorId());
+    }
+
+    RolUsuario rolUsuario = rolUsuarioService.obtenerRolUsuarioPorId(dto.getRolId());
+    Usuario usuario = dtoConverter.dtoAUsuario(dto, tutorCentro, rolUsuario);
+
+    usuario.setId(id);
+    usuario = repository.save(usuario);
+    return dtoConverter.usuarioADtoResponseAdmin(usuario);
+  }
+
+  @Transactional
   public void deleteUsuario(Long id) {
     Usuario usuario = obtenerUsuarioPorId(id);
     usuario.setActivo(false);

@@ -81,6 +81,15 @@ public class EmpresaService {
   }
 
   @Transactional
+  public EmpresaDTO updateEmpresa(UserDetailsImpl userDetails, EmpresaDTOCreate dto, Long id) {
+    boolean isAdmin = AuthUtils.isAdmin(userDetails);
+    Empresa empresa = dtoConverter.DTOCreateAEmpresa(dto, userDetails);
+    empresa.setId(id);
+    empresa = repository.save(empresa);
+    return dtoConverter.empresaADTOResponse(empresa, isAdmin);
+  }
+
+  @Transactional
   public void deleteEmpresa(UserDetailsImpl userDetails, Long id) {
     Empresa empresa = obtenerEmpresaPorId(userDetails, id);
 

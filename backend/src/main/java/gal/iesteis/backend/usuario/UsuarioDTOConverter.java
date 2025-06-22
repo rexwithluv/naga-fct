@@ -35,8 +35,6 @@ public class UsuarioDTOConverter {
   }
 
   public Usuario dtoAUsuario(UsuarioDTOCreate dto, TutorCentro tutorCentro, RolUsuario rolUsuario) {
-    // Usuario usuario = modelMapper.map(dto, Usuario.class);
-
     Usuario usuario = new Usuario();
 
     usuario.setEmail(dto.getEmail());
