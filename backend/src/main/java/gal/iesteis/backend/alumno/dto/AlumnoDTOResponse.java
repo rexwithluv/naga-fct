@@ -1,5 +1,6 @@
 package gal.iesteis.backend.alumno.dto;
 
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ public class AlumnoDTOResponse extends AlumnoDTO {
   private String apellidos;
   private String email;
   private String telefono;
-  private String concello;
+  private Map<String, Object> concello;
   private String numeroSeguridadSocial;
-  private String estado;
+  private Map<String, Object> estado;
 }

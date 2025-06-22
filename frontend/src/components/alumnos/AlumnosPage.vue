@@ -13,8 +13,9 @@
 
   const alumnos: Ref<Alumno[]> = ref([])
   const alumnoID: Ref<number> = ref(0)
-  const dialogDetalles: Ref<boolean> = ref(false)
   const dialogCrear: Ref<boolean> = ref(false)
+  const dialogDetalles: Ref<boolean> = ref(false)
+  const dialogActualizar = ref(false)
 
   const getAlumnos = async () => {
     try {
@@ -64,13 +65,16 @@
     })
   }
 
+  const verCrear = () => {
+    dialogCrear.value = true
+  }
   const verDetalles = (id: number) => {
     alumnoID.value = id
     dialogDetalles.value = true
   }
-
-  const verCrear = () => {
-    dialogCrear.value = true
+  const verActualizar = (id: number) => {
+    alumnoID.value = id
+    dialogActualizar.value = true
   }
 
   onMounted(async () => {
@@ -83,6 +87,11 @@
     <ConfirmDialog />
     <DialogDetallesAlumno v-model:alumnoID="alumnoID" v-model:visible="dialogDetalles" />
     <DialogCrearAlumno v-model:visible="dialogCrear" @alumnoCreado="getAlumnos" />
+    <DialogUpdateAlumno
+      v-model:visible="dialogActualizar"
+      v-model:alumnoID="alumnoID"
+      @alumnoEditado="getAlumnos"
+    />
 
     <div class="mb-5 text-center">
       <h1 class="text-2xl font-bold mb-3">Alumnos</h1>
@@ -95,12 +104,13 @@
       <Column field="apellidos" header="Apellidos" />
       <Column field="email" header="Email" />
       <Column field="telefono" header="Teléfono" />
-      <Column field="concello" header="Concello" />
-      <Column field="estado" header="Estado" />
-      <Column field="tutorCentro" header="Tutor" v-if="auth.isAdmin" />
+      <Column field="concello.nombre" header="Concello" />
+      <Column field="estado.nombre" header="Estado" />
+      <Column field="tutorCentro.nombre" header="Tutor" v-if="auth.isAdmin" />
       <Column header="Acciones">
         <template #body="{ data }">
           <Button label="Ver detalles" @click="verDetalles(data.id)" />
+          <Button label="Editar" @click="verActualizar(data.id)" />
           <Button label="Dar de baja" @click="deleteAlumno(data.id)" />
         </template>
       </Column>

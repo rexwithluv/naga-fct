@@ -13,6 +13,7 @@ import gal.iesteis.backend.estadoAlumno.EstadoAlumnoService;
 import gal.iesteis.backend.tutorCentro.TutorCentro;
 import gal.iesteis.backend.tutorCentro.TutorCentroRepository;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
+import java.util.Map;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,15 +31,31 @@ public class AlumnoDTOConverter {
   public AlumnoDTO alumnoADTOResponse(Alumno alumno, boolean isAdmin) {
     if (isAdmin) {
       AlumnoDTOResponseAdmin dto = modelMapper.map(alumno, AlumnoDTOResponseAdmin.class);
-      dto.setConcello(alumno.getConcello().getNombre());
-      dto.setEstado(alumno.getEstado().getNombre());
+      dto.setConcello(
+          Map.of(
+              "id", alumno.getConcello().getId(),
+              "nombre", alumno.getConcello().getNombre()));
+      dto.setEstado(
+          Map.of(
+              "id", alumno.getEstado().getId(),
+              "nombre", alumno.getEstado().getNombre()));
       dto.setTutorCentro(
-          alumno.getTutorCentro().getNombre() + " " + alumno.getTutorCentro().getApellidos());
+          Map.of(
+              "id",
+              alumno.getTutorCentro().getId(),
+              "nombre",
+              alumno.getTutorCentro().getNombre() + " " + alumno.getTutorCentro().getApellidos()));
       return dto;
     }
     AlumnoDTOResponse dto = modelMapper.map(alumno, AlumnoDTOResponse.class);
-    dto.setConcello(alumno.getConcello().getNombre());
-    dto.setEstado(alumno.getEstado().getNombre());
+    dto.setConcello(
+        Map.of(
+            "id", alumno.getConcello().getId(),
+            "nombre", alumno.getConcello().getNombre()));
+    dto.setEstado(
+        Map.of(
+            "id", alumno.getEstado().getId(),
+            "nombre", alumno.getEstado().getNombre()));
     return dto;
   }
 

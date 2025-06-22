@@ -13,7 +13,7 @@
   const visible: ModelRef<boolean | undefined> = defineModel('visible')
   const alumno: Ref<Alumno | null> = ref(null)
 
-  const getAlumnoData = async (): Promise<void> => {
+  const getAlumno = async (): Promise<void> => {
     try {
       const response = await apiClient.get(`/alumnos/${alumnoID.value}`)
       alumno.value = response.data
@@ -30,7 +30,7 @@
   // Solo cuando el Dialog es visible intentamos cargar los datos
   watch(visible, async (newValue) => {
     if (newValue === true) {
-      await getAlumnoData()
+      await getAlumno()
     }
   })
 </script>
@@ -42,11 +42,12 @@
       <li>DNI/NIE: {{ alumno?.dniNie }}</li>
       <li>Nombre: {{ alumno?.nombre }}</li>
       <li>Apellidos: {{ alumno?.apellidos }}</li>
+      <li>Concello: {{ alumno?.concello.nombre }}</li>
       <li>Correo electrónico: {{ alumno?.email }}</li>
       <li>Teléfono: {{ alumno?.telefono }}</li>
       <li>NUSS: {{ alumno?.numeroSeguridadSocial }}</li>
-      <li>Estado: {{ alumno?.estado }}</li>
-      <li v-if="auth.isAdmin">Tutor: {{ alumno?.tutorCentro }}</li>
+      <li>Estado: {{ alumno?.estado.nombre }}</li>
+      <li v-if="auth.isAdmin">Tutor: {{ alumno?.tutorCentro.nombre }}</li>
     </ul>
   </Dialog>
 </template>
