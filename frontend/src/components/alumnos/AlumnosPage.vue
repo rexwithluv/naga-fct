@@ -1,27 +1,28 @@
 <script setup lang="ts">
-  import apiClient from '@/apiClient'
+  import { useAlumno } from '@/composables/useAlumno'
+  import { useConcello } from '@/composables/useConcello'
+  import { useEstadoAlumno } from '@/composables/useEstadoAlumno'
   import { useAuthStore } from '@/stores/authStore'
   import { Alumno } from '@/types/models/Alumno'
+  import { Concello } from '@/types/models/Concello'
+  import { EstadoAlumno } from '@/types/models/EstadoAlumno'
   import { FilterMatchMode } from '@primevue/core/api'
   import { StoreGeneric } from 'pinia'
-  import { ToastServiceMethods, useConfirm } from 'primevue'
-  import { useToast } from 'primevue/usetoast'
   import { onMounted, Ref, ref } from 'vue'
-  import { useConcello } from '../../composables/useConcello'
 
-  const auth: StoreGeneric = useAuthStore()
-  const toast: ToastServiceMethods = useToast()
-  const confirm = useConfirm()
+  const authStore: StoreGeneric = useAuthStore()
+  const { getAlumnos, getAlumno, deleteAlumno } = useAlumno()
   const { getConcellos } = useConcello()
-
-  const concellos = ref([])
-  const estadosAlumno = ref([])
+  const { getEstadosAlumno } = useEstadoAlumno()
 
   const alumnos: Ref<Alumno[]> = ref([])
-  const alumnoID: Ref<number> = ref(0)
-  const dialogCrear: Ref<boolean> = ref(false)
-  const dialogDetalles: Ref<boolean> = ref(false)
-  const dialogActualizar: Ref<boolean> = ref(false)
+  const concellos: Ref<Concello[]> = ref([])
+  const estadosAlumno: Ref<EstadoAlumno[]> = ref([])
+
+  const selectedAlumno: Ref<Alumno> = ref({})
+  const showCreateDialog: Ref<boolean> = ref(false)
+  const showDetailsDialog: Ref<boolean> = ref(false)
+  const showUpdateDialog: Ref<boolean> = ref(false)
 
   const filters = ref({
     nombre: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -30,83 +31,31 @@
     'estado.nombre': { value: null, matchMode: FilterMatchMode.EQUALS },
   })
 
-  const getAlumnos = async () => {
-    try {
-      const response = await apiClient.get('/alumnos')
-      alumnos.value = response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al cargar los alumnos',
-        detail: error.message,
-        life: 5000,
-      })
+  const openCreateDialog = () => {
+    showCreateDialog.value = true
+  }
+  const openDetailsDialog = (alumnoData: Alumno) => {
+    selectedAlumno.value = alumnoData
+    showDetailsDialog.value = true
+  }
+  const openUpdateDialog = (alumnoData: Alumno) => {
+    selectedAlumno.value = alumnoData
+    showUpdateDialog.value = true
+  }
+
+  const handleGetAlumnos = async () => {
+    alumnos.value = await getAlumnos()
+  }
+  const handleDeleteAlumno = async (alumnoData: Alumno) => {
+    const success: boolean = await deleteAlumno(alumnoData)
+    if (success) {
+      alumnos.value = await getAlumnos()
     }
-  }
-
-  const getEstadosAlumno = async () => {
-    try {
-      const response = await apiClient.get('/estados-alumno')
-      estadosAlumno.value = response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener los posibles estados de un alumno.',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
-
-  const deleteAlumno = async (id: number): Promise<void> => {
-    confirm.require({
-      message: '¿Estás seguro de que quieres eliminar a este alumno?',
-      header: 'Eliminar alumno',
-      /* icon: 'pipi', */
-      rejectProps: {
-        label: 'Cancelar',
-      },
-      acceptProps: {
-        label: 'Eliminar',
-      },
-
-      accept: async () => {
-        try {
-          await apiClient.delete(`/alumnos/${id}`)
-          toast.add({
-            severity: 'success',
-            summary: 'Alumno eliminado correctamente.',
-            detail: `Se ha eliminado el alumno con id ${id}.`,
-            life: 5000,
-          })
-          getAlumnos()
-        } catch (error: any) {
-          toast.add({
-            severity: 'error',
-            summary: 'Error al eliminar el alumno.',
-            detail: error.message,
-            life: 5000,
-          })
-        }
-      },
-    })
-  }
-
-  const verCrear = () => {
-    dialogCrear.value = true
-  }
-  const verDetalles = (id: number) => {
-    alumnoID.value = id
-    dialogDetalles.value = true
-  }
-  const verActualizar = (id: number) => {
-    alumnoID.value = id
-    dialogActualizar.value = true
   }
 
   onMounted(async () => {
-    await getAlumnos()
-    await getEstadosAlumno()
+    alumnos.value = await getAlumnos()
+    estadosAlumno.value = await getEstadosAlumno()
     concellos.value = await getConcellos()
   })
 </script>
@@ -114,18 +63,21 @@
 <template>
   <div>
     <ConfirmDialog />
-    <DialogDetallesAlumno v-model:alumnoID="alumnoID" v-model:visible="dialogDetalles" />
-    <DialogCrearAlumno v-model:visible="dialogCrear" @alumnoCreado="getAlumnos" />
+    <DialogDetallesAlumno
+      v-model:selectedAlumno="selectedAlumno"
+      v-model:visible="showDetailsDialog"
+    />
+    <DialogCrearAlumno v-model:visible="showCreateDialog" @alumnoCreado="handleGetAlumnos" />
     <DialogUpdateAlumno
-      v-model:visible="dialogActualizar"
-      v-model:alumnoID="alumnoID"
-      @alumnoEditado="getAlumnos"
+      v-model:visible="showUpdateDialog"
+      v-model:selectedAlumno="selectedAlumno"
+      @alumnoEditado="handleGetAlumnos"
     />
 
     <div class="mb-5 text-center">
       <div class="mb-5">
         <h1 class="text-2xl font-bold mb-3">Alumnos</h1>
-        <Button label="Crear alumno" @click="verCrear" />
+        <Button label="Crear alumno" @click="openCreateDialog" />
       </div>
 
       <div class="flex text-center gap-2">
@@ -198,12 +150,12 @@
       <Column field="telefono" header="Teléfono" />
       <Column field="concello.nombre" header="Concello" />
       <Column field="estado.nombre" header="Estado" />
-      <Column field="tutorCentro.nombre" header="Tutor" v-if="auth.isAdmin" />
+      <Column field="tutorCentro.nombre" header="Tutor" v-if="authStore.isAdmin" />
       <Column header="Acciones">
         <template #body="{ data }">
-          <Button class="mr-2" label="Ver detalles" @click="verDetalles(data.id)" />
-          <Button class="mr-2" label="Editar" @click="verActualizar(data.id)" />
-          <Button label="Dar de baja" @click="deleteAlumno(data.id)" />
+          <Button class="mr-2" label="Ver detalles" @click="openDetailsDialog(data)" />
+          <Button class="mr-2" label="Editar" @click="openUpdateDialog(data)" />
+          <Button label="Dar de baja" @click="handleDeleteAlumno(data)" />
         </template>
       </Column>
     </DataTable>

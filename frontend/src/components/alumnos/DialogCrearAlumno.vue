@@ -1,106 +1,47 @@
 <script setup lang="ts">
-  import apiClient from '@/apiClient'
+  import { useAlumno } from '@/composables/useAlumno'
+  import { useConcello } from '@/composables/useConcello'
+  import { useEstadoAlumno } from '@/composables/useEstadoAlumno'
+  import { useTutorCentro } from '@/composables/useTutorCentro'
   import { useAuthStore } from '@/stores/authStore'
   import { Alumno } from '@/types/models/Alumno'
-  import { Concello } from '@/types/models/Concello'
-  import { EstadoAlumno } from '@/types/models/EstadoAlumno'
   import { StoreGeneric } from 'pinia'
-  import { ToastServiceMethods, useToast } from 'primevue'
   import { ModelRef, ref, Ref, watch } from 'vue'
 
   const emit = defineEmits(['alumnoCreado'])
   const visible: ModelRef<boolean | undefined> = defineModel('visible')
 
-  const auth: StoreGeneric = useAuthStore()
-  const toast: ToastServiceMethods = useToast()
+  const authStore: StoreGeneric = useAuthStore()
+  const { createAlumno } = useAlumno()
+  const { getConcellos } = useConcello()
+  const { getEstadosAlumno } = useEstadoAlumno()
+  const { getTutoresCentro } = useTutorCentro()
 
   const concellos: Ref<any[]> = ref([])
   const estadosAlumno: Ref<any[]> = ref([])
   const tutoresCentro: Ref<any[]> = ref([])
 
   const alumno: Ref<Alumno> = ref({
-    id: 0,
-    dniNie: '',
-    nombre: '',
-    apellidos: '',
-    email: '',
-    telefono: '',
-    concello: {} as Concello,
-    numeroSeguridadSocial: '',
-    estado: {} as EstadoAlumno,
-    tutorCentro: null,
+    concello: { id: 0 },
+    estado: { id: 0 },
+    tutorCentro: { id: 0 },
   })
 
-  const crearAlumno = async (): Promise<void> => {
-    try {
-      await apiClient.post('/alumnos', alumno.value)
-      toast.add({
-        severity: 'success',
-        summary: 'Alumna/o creado correctamente',
-        detail: 'Se ha creado el alumno con la información proporcionada',
-        life: 5000,
-      })
+  const handleCreateAlumno = async () => {
+    const success = await createAlumno(alumno.value)
+    if (success) {
       emit('alumnoCreado')
       visible.value = false
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al guardar la/el alumna/o',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
-
-  const obtenerConcellos = async (nombreConcello: string = '') => {
-    try {
-      const response = await apiClient.get(`/concellos?nombre=${nombreConcello}`)
-      return response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener los concellos.',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
-
-  const obtenerEstadosAlumno = async () => {
-    try {
-      const response = await apiClient.get('/estados-alumno')
-      return response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener los posibles estados de un alumno.',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
-
-  const obtenerTutoresCentro = async (nombreTutor: string = '') => {
-    try {
-      const response = await apiClient.get(`/tutores-centro/select?nombreTutor=${nombreTutor}`)
-      return response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener los tutores del centro.',
-        detail: error.message,
-        life: 5000,
-      })
     }
   }
 
   watch(visible, async (newValue) => {
     if (newValue === true) {
-      concellos.value = await obtenerConcellos()
-      estadosAlumno.value = await obtenerEstadosAlumno()
+      concellos.value = await getConcellos()
+      estadosAlumno.value = await getEstadosAlumno()
 
-      if (auth.isAdmin) {
-        tutoresCentro.value = await obtenerTutoresCentro()
+      if (authStore.isAdmin) {
+        tutoresCentro.value = await getTutoresCentro()
       }
     }
   })
@@ -127,7 +68,7 @@
         optionValue="id"
         optionLabel="nombre"
         placeholder="El alumno está..."
-        v-model="alumno.estado"
+        v-model="alumno.estado.id"
       />
     </div>
 
@@ -181,10 +122,10 @@
         optionValue="id"
         optionLabel="nombre"
         placeholder="Selecciona un concello..."
-        v-model="alumno.concello"
+        v-model="alumno.concello.id"
       />
 
-      <template v-if="auth.isAdmin">
+      <template v-if="authStore.isAdmin">
         <label for="tutorCentro" class="font-semibold w-24">Tutor</label>
         <Select
           id="tutorCentro"
@@ -194,7 +135,7 @@
           optionValue="id"
           optionLabel="nombreCompletoCurso"
           placeholder="Selecciona un tutor..."
-          v-model="alumno.tutorCentro"
+          v-model="alumno.tutorCentro.id"
         />
       </template>
     </div>
@@ -211,7 +152,7 @@
     </div>
 
     <div class="text-center">
-      <Button type="button" label="Guardar" @click="crearAlumno" />
+      <Button type="button" label="Guardar" @click="handleCreateAlumno" />
     </div>
   </Dialog>
 </template>

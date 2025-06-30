@@ -1,124 +1,58 @@
 <script setup lang="ts">
-  import apiClient from '@/apiClient'
   import { useAlumno } from '@/composables/useAlumno'
+  import { useConcello } from '@/composables/useConcello'
+  import { useEstadoAlumno } from '@/composables/useEstadoAlumno'
+  import { useTutorCentro } from '@/composables/useTutorCentro'
   import { useAuthStore } from '@/stores/authStore'
+  import { Alumno } from '@/types/models/Alumno'
   import { StoreGeneric } from 'pinia'
-  import { ToastServiceMethods, useToast } from 'primevue'
   import { ModelRef, ref, Ref, watch } from 'vue'
 
   const emit = defineEmits(['alumnoEditado'])
   const visible: ModelRef<boolean | undefined> = defineModel('visible')
-  const alumnoID: ModelRef<number | undefined> = defineModel('alumnoID')
+  const alumnoSeleccionado: ModelRef<Alumno | undefined> = defineModel('selectedAlumno')
 
-  const auth: StoreGeneric = useAuthStore()
-  const toast: ToastServiceMethods = useToast()
-  const { getAlumno } = useAlumno()
+  const authStore: StoreGeneric = useAuthStore()
+  const { updateAlumno } = useAlumno()
+  const { getConcellos } = useConcello()
+  const { getEstadosAlumno } = useEstadoAlumno()
+  const { getTutoresCentro } = useTutorCentro()
 
   const concellos: Ref<any[]> = ref([])
   const estadosAlumno: Ref<any[]> = ref([])
   const tutoresCentro: Ref<any[]> = ref([])
 
-  const nuevoAlumno = () => ({
-    dniNie: null,
-    nombre: null,
-    apellidos: null,
-    email: null,
-    telefono: null,
-    concello: null,
-    numeroSeguridadSocial: null,
-    estado: null,
-    tutorCentro: null,
+  const alumno: Ref<Alumno> = ref({
+    estado: { id: 0 },
+    concello: { id: 0 },
+    tutorCentro: { id: 0 },
   })
-  const alumno = ref(nuevoAlumno())
 
-  const actualizarAlumno = async (): Promise<void> => {
-    try {
-      await apiClient.put(`/alumnos/${alumnoID.value}`, alumno.value)
-      toast.add({
-        severity: 'success',
-        summary: 'Alumno actualizado correctamente.',
-        detail: 'Se ha actualizado la información del alumno.',
-        life: 5000,
-      })
+  const handleUpdateAlumno = async () => {
+    const success = await updateAlumno(alumno.value)
+    if (success) {
       emit('alumnoEditado')
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al actualizar la información del alumno.',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
-
-  const obtenerConcellos = async (nombreConcello: string = '') => {
-    try {
-      const response = await apiClient.get(`/concellos?nombre=${nombreConcello}`)
-      return response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener los concellos.',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
-
-  const obtenerEstadosAlumno = async () => {
-    try {
-      const response = await apiClient.get('/estados-alumno')
-      return response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener los posibles estados de un alumno.',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
-
-  const obtenerTutoresCentro = async (nombreTutor: string = '') => {
-    try {
-      const response = await apiClient.get(`/tutores-centro/select?nombreTutor=${nombreTutor}`)
-      return response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener los tutores del centro.',
-        detail: error.message,
-        life: 5000,
-      })
+      visible.value = false
     }
   }
 
   watch(visible, async (newValue) => {
     if (newValue === true) {
-      alumno.value = nuevoAlumno()
+      concellos.value = await getConcellos()
+      estadosAlumno.value = await getEstadosAlumno()
 
-      concellos.value = await obtenerConcellos()
-      estadosAlumno.value = await obtenerEstadosAlumno()
-
-      if (auth.isAdmin) {
-        tutoresCentro.value = await obtenerTutoresCentro()
+      if (authStore.isAdmin) {
+        tutoresCentro.value = await getTutoresCentro()
       }
 
-      if (alumnoID.value !== undefined) {
-        const data = await getAlumno(alumnoID.value)
-        alumno.value = {
-          ...data,
-          concello: data.concello ? data.concello.id : null,
-          estado: data.estado ? data.estado.id : null,
-          tutorCentro: data.tutorCentro ? data.tutorCentro.id : null,
-        }
-      }
+      // Deep copy
+      alumno.value = JSON.parse(JSON.stringify(alumnoSeleccionado.value))
     }
   })
 </script>
 
 <template>
-  <Dialog v-model:visible="visible" header="Crear alumno" modal dismissableMask>
+  <Dialog v-model:visible="visible" header="Editar alumno" modal dismissableMask>
     <div class="flex items-center gap-4 mb-4">
       <label for="dniNie" class="font-semibold w-24">DNI/NIE</label>
       <InputText
@@ -138,7 +72,7 @@
         optionValue="id"
         optionLabel="nombre"
         placeholder="El alumno está..."
-        v-model="alumno.estado"
+        v-model="alumno.estado.id"
       />
     </div>
 
@@ -192,10 +126,10 @@
         optionValue="id"
         optionLabel="nombre"
         placeholder="Selecciona un concello..."
-        v-model="alumno.concello"
+        v-model="alumno.concello.id"
       />
 
-      <template v-if="auth.isAdmin">
+      <template v-if="authStore.isAdmin">
         <label for="tutorCentro" class="font-semibold w-24">Tutor</label>
         <Select
           id="tutorCentro"
@@ -205,7 +139,7 @@
           optionValue="id"
           optionLabel="nombreCompletoCurso"
           placeholder="Selecciona un tutor..."
-          v-model="alumno.tutorCentro"
+          v-model="alumno.tutorCentro.id"
         />
       </template>
     </div>
@@ -222,7 +156,7 @@
     </div>
 
     <div class="text-center">
-      <Button type="button" label="Guardar" @click="actualizarAlumno()" />
+      <Button type="button" label="Guardar" @click="handleUpdateAlumno" />
     </div>
   </Dialog>
 </template>
