@@ -4,7 +4,6 @@
   import { Alumno } from '@/types/models/Alumno'
   import { Concello } from '@/types/models/Concello'
   import { EstadoAlumno } from '@/types/models/EstadoAlumno'
-  import { TutorCentro } from '@/types/models/TutorCentro'
   import { StoreGeneric } from 'pinia'
   import { ToastServiceMethods, useToast } from 'primevue'
   import { ModelRef, ref, Ref, watch } from 'vue'
@@ -29,7 +28,7 @@
     concello: {} as Concello,
     numeroSeguridadSocial: '',
     estado: {} as EstadoAlumno,
-    tutorCentro: {} as TutorCentro,
+    tutorCentro: null,
   })
 
   const crearAlumno = async (): Promise<void> => {
@@ -42,6 +41,7 @@
         life: 5000,
       })
       emit('alumnoCreado')
+      visible.value = false
     } catch (error: any) {
       toast.add({
         severity: 'error',

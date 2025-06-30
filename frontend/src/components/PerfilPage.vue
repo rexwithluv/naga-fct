@@ -45,7 +45,7 @@
 
 <template>
   <div class="flex items-center justify-center">
-    <div class="bg-gray-500 p-4 rounded">
+    <div class="bg-gray-200 p-4 rounded">
       <ul>
         <li>ID: {{ usuario?.id }}</li>
         <li>Email: {{ usuario?.email }}</li>

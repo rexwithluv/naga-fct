@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import apiClient from '@/apiClient'
-  import { useAlumno } from '@/helpers/useAlumno'
+  import { useAlumno } from '@/composables/useAlumno'
   import { useAuthStore } from '@/stores/authStore'
   import { StoreGeneric } from 'pinia'
   import { ToastServiceMethods, useToast } from 'primevue'

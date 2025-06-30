@@ -89,14 +89,15 @@
       <Button label="Crear usuario" @click="verCrear" />
     </div>
 
-    <DataTable :value="usuarios" rowHover>
+    <DataTable :value="usuarios" paginator :rows="10" rowHover>
       <Column field="email" header="Email" />
       <Column field="rol" header="Rol" />
       <Column field="tutor" header="Tutor de..." />
       <Column field="activo" header="Activo" />
       <Column header="Acciones">
         <template #body="{ data }">
-          <Button label="Ver detalles" @click="verDetalles(data.id)" />
+          <Button class="mr-2" label="Ver detalles" @click="verDetalles(data.id)" />
+          <Button class="mr-2" label="Editar" @click="verDetalles(data.id)" />
           <Button label="Marcar como inactivo" @click="deleteUsuario(data.id)" />
         </template>
       </Column>

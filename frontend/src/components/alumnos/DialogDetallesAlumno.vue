@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useAlumno } from '@/helpers/useAlumno'
+  import { useAlumno } from '@/composables/useAlumno'
   import { useAuthStore } from '@/stores/authStore'
   import { Alumno } from '@/types/models/Alumno'
   import { StoreGeneric } from 'pinia'

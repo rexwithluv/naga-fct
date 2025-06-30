@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import apiClient from '@/apiClient'
   import { FCT } from '@/types/models/FCT'
+  import { FilterMatchMode } from '@primevue/core/api'
   import { ToastServiceMethods, useConfirm } from 'primevue'
   import { useToast } from 'primevue/usetoast'
   import { onMounted, Ref, ref } from 'vue'
@@ -12,6 +13,12 @@
   const FCTID: Ref<number> = ref(0)
   const dialogDetalles: Ref<boolean> = ref(false)
   const dialogCrear: Ref<boolean> = ref(false)
+
+  const filters = ref({
+    alumno: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    empresa: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    fechaFin: { value: null, matchMode: FilterMatchMode.DATE_IS },
+  })
 
   const getFct = async () => {
     try {
@@ -82,11 +89,55 @@
     <DialogCrearFCT v-model:visible="dialogCrear" @fctCreada="getFct"></DialogCrearFCT>
 
     <div class="mb-5 text-center">
-      <h1 class="text-2xl font-bold mb-3">FCT</h1>
-      <Button label="Crear FCT" @click="verCrear" />
+      <div class="mb-5">
+        <h1 class="text-2xl font-bold mb-3">FCT</h1>
+        <Button label="Crear FCT" @click="verCrear" />
+      </div>
+
+      <div class="flex text-center gap-2">
+        <div class="flex-grow">
+          <label for="filter-alumno" class="font-semibold">Alumno</label>
+          <InputText
+            id="filter-alumno"
+            class="flex-auto"
+            placeholder="Carlitos"
+            autocomplete="off"
+            v-model="filters.alumno.value"
+          />
+        </div>
+
+        <div class="flex-grow">
+          <label for="filter-empresa" class="font-semibold">Empresa</label>
+          <InputText
+            id="filter-empresa"
+            class="flex-auto"
+            placeholder="Informática Rueda SL"
+            autocomplete="off"
+            v-model="filters.empresa.value"
+          />
+        </div>
+
+        <!-- <div class="flex-grow">
+          <label for="filter-fecha-fin" class="font-semibold">Fecha de fin</label>
+          <InputText
+            id="filter-fecha-fin"
+            class="flex-auto"
+            placeholder="Informática Rueda SL"
+            autocomplete="off"
+            v-model="filters.fechaFin.value"
+          />
+        </div> -->
+      </div>
     </div>
 
-    <DataTable :value="fct" rowHover>
+    <DataTable
+      :value="fct"
+      v-model:filters="filters"
+      filterDisplay="menu"
+      paginator
+      :rows="10"
+      rowHover
+    >
       <Column field="alumno" header="Alumno" />
       <Column field="tutorEmpresa" header="Tutor en la empresa" />
       <Column field="empresa" header="Empresa" />
@@ -94,7 +145,8 @@
       <Column field="fechaFin" header="Fecha de fin" />
       <Column header="Acciones">
         <template #body="{ data }">
-          <Button label="Ver detalles" @click="verDetalles(data.id)" />
+          <Button class="mr-2" label="Ver detalles" @click="verDetalles(data.id)" />
+          <Button class="mr-2" label="Editar" @click="verDetalles(data.id)" />
           <Button label="Finalizar" @click="deleteFct(data.id)" />
         </template>
       </Column>

@@ -54,7 +54,7 @@
       <Button label="Crear tutor de empresa" @click="verCrear" />
     </div>
 
-    <DataTable :value="tutores" rowHover>
+    <DataTable :value="tutores" paginator :rows="10" rowHover>
       <Column field="nombre" header="Nombre" />
       <Column field="apellidos" header="Apellidos" />
       <Column field="empresa" header="Empresa" />
@@ -62,7 +62,8 @@
       <Column field="Telefono" header="Teléfono" />
       <Column header="Acciones">
         <template #body="{ data }">
-          <Button label="Detalles" @click="verDetalles(data.id)" />
+          <Button class="mr-2" label="Detalles" @click="verDetalles(data.id)" />
+          <Button label="Editar" @click="verDetalles(data.id)" />
         </template>
       </Column>
     </DataTable>

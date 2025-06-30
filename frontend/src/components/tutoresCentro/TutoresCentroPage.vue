@@ -88,7 +88,7 @@
       <Button label="Crear tutor de centro" @click="verCrear" />
     </div>
 
-    <DataTable :value="tutores" rowHover>
+    <DataTable :value="tutores" paginator :rows="10" rowHover>
       <Column field="nombre" header="Nombre" />
       <Column field="apellidos" header="Apellidos" />
       <Column field="email" header="Email" />
@@ -96,7 +96,8 @@
       <Column field="activo" header="Activo" />
       <Column header="Acciones">
         <template #body="{ data }">
-          <Button label="Ver detalles" @click="verDetalles(data.id)" />
+          <Button class="mr-2" label="Ver detalles" @click="verDetalles(data.id)" />
+          <Button class="mr-2" label="Editar" @click="verDetalles(data.id)" />
           <Button label="Marcar como inactivo" @click="deleteTutorCentro(data.id)" />
         </template>
       </Column>

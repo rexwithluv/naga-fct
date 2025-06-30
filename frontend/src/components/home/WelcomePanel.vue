@@ -30,7 +30,7 @@
 </script>
 
 <template>
-  <div class="bg-gray-500 w-55 p-4 rounded-lg shadow-md text-center">
+  <div class="bg-gray-200 w-55 p-4 rounded-lg shadow-md text-center">
     <div>
       <p>
         Bienvenida/o <span v-show="nombre"> {{ capitalize(nombre ?? '') }} </span>
@@ -41,7 +41,7 @@
 
       <hr />
 
-      <p>{{ datetime }}</p>
+      <!-- <p>{{ datetime }}</p> -->
     </div>
   </div>
 </template>
