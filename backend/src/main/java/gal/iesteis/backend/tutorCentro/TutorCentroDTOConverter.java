@@ -13,7 +13,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class TutorCentroDTOConverter {
 
-  @Autowired private ModelMapper modelMapper;
+  @Autowired
+  private ModelMapper modelMapper;
 
   public TutorCentroDTO tutorCentroADtoResponseAdmin(TutorCentro tutor) {
     TutorCentroDTOResponseAdmin dto = modelMapper.map(tutor, TutorCentroDTOResponseAdmin.class);
@@ -21,16 +22,6 @@ public class TutorCentroDTOConverter {
     if (tutor.getCurso() != null) {
       dto.setCurso(tutor.getCurso().getNombre());
     }
-
-    return dto;
-  }
-
-  public TutorCentroDTO tutorCentroADtoResponseSelect(TutorCentro tutor) {
-    TutorCentroDTOResponseSelect dto = modelMapper.map(tutor, TutorCentroDTOResponseSelect.class);
-
-    dto.setNombreCompletoCurso(
-        String.format(
-            "%s %s - %s", tutor.getNombre(), tutor.getApellidos(), tutor.getCurso().getCodigo()));
 
     return dto;
   }

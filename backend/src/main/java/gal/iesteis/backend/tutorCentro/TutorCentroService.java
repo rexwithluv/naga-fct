@@ -50,20 +50,6 @@ public class TutorCentroService {
     return dtoConverter.tutorCentroADtoResponseAdmin(tutor);
   }
 
-  public List<TutorCentroDTO> obtenerTodosSelect(Optional<String> nombre) {
-    if (nombre.isEmpty()) {
-      List<TutorCentro> tutoresActivos = repository.findByActivoTrue();
-      return tutoresActivos.stream()
-          .map(t -> dtoConverter.tutorCentroADtoResponseSelect(t))
-          .toList();
-    }
-    List<TutorCentro> tutoresFiltrados =
-        repository.findByActivoTrueAndNombreContaining(nombre.get());
-    return tutoresFiltrados.stream()
-        .map(t -> dtoConverter.tutorCentroADtoResponseSelect(t))
-        .toList();
-  }
-
   @Transactional
   public TutorCentro asignarUsuarioATutor(Long tutorCentroId, Long usuarioId) {
     TutorCentro tutor = obtenerTutorCentroPorid(tutorCentroId);

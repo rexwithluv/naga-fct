@@ -1,28 +1,97 @@
 <script setup lang="ts">
   import { useAuthStore } from '@/stores/authStore'
   import { Alumno } from '@/types/models/Alumno'
+  import {
+    BookMarked,
+    BookUser,
+    Car,
+    GraduationCap,
+    IdCard,
+    IdCardLanyard,
+    Mail,
+    MapPin,
+    PenOff,
+    Phone,
+    Sparkles,
+  } from 'lucide-vue-next'
   import { StoreGeneric } from 'pinia'
-  import { ModelRef } from 'vue'
+  import { ModelRef, ref, watch } from 'vue'
+import { TutorCentro } from '../../types/models/TutorCentro';
 
   const authStore: StoreGeneric = useAuthStore()
 
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
   const alumno: ModelRef<Alumno | null> = defineModel('selectedAlumno')
+
+  const estado = ref(null)
+  watch(isVisible, (newValue) => {
+    if (newValue) {
+      estado.value = alumno.value?.estado.nombre.toLowerCase()
+    }
+  })
 </script>
 
 <template>
   <Dialog v-model:visible="isVisible" header="Detalles del alumno" modal dismissableMask>
-    <ul>
-      <li>ID: {{ alumno?.id }}</li>
-      <li>DNI/NIE: {{ alumno?.dniNie }}</li>
-      <li>Nombre: {{ alumno?.nombre }}</li>
-      <li>Apellidos: {{ alumno?.apellidos }}</li>
-      <li>Concello: {{ alumno?.concello.nombre }}</li>
-      <li>Correo electrónico: {{ alumno?.email }}</li>
-      <li>Teléfono: {{ alumno?.telefono }}</li>
-      <li>NUSS: {{ alumno?.numeroSeguridadSocial }}</li>
-      <li>Estado: {{ alumno?.estado.nombre }}</li>
-      <li v-if="authStore.isAdmin">Tutor: {{ alumno?.tutorCentro.nombre }}</li>
-    </ul>
+    <div class="flex flex-col items-center justify-center mb-5">
+      <GraduationCap class="text-primary mb-3" :size="36" aria-label="Nombre del alumno" />
+      <h3 class="text-xl font-semibold">{{ alumno?.nombre }} {{ alumno?.apellidos }}</h3>
+    </div>
+
+    <hr class="mb-4" />
+
+    <div class="field mb-1">
+      <p class="flex items-center gap-2">
+        <IdCard :size="18" aria-label="DNI o NIE del alumno" />
+        {{ alumno?.dniNie }}
+      </p>
+    </div>
+    <div class="field mb-1">
+      <p class="flex items-center gap-2">
+        <IdCardLanyard :size="18" aria-label="NUSS del alumno" />
+        {{ alumno?.numeroSeguridadSocial }}
+      </p>
+    </div>
+    <div class="field mb-1" v-if="authStore.isAdmin">
+      <p class="flex items-center gap-2">
+        <BookUser :size="18" aria-label="Teléfono de contacto" />
+        {{ alumno?.tutorCentro.nombre }} - {{ alumno?.tutorCentro.curso }}
+      </p>
+    </div>
+    <div class="field mb-1">
+      <p class="flex items-center gap-2">
+        <MapPin :size="18" aria-label="Concello del alumno" />
+        {{ alumno?.concello?.nombre }}
+      </p>
+    </div>
+    <div class="field mb-1">
+      <p class="flex items-center gap-2">
+        <template v-if="estado === 'cursando'">
+          <BookMarked :size="18" aria-label="Estado del alumno" />
+        </template>
+        <template v-if="estado === 'de baja'">
+          <PenOff :size="18" aria-label="Estado del alumno" />
+        </template>
+        <template v-if="estado === 'graduado'">
+          <Sparkles :size="18" aria-label="Estado del alumno" />
+        </template>
+        <template v-if="estado === 'en prácticas'">
+          <Car :size="18" aria-label="Estado del alumno" />
+        </template>
+        {{ alumno?.estado?.nombre }}
+      </p>
+    </div>
+    <div class="field mb-1">
+      <p class="flex items-center gap-2">
+        <Phone :size="18" aria-label="Teléfono de contacto" />
+        {{ alumno?.telefono }}
+      </p>
+    </div>
+    <div class="field">
+      <p class="flex items-center gap-2">
+        <Mail :size="18" aria-label="E-mail de contacto" />
+        {{ alumno?.email }}
+      </p>
+    </div>
   </Dialog>
 </template>
