@@ -12,8 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TutorCentroDTOConverter {
 
-  @Autowired
-  private ModelMapper modelMapper;
+  @Autowired private ModelMapper modelMapper;
 
   public TutorCentroDTO tutorCentroADtoResponseAdmin(TutorCentro tutor) {
     TutorCentroDTOResponseAdmin dto = modelMapper.map(tutor, TutorCentroDTOResponseAdmin.class);

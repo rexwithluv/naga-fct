@@ -1,11 +1,5 @@
 package gal.iesteis.backend.alumno;
 
-import java.util.Map;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import gal.iesteis.backend.alumno.dto.AlumnoDTO;
 import gal.iesteis.backend.alumno.dto.AlumnoDTOCreate;
 import gal.iesteis.backend.alumno.dto.AlumnoDTOResponse;
@@ -19,18 +13,18 @@ import gal.iesteis.backend.estadoAlumno.EstadoAlumnoService;
 import gal.iesteis.backend.tutorCentro.TutorCentro;
 import gal.iesteis.backend.tutorCentro.TutorCentroRepository;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
+import java.util.Map;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class AlumnoDTOConverter {
 
-  @Autowired
-  private ModelMapper modelMapper;
-  @Autowired
-  private TutorCentroRepository tutorCentroRepository;
-  @Autowired
-  private ConcelloService concelloService;
-  @Autowired
-  private EstadoAlumnoService estadoAlumnoService;
+  @Autowired private ModelMapper modelMapper;
+  @Autowired private TutorCentroRepository tutorCentroRepository;
+  @Autowired private ConcelloService concelloService;
+  @Autowired private EstadoAlumnoService estadoAlumnoService;
 
   // Esto está fatal montado pero hasta ahora me parece la forma más sencilla de
   // no andar a dos métodos
@@ -73,14 +67,15 @@ public class AlumnoDTOConverter {
 
     Concello concello = concelloService.obtenerPorId(dto.getConcello());
     EstadoAlumno estado = estadoAlumnoService.obtenerPorId(dto.getEstado());
-    TutorCentro tutor = isAdmin
-        ? tutorCentroRepository
-            .findById(dto.getTutorCentro())
-            .orElseThrow(() -> new TutorCentroNotFoundException(dto.getTutorCentro()))
-        : tutorCentroRepository
-            .findById(userDetails.getTutorCentroId())
-            .orElseThrow(
-                () -> new TutorCentroNotFoundException(userDetails.getTutorCentroId()));
+    TutorCentro tutor =
+        isAdmin
+            ? tutorCentroRepository
+                .findById(dto.getTutorCentro())
+                .orElseThrow(() -> new TutorCentroNotFoundException(dto.getTutorCentro()))
+            : tutorCentroRepository
+                .findById(userDetails.getTutorCentroId())
+                .orElseThrow(
+                    () -> new TutorCentroNotFoundException(userDetails.getTutorCentroId()));
 
     alumno.setConcello(concello);
     alumno.setEstado(estado);
