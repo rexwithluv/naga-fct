@@ -9,7 +9,7 @@
   import { ModelRef, ref, Ref, watch } from 'vue'
 
   const emit = defineEmits(['alumnoCreado'])
-  const visible: ModelRef<boolean | undefined> = defineModel('visible')
+  const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
 
   const authStore: StoreGeneric = useAuthStore()
   const { createAlumno } = useAlumno()
@@ -31,12 +31,12 @@
     const success = await createAlumno(alumno.value)
     if (success) {
       emit('alumnoCreado')
-      visible.value = false
+      isVisible.value = false
     }
   }
 
-  watch(visible, async (newValue) => {
-    if (newValue === true) {
+  watch(isVisible, async (newValue) => {
+    if (newValue) {
       concellos.value = await getConcellos()
       estadosAlumno.value = await getEstadosAlumno()
 
@@ -48,7 +48,7 @@
 </script>
 
 <template>
-  <Dialog v-model:visible="visible" header="Crear alumno" modal dismissableMask>
+  <Dialog v-model:visible="isVisible" header="Crear alumno" modal dismissableMask>
     <div class="flex items-center gap-4 mb-4">
       <label for="dniNie" class="font-semibold w-24">DNI/NIE</label>
       <InputText

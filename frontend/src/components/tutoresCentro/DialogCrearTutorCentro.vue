@@ -73,7 +73,7 @@
   }
 
   watch(visible, async (newValue) => {
-    if (newValue === true) {
+    if (newValue) {
       await obtenerCursos()
       await obtenerUsuarios()
       tutorCentro.value = nuevoTutorCentro()

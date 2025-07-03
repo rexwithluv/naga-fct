@@ -1,112 +1,55 @@
 <script setup lang="ts">
-  import apiClient from '@/apiClient'
   import { useAuthStore } from '@/stores/authStore'
   import { StoreGeneric } from 'pinia'
-  import { ToastServiceMethods, useToast } from 'primevue'
   import { ModelRef, ref, Ref, watch } from 'vue'
+  import { useConcello } from '../../composables/useConcello'
+  import { useEmpresa } from '../../composables/useEmpresa'
+  import { useEspecialidad } from '../../composables/useEspecialidad'
+  import { useSkill } from '../../composables/useSkill'
 
-  const emit = defineEmits(['tutorCentroCreado'])
-  const visible: ModelRef<boolean | undefined> = defineModel('visible')
+  const emit = defineEmits(['empresaCreada'])
+  const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
 
-  const auth: StoreGeneric = useAuthStore()
-  const toast: ToastServiceMethods = useToast()
+  const authStore: StoreGeneric = useAuthStore()
+  const { createEmpresa } = useEmpresa()
+  const { getSkills } = useSkill()
+  const { getConcellos } = useConcello()
+  const { getEspecialidades } = useEspecialidad()
 
   const concellos: Ref<any[]> = ref([])
   const especialidades = ref([])
   const skills = ref([])
 
-  const nuevaEmpresa = () => ({
-    nombre: null,
-    concello: null,
-    direccion: null,
-    observaciones: null,
+  const empresa: Ref<Empresa> = ref({
     contacto: {
-      nombre: null,
-      email: null,
-      telefono: null,
+      nombre: '',
+      telefono: '',
+      email: '',
     },
-    activa: null,
-    plazas: null,
-    skills: [],
-    especialidad: null,
   })
-  const empresa = ref(nuevaEmpresa())
 
-  const crearEmpresa = async (): Promise<void> => {
-    try {
-      await apiClient.post('/empresas', empresa.value)
-      toast.add({
-        severity: 'success',
-        summary: 'Empresa creado correctamente',
-        detail: 'Se ha creado la empresa con la información proporcionada',
-        life: 5000,
-      })
-      emit('tutorCentroCreado')
+  const handleCreateEmpresa = async () => {
+    const success = await createEmpresa(empresa.value)
+    if (success) {
+      emit('empresaCreada')
       visible.value = false
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al guardar la empresa.',
-        detail: error.message,
-        life: 5000,
-      })
     }
   }
 
-  const obtenerConcellos = async () => {
-    try {
-      const response = await apiClient.get('/concellos')
-      return response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener los concellos.',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
+  watch(isVisible, async (newValue) => {
+    if (newValue) {
+      concellos.value = await getConcellos()
+      skills.value = await getSkills()
 
-  const obtenerEspecialidades = async () => {
-    try {
-      const response = await apiClient.get('/especialidades')
-      return response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener las especialidades.',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
-
-  const obtenerSkills = async () => {
-    try {
-      const response = await apiClient.get('/skills')
-      return response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener las skills.',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
-
-  watch(visible, async (newValue) => {
-    if (newValue === true) {
-      concellos.value = await obtenerConcellos()
-      especialidades.value = await obtenerEspecialidades()
-      skills.value = await obtenerSkills()
-      empresa.value = nuevaEmpresa()
+      if (authStore.isAdmin) {
+        especialidades.value = await getEspecialidades()
+      }
     }
   })
 </script>
 
 <template>
-  <Dialog v-model:visible="visible" header="Crear empresa" modal dismissableMask>
+  <Dialog v-model:visible="isVisible" header="Crear empresa" modal dismissableMask>
     <div class="flex items-center gap-4 mb-4">
       <label for="nombre" class="font-semibold w-24">Nombre</label>
       <InputText
@@ -171,7 +114,7 @@
         v-model="empresa.contacto.email"
       />
 
-      <template v-if="auth.isAdmin">
+      <template v-if="authStore.isAdmin">
         <label for="especialidad" class="font-semibold w-24">Especialidad</label>
         <Select
           id="especialidad"
@@ -212,7 +155,7 @@
     </div>
 
     <div class="text-center">
-      <Button type="button" label="Guardar" @click="crearEmpresa" />
+      <Button type="button" label="Guardar" @click="handleCreateEmpresa" />
     </div>
   </Dialog>
 </template>

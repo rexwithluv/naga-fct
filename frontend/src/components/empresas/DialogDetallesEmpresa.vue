@@ -1,58 +1,107 @@
 <script setup lang="ts">
-  import apiClient from '@/apiClient'
   import formatList from '@/helpers/formatList'
-  import { Empresa } from '@/types/models/Empresa'
-  import { useToast } from 'primevue'
-  import { ModelRef, ref, Ref, watch } from 'vue'
+  import {
+    BriefcaseBusiness,
+    CircleCheck,
+    CircleX,
+    Grip,
+    Info,
+    MapPin,
+    MapPinHouse,
+    Star,
+    Users,
+  } from 'lucide-vue-next'
+  import { ModelRef, ref, watch } from 'vue'
+  import { useAuthStore } from '../../stores/authStore'
 
-  const toast = useToast()
+  const authStore = useAuthStore()
 
-  const empresaID: ModelRef<number | undefined> = defineModel('empresaID')
-  const visible: ModelRef<boolean | undefined> = defineModel('visible')
-  const empresa: Ref<Empresa | null> = ref(null)
+  const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
+  const empresa: ModelRef<number | undefined> = defineModel('selectedEmpresa')
 
-  const getEmpresaData = async (): Promise<void> => {
-    try {
-      const response = await apiClient.get(`/empresas/${empresaID.value}`)
-      empresa.value = response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al cargar la empresa',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
+  const isActiva = ref(null)
 
-  // Solo cuando el Dialog es visible intentamos cargar los datos
-  watch(visible, async (newValue) => {
-    if (newValue === true) {
-      await getEmpresaData()
+  watch(isVisible, (newValue) => {
+    if (newValue) {
+      isActiva.value = empresa.value?.activa
     }
   })
 </script>
 
 <template>
-  <Dialog v-model:visible="visible" header="Detalles de la empresa" modal dismissableMask>
-    <ul>
-      <li>ID: {{ empresa?.id }}</li>
-      <li>Nombre: {{ empresa?.nombre }}</li>
-      <li>Concello: {{ empresa?.concello }}</li>
-      <li>Dirección: {{ empresa?.direccion }}</li>
-      <li>Observaciones: {{ empresa?.observaciones }}</li>
-      <li>Especialidad: {{ empresa?.especialidad }}</li>
-      <li>
-        Contacto:
-        <ul>
-          <li>&nbsp;&nbsp;&nbsp;· Nombre: {{ empresa?.contacto?.nombre }}</li>
-          <li>&nbsp;&nbsp;&nbsp;· Teléfono: {{ empresa?.contacto?.telefono }}</li>
-          <li>&nbsp;&nbsp;&nbsp;· Email: {{ empresa?.contacto?.email }}</li>
-        </ul>
-      </li>
-      <li>Activa: {{ empresa?.activa }}</li>
-      <li>Plazas: {{ empresa?.plazas }}</li>
-      <li>Skills: {{ formatList(empresa?.skills ?? []) }}</li>
-    </ul>
+  <Dialog v-model:visible="isVisible" header="Detalles de la empresa" modal dismissableMask>
+    <div class="flex flex-col items-center justify-center mb-5">
+      <BriefcaseBusiness class="text-primary mb-3" :size="36" aria-label="Nombre de la empresa" />
+      <h3 class="text-xl font-semibold">{{ empresa?.nombre }}</h3>
+    </div>
+
+    <hr class="mb-4" />
+
+    <div class="field mb-1">
+      <p class="flex items-center gap-2">
+        <MapPin :size="18" aria-label="Concello de la empresa" />
+        {{ empresa?.concello }}
+      </p>
+    </div>
+    <div class="field mb-1">
+      <p class="flex items-center gap-2">
+        <MapPinHouse :size="18" aria-label="Dirección de la empresa" />
+        {{ empresa?.direccion }}
+      </p>
+    </div>
+    <div class="field mb-1" v-if="authStore.isAdmin">
+      <p class="flex items-center gap-2">
+        <Star :size="18" aria-label="Especialidad de la empresa" />
+        {{ empresa?.especialidad }}
+      </p>
+    </div>
+    <div class="field mb-1">
+      <p class="flex items-center gap-2">
+        <template v-if="isActiva">
+          <CircleCheck :size="18" aria-label="La empresa está activa" />
+          La empresa está activa
+        </template>
+        <template v-if="!isActiva">
+          <CircleX :size="18" aria-label="La empresa no está activa" />
+          La empresa no está activa
+        </template>
+      </p>
+    </div>
+    <div class="field mb-1">
+      <p class="flex items-center gap-2">
+        <Users :size="18" aria-label="Plazas para alumnado en la empresa" />
+        {{ empresa?.plazas }} plazas disponibles
+      </p>
+    </div>
+    <div class="field mb-1">
+      <p class="flex items-center gap-2">
+        <Grip :size="18" aria-label="Skills de la empresa" />
+        {{ formatList(empresa?.skills ?? []) }}
+      </p>
+    </div>
+    <!-- <div class="field mb-1">
+      <p class="flex items-center gap-2">
+        <BookUser :size="18" aria-label="Nombre de la persona de contact de la empresa" />
+        {{ empresa?.contacto?.nombre }}
+      </p>
+    </div>
+    <div class="field mb-1">
+      <p class="flex items-center gap-2">
+        <Phone :size="18" aria-label="Teléfono de la persona de contacto de la empresa" />
+        {{ empresa?.contacto?.telefono }}
+      </p>
+    </div>
+    <div class="field mb-1">
+      <p class="flex items-center gap-2">
+        <Mail :size="18" aria-label="E-mail de la persona de contacto de la empresa" />
+        {{ empresa?.contacto?.email }}
+      </p>
+    </div> -->
+    <div class="field">
+      <p class="flex items-center gap-2">
+        <Info :size="18" aria-label="Observaciones de la empresa" />
+        {{ empresa?.observaciones }}
+      </p>
+    </div>
   </Dialog>
 </template>

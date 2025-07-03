@@ -51,15 +51,15 @@ export function useAlumno() {
         await apiClient.post('/alumnos', prepareAlumnoPayload(alumnoData))
         toast.add({
           severity: 'success',
-          summary: 'Alumna/o creado correctamente',
-          detail: 'Se ha creado el alumno con la información proporcionada',
+          summary: 'Alumna/o guardado correctamente.',
+          detail: 'Se ha creado el alumno con la información proporcionada.',
           life: 5000,
         })
         resolve(true)
       } catch (error: any) {
         toast.add({
           severity: 'error',
-          summary: 'Error al guardar la/el alumna/o',
+          summary: 'Error al guardar la/el alumna/o.',
           detail: error.message,
           life: 5000,
         })

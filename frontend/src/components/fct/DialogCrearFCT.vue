@@ -69,7 +69,7 @@
   }
 
   watch(visible, async (newValue) => {
-    if (newValue === true) {
+    if (newValue) {
       await obtenerAlumnos()
       await obtenerTutoresEmpresa()
       fct.value = nuevaFct()

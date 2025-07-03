@@ -68,7 +68,7 @@
   }
 
   watch(visible, async (newValue) => {
-    if (newValue === true) {
+    if (newValue) {
       roles.value = await obtenerRoles()
       tutoresCentro.value = await obtenerTutoresCentro()
       usuario.value = nuevoUsuario()

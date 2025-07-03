@@ -55,7 +55,7 @@
   }
 
   watch(visible, async (newValue) => {
-    if (newValue === true) {
+    if (newValue) {
       empresas.value = await obtenerEmpresas()
       tutorEmpresa.value = nuevoTutorEmpresa()
     }

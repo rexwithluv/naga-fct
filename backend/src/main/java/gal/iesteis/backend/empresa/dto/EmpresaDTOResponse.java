@@ -18,7 +18,7 @@ public class EmpresaDTOResponse extends EmpresaDTO {
   private String direccion;
   private String observaciones;
   private Map<String, String> contacto;
-  private String activa;
+  private Boolean activa;
   private Byte plazas;
   private Set<String> skills;
 }

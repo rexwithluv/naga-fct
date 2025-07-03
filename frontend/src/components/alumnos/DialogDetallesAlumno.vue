@@ -6,12 +6,12 @@
 
   const authStore: StoreGeneric = useAuthStore()
 
-  const visible: ModelRef<boolean | undefined> = defineModel('visible')
+  const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
   const alumno: ModelRef<Alumno | null> = defineModel('selectedAlumno')
 </script>
 
 <template>
-  <Dialog v-model:visible="visible" header="Detalles del alumno" modal dismissableMask>
+  <Dialog v-model:visible="isVisible" header="Detalles del alumno" modal dismissableMask>
     <ul>
       <li>ID: {{ alumno?.id }}</li>
       <li>DNI/NIE: {{ alumno?.dniNie }}</li>

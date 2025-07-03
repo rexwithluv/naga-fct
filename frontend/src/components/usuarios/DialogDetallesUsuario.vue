@@ -26,7 +26,7 @@
 
   // Solo cuando el Dialog es visible intentamos cargar los datos
   watch(visible, async (newValue) => {
-    if (newValue === true) {
+    if (newValue) {
       await getUsuarioData()
     }
   })

@@ -65,11 +65,11 @@
     <ConfirmDialog />
     <DialogDetallesAlumno
       v-model:selectedAlumno="selectedAlumno"
-      v-model:visible="showDetailsDialog"
+      v-model:isVisible="showDetailsDialog"
     />
-    <DialogCrearAlumno v-model:visible="showCreateDialog" @alumnoCreado="handleGetAlumnos" />
+    <DialogCrearAlumno v-model:isVisible="showCreateDialog" @alumnoCreado="handleGetAlumnos" />
     <DialogUpdateAlumno
-      v-model:visible="showUpdateDialog"
+      v-model:isVisible="showUpdateDialog"
       v-model:selectedAlumno="selectedAlumno"
       @alumnoEditado="handleGetAlumnos"
     />
