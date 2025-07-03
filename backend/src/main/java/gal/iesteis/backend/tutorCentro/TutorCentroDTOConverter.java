@@ -4,7 +4,6 @@ import gal.iesteis.backend.curso.Curso;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTO;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTOCreate;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTOResponseAdmin;
-import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTOResponseSelect;
 import gal.iesteis.backend.usuario.Usuario;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,11 +4,9 @@ import { useToast } from 'primevue/usetoast'
 export function useTutorCentro() {
   const toast = useToast()
 
-  const getTutoresCentro = async (nombreTutorCentro: string = '') => {
+  const getTutoresCentro = async () => {
     try {
-      const response = await apiClient.get(
-        `/tutores-centro/select?nombreTutor=${nombreTutorCentro}`,
-      )
+      const response = await apiClient.get('/tutores-centro/')
       return response.data
     } catch (error: any) {
       toast.add({
