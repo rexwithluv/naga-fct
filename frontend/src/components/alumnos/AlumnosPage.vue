@@ -19,7 +19,7 @@
   const concellos: Ref<Concello[]> = ref([])
   const estadosAlumno: Ref<EstadoAlumno[]> = ref([])
 
-  const selectedAlumno: Ref<Alumno> = ref({})
+  const selectedAlumno: Ref<Alumno | object> = ref({})
   const showCreateDialog: Ref<boolean> = ref(false)
   const showDetailsDialog: Ref<boolean> = ref(false)
   const showUpdateDialog: Ref<boolean> = ref(false)

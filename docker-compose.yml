@@ -47,7 +47,7 @@ services:
 
   pma-dev:
     image: phpmyadmin/phpmyadmin:latest
-    container_name: naga-phpmyadmin
+    container_name: naga-phpmyadmin-dev
     environment:
       - PMA_HOST=db-dev
     ports:

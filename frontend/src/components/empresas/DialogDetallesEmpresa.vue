@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import formatList from '@/helpers/formatList'
+  import { Empresa } from '@/types/models/Empresa'
   import {
     BriefcaseBusiness,
     CircleCheck,
@@ -11,19 +12,19 @@
     Star,
     Users,
   } from 'lucide-vue-next'
-  import { ModelRef, ref, watch } from 'vue'
+  import { ModelRef, Ref, ref, watch } from 'vue'
   import { useAuthStore } from '../../stores/authStore'
 
   const authStore = useAuthStore()
 
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
-  const empresa: ModelRef<number | undefined> = defineModel('selectedEmpresa')
+  const empresa: ModelRef<Empresa | undefined> = defineModel('selectedEmpresa')
 
-  const isActiva = ref(null)
+  const isActiva: Ref<boolean | null> = ref(null)
 
   watch(isVisible, (newValue) => {
     if (newValue) {
-      isActiva.value = empresa.value?.activa
+      isActiva.value = empresa.value?.activa || null
     }
   })
 </script>

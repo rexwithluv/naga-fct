@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { useAuthStore } from '@/stores/authStore'
+  import { Empresa } from '@/types/models/Empresa'
   import { StoreGeneric } from 'pinia'
   import { ModelRef, ref, Ref, watch } from 'vue'
   import { useConcello } from '../../composables/useConcello'
@@ -26,13 +27,13 @@
       telefono: '',
       email: '',
     },
-  })
+  } as Empresa)
 
   const handleCreateEmpresa = async () => {
     const success = await createEmpresa(empresa.value)
     if (success) {
       emit('empresaCreada')
-      visible.value = false
+      isVisible.value = false
     }
   }
 

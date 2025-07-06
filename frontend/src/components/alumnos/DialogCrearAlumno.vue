@@ -25,7 +25,7 @@
     concello: { id: 0 },
     estado: { id: 0 },
     tutorCentro: { id: 0 },
-  })
+  } as Alumno)
 
   const handleCreateAlumno = async () => {
     const success = await createAlumno(alumno.value)
@@ -133,7 +133,7 @@
           class="flex-auto"
           :options="tutoresCentro"
           optionValue="id"
-          optionLabel="nombreCompletoCurso"
+          optionLabel="nombre"
           placeholder="Selecciona un tutor..."
           v-model="alumno.tutorCentro.id"
         />

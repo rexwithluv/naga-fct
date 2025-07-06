@@ -26,13 +26,13 @@
     estado: { id: 0 },
     concello: { id: 0 },
     tutorCentro: { id: 0 },
-  })
+  } as Alumno)
 
   const handleUpdateAlumno = async () => {
     const success = await updateAlumno(alumno.value)
     if (success) {
       emit('alumnoEditado')
-      visible.value = false
+      isVisible.value = false
     }
   }
 
@@ -137,7 +137,7 @@
           class="flex-auto"
           :options="tutoresCentro"
           optionValue="id"
-          optionLabel="nombreCompletoCurso"
+          optionLabel="nombre"
           placeholder="Selecciona un tutor..."
           v-model="alumno.tutorCentro.id"
         />

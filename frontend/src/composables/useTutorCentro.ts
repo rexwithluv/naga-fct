@@ -6,7 +6,7 @@ export function useTutorCentro() {
 
   const getTutoresCentro = async () => {
     try {
-      const response = await apiClient.get('/tutores-centro/')
+      const response = await apiClient.get('/tutores-centro')
       return response.data
     } catch (error: any) {
       toast.add({

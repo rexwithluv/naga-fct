@@ -4,7 +4,6 @@
   import { useSkill } from '@/composables/useSkill'
   import booleanToSpanish from '@/helpers/booleanToSpanish'
   import formatList from '@/helpers/formatList'
-  import { ContactoEmpresa } from '@/types/models/ContactoEmpresa'
   import { Empresa } from '@/types/models/Empresa'
   import { FilterMatchMode } from '@primevue/core/api'
   import { onMounted, Ref, ref } from 'vue'
@@ -16,9 +15,8 @@
   const empresas: Ref<Empresa[]> = ref([])
   const concellos = ref([])
   const skills = ref([])
-  const empresaID: Ref<number> = ref(0)
 
-  const selectedEmpresa: Ref<ContactoEmpresa> = ref(null)
+  const selectedEmpresa: Ref<Empresa | null> = ref(null)
   const showContactDialog: Ref<boolean> = ref(false)
   const showDetailsDialog: Ref<boolean> = ref(false)
   const showCreateDialog: Ref<boolean> = ref(false)
@@ -31,11 +29,11 @@
   })
 
   const openContactDialog = (empresaData: Empresa) => {
-    selectedEmpresa.value = empresaData
+    selectedEmpresa.value = empresaData || null
     showContactDialog.value = true
   }
   const openDetailsDialog = (empresaData: Empresa) => {
-    selectedEmpresa.value = empresaData
+    selectedEmpresa.value = empresaData || null
     showDetailsDialog.value = true
   }
   const openCreateDialog = () => {

@@ -15,18 +15,17 @@
     Sparkles,
   } from 'lucide-vue-next'
   import { StoreGeneric } from 'pinia'
-  import { ModelRef, ref, watch } from 'vue'
-import { TutorCentro } from '../../types/models/TutorCentro';
+  import { ModelRef, Ref, ref, watch } from 'vue'
 
   const authStore: StoreGeneric = useAuthStore()
 
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
-  const alumno: ModelRef<Alumno | null> = defineModel('selectedAlumno')
+  const alumno: ModelRef<Alumno | undefined> = defineModel('selectedAlumno')
 
-  const estado = ref(null)
+  const estado: Ref<string | null> = ref(null)
   watch(isVisible, (newValue) => {
     if (newValue) {
-      estado.value = alumno.value?.estado.nombre.toLowerCase()
+      estado.value = alumno.value?.estado.nombre.toLowerCase() || null
     }
   })
 </script>
@@ -54,7 +53,7 @@ import { TutorCentro } from '../../types/models/TutorCentro';
     </div>
     <div class="field mb-1" v-if="authStore.isAdmin">
       <p class="flex items-center gap-2">
-        <BookUser :size="18" aria-label="Teléfono de contacto" />
+        <BookUser :size="18" aria-label="Tutor de centro del alumno" />
         {{ alumno?.tutorCentro.nombre }} - {{ alumno?.tutorCentro.curso }}
       </p>
     </div>
