@@ -1,18 +1,17 @@
 <script setup lang="ts">
-  import apiClient from '@/apiClient'
-  import { FCT } from '@/types/models/FCT'
+  import { useFct } from '@/composables/useFct'
+  import formatDate from '@/helpers/formatDate'
+  import { FCTResponse } from '@/types/models/FCT'
   import { FilterMatchMode } from '@primevue/core/api'
-  import { ToastServiceMethods, useConfirm } from 'primevue'
-  import { useToast } from 'primevue/usetoast'
   import { onMounted, Ref, ref } from 'vue'
 
-  const toast: ToastServiceMethods = useToast()
-  const confirm = useConfirm()
+  const { getAllFct, deleteFct } = useFct()
 
-  const fct: Ref<FCT[]> = ref([])
-  const FCTID: Ref<number> = ref(0)
-  const dialogDetalles: Ref<boolean> = ref(false)
-  const dialogCrear: Ref<boolean> = ref(false)
+  const fct: Ref<FCTResponse[]> = ref([])
+
+  const selectedFct: Ref<FCTResponse | object> = ref({})
+  const showDetailsDialog: Ref<boolean> = ref(false)
+  const showCreateDialog: Ref<boolean> = ref(false)
 
   const filters = ref({
     alumno: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -20,78 +19,39 @@
     fechaFin: { value: null, matchMode: FilterMatchMode.DATE_IS },
   })
 
-  const getFct = async () => {
-    try {
-      const response = await apiClient.get('/fct')
-      fct.value = response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al cargar las FCT',
-        detail: error.message,
-        life: 5000,
-      })
+  const openDetailsDialog = (fctData: FCTResponse) => {
+    selectedFct.value = fctData
+    showDetailsDialog.value = true
+  }
+  const openCreateDialog = () => {
+    showCreateDialog.value = true
+  }
+
+  const handleGetAllFct = async () => {
+    fct.value = await getAllFct()
+  }
+  const handleDeleteFct = async (fctData: FCTResponse) => {
+    const success = await deleteFct(fctData)
+    if (success) {
+      fct.value = await getAllFct()
     }
   }
 
-  const deleteFct = async (id: number): Promise<void> => {
-    confirm.require({
-      message: '¿Estás seguro de que quieres finalizar esta FCT?',
-      header: 'Finalizar FCT',
-      /* icon: 'pipi', */
-      rejectProps: {
-        label: 'Cancelar',
-      },
-      acceptProps: {
-        label: 'Finalizar',
-      },
-
-      accept: async () => {
-        try {
-          await apiClient.delete(`/fct/${id}`)
-          toast.add({
-            severity: 'success',
-            summary: 'FCT finalizada correctamente.',
-            detail: `Se ha finalizado la FCT con id ${id}.`,
-            life: 5000,
-          })
-          getFct()
-        } catch (error: any) {
-          toast.add({
-            severity: 'error',
-            summary: 'Error al finalizar la FCT.',
-            detail: error.message,
-            life: 5000,
-          })
-        }
-      },
-    })
-  }
-
-  const verDetalles = (id: number) => {
-    FCTID.value = id
-    dialogDetalles.value = true
-  }
-
-  const verCrear = () => {
-    dialogCrear.value = true
-  }
-
   onMounted(async () => {
-    await getFct()
+    fct.value = await getAllFct()
   })
 </script>
 
 <template>
   <div>
     <ConfirmDialog />
-    <DialogDetallesFCT v-model:FCTID="FCTID" v-model:visible="dialogDetalles" />
-    <DialogCrearFCT v-model:visible="dialogCrear" @fctCreada="getFct"></DialogCrearFCT>
+    <DialogDetallesFCT v-model:selectedFct="selectedFct" v-model:isVisible="showDetailsDialog" />
+    <DialogCrearFCT v-model:isVisible="showCreateDialog" @fctCreada="handleGetAllFct" />
 
     <div class="mb-5 text-center">
       <div class="mb-5">
         <h1 class="text-2xl font-bold mb-3">FCT</h1>
-        <Button label="Crear FCT" @click="verCrear" />
+        <Button label="Crear FCT" @click="openCreateDialog" />
       </div>
 
       <div class="flex text-center gap-2">
@@ -141,13 +101,21 @@
       <Column field="alumno" header="Alumno" />
       <Column field="tutorEmpresa" header="Tutor en la empresa" />
       <Column field="empresa" header="Empresa" />
-      <Column field="fechaInicio" header="Fecha de inicio" />
-      <Column field="fechaFin" header="Fecha de fin" />
+      <Column header="Fecha de inicio">
+        <template #body="{ data }">
+          {{ formatDate(data.fechaInicio) }}
+        </template>
+      </Column>
+      <Column field="fechaFin" header="Fecha de fin">
+        <template #body="{ data }">
+          {{ formatDate(data.fechaFin) }}
+        </template>
+      </Column>
       <Column header="Acciones">
         <template #body="{ data }">
-          <Button class="mr-2" label="Ver detalles" @click="verDetalles(data.id)" />
-          <Button class="mr-2" label="Editar" @click="verDetalles(data.id)" />
-          <Button label="Finalizar" @click="deleteFct(data.id)" />
+          <Button class="mr-2" label="Ver detalles" @click="openDetailsDialog(data)" />
+          <Button class="mr-2" label="Editar" @click="openDetailsDialog(data)" disabled />
+          <Button label="Finalizar" @click="handleDeleteFct(data)" />
         </template>
       </Column>
     </DataTable>

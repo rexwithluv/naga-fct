@@ -11,7 +11,7 @@
   import { onMounted, Ref, ref } from 'vue'
 
   const authStore: StoreGeneric = useAuthStore()
-  const { getAlumnos, getAlumno, deleteAlumno } = useAlumno()
+  const { getAlumnos, deleteAlumno } = useAlumno()
   const { getConcellos } = useConcello()
   const { getEstadosAlumno } = useEstadoAlumno()
 

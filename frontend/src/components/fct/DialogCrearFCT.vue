@@ -1,84 +1,42 @@
 <script setup lang="ts">
-  import apiClient from '@/apiClient'
-  import { ToastServiceMethods, useToast } from 'primevue'
+  import { useAlumno } from '@/composables/useAlumno'
+  import { useFct } from '@/composables/useFct'
+  import { useTutorEmpresa } from '@/composables/useTutorEmpresa'
+  import { Alumno } from '@/types/models/Alumno'
+  import { FCTRequest } from '@/types/models/FCT'
+  import { TutorEmpresa } from '@/types/models/TutorEmpresa'
   import { ModelRef, ref, Ref, watch } from 'vue'
 
   const emit = defineEmits(['fctCreada'])
-  const visible: ModelRef<boolean | undefined> = defineModel('visible')
+  const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
 
-  const toast: ToastServiceMethods = useToast()
+  const { createFCTRequest, createFct } = useFct()
+  const { getAlumnos } = useAlumno()
+  const { getTutoresEmpresa } = useTutorEmpresa()
 
-  const alumnos: Ref<any[]> = ref([])
-  const tutoresEmpresa: Ref<any[]> = ref([])
+  const fct: Ref<FCTRequest> = ref(createFCTRequest())
+  const alumnos: Ref<Alumno[]> = ref([])
+  const tutoresEmpresa: Ref<TutorEmpresa[]> = ref([])
 
-  const nuevaFct = () => ({
-    alumnoId: null,
-    tutorEmpresaId: null,
-    fechaInicio: null,
-    fechaFin: null,
-  })
-  const fct = ref(nuevaFct())
-
-  const crearFct = async (): Promise<void> => {
-    try {
-      await apiClient.post('/fct', fct.value)
-      toast.add({
-        severity: 'success',
-        summary: 'FCT creada correctamente.',
-        detail: 'Se ha creado la FCT con la información proporcionada',
-        life: 5000,
-      })
+  const handleCreateFct = async () => {
+    const success = await createFct(fct.value)
+    if (success) {
       emit('fctCreada')
-      visible.value = false
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al guardar la FCT.',
-        detail: error.message,
-        life: 5000,
-      })
+      isVisible.value = false
     }
   }
 
-  const obtenerAlumnos = async () => {
-    try {
-      const response = await apiClient.get('/alumnos')
-      alumnos.value = response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener los alumnos.',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
-
-  const obtenerTutoresEmpresa = async () => {
-    try {
-      const response = await apiClient.get('/tutores-empresa')
-      tutoresEmpresa.value = response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener los tutores de empresa.',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
-
-  watch(visible, async (newValue) => {
+  watch(isVisible, async (newValue) => {
     if (newValue) {
-      await obtenerAlumnos()
-      await obtenerTutoresEmpresa()
-      fct.value = nuevaFct()
+      fct.value = createFCTRequest()
+      alumnos.value = await getAlumnos()
+      tutoresEmpresa.value = await getTutoresEmpresa()
     }
   })
 </script>
 
 <template>
-  <Dialog v-model:visible="visible" header="Crear FCT" modal dismissableMask>
+  <Dialog v-model:visible="isVisible" header="Crear FCT" modal dismissableMask>
     <div class="flex items-center gap-4 mb-4">
       <label for="alumno" class="font-semibold w-24">Alumno</label>
       <Select
@@ -91,7 +49,9 @@
         placeholder="Juan Pérez"
         v-model="fct.alumnoId"
       />
+    </div>
 
+    <div class="flex items-center gap-4 mb-4">
       <label for="tutorEmpresa" class="font-semibold w-24">Tutor de empresa</label>
       <Select
         id="tutorEmpresa"
@@ -108,25 +68,18 @@
     <div class="flex items-center gap-4 mb-4">
       <label for="fechaInicio" class="font-semibold w-24">Fecha de inicio</label>
       <DatePicker
-        v-model="fct.fechaInicio"
         id="fechaInicio"
         name="fechaInicio"
-        inline
-        class="w-full sm:w-[30rem]"
+        v-model="fct.fechaInicio"
+        dateFormat="dd/mm/yy"
       />
 
       <label for="fechaFin" class="font-semibold w-24">Fecha de fin</label>
-      <DatePicker
-        v-model="fct.fechaFin"
-        id="fechaFin"
-        name="fechaFin"
-        inline
-        class="w-full sm:w-[30rem]"
-      />
+      <DatePicker id="fechaFin" name="fechaFin" v-model="fct.fechaFin" dateFormat="dd/mm/yy" />
     </div>
 
     <div class="text-center">
-      <Button type="button" label="Guardar" @click="crearFct" />
+      <Button type="button" label="Guardar" @click="handleCreateFct" />
     </div>
   </Dialog>
 </template>

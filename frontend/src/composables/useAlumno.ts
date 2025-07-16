@@ -99,7 +99,7 @@ export function useAlumno() {
     if (['de baja', 'graduado'].includes(estado)) {
       toast.add({
         severity: 'error',
-        summary: `Error al dar de baja al alumno.`,
+        summary: 'Error al dar de baja al alumno.',
         detail: 'No se puede dar de baja a un alumno graduado o que ya esté de baja.',
         life: 5000,
       })

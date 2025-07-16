@@ -40,6 +40,9 @@
     showCreateDialog.value = true
   }
 
+  const handleGetEmpresas = async () => {
+    empresas.value = await getEmpresas()
+  }
   const handleDeleteEmpresa = async (empresaData: Empresa) => {
     const success: boolean = await deleteEmpresa(empresaData)
     if (success) {
@@ -67,7 +70,7 @@
     />
     <DialogCrearEmpresa
       v-model:isVisible="showCreateDialog"
-      @empresaCreada="getEmpresas"
+      @empresaCreada="handleGetEmpresas"
     ></DialogCrearEmpresa>
 
     <div class="mb-5 text-center">
@@ -149,8 +152,8 @@
         <template #body="{ data }">
           <Button class="mr-2" label="Ver contacto" @click="openContactDialog(data)" />
           <Button class="mr-2" label="Ver detalles" @click="openDetailsDialog(data)" />
-          <Button class="mr-2" label="Editar" @click="openDetailsDialog(data)" />
-          <Button label="Marcar como inactiva" @click="deleteEmpresa(data)" />
+          <Button class="mr-2" label="Editar" @click="openDetailsDialog(data)" disabled />
+          <Button label="Marcar como inactiva" @click="handleDeleteEmpresa(data)" />
         </template>
       </Column>
     </DataTable>
