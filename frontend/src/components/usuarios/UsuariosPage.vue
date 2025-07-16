@@ -24,7 +24,7 @@
       toast.add({
         severity: 'error',
         summary: 'Error al cargar los usuarios',
-        detail: error.message,
+        detail: error.response.data.detail,
         life: 5000,
       })
     }
@@ -56,7 +56,7 @@
           toast.add({
             severity: 'error',
             summary: 'Error al eliminar el usuario.',
-            detail: error.message,
+            detail: error.response.data.detail,
             life: 5000,
           })
         }

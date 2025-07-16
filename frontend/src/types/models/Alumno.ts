@@ -1,6 +1,6 @@
 import { Concello } from './Concello'
 import { EstadoAlumno } from './EstadoAlumno'
-import { TutorCentro } from './TutorCentro'
+import { TutorCentroResponse } from './TutorCentro'
 
 export interface Alumno {
   id: number
@@ -12,5 +12,5 @@ export interface Alumno {
   concello: Concello
   numeroSeguridadSocial: string
   estado: EstadoAlumno
-  tutorCentro: TutorCentro
+  tutorCentro: TutorCentroResponse
 }

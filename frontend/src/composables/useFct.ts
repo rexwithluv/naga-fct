@@ -24,7 +24,7 @@ export function useFct() {
       toast.add({
         severity: 'error',
         summary: 'Error al cargar los alumnos.',
-        detail: error.message,
+        detail: error.response.data.detail,
         life: 5000,
       })
     }
@@ -45,7 +45,7 @@ export function useFct() {
         toast.add({
           severity: 'error',
           summary: 'Error al guardar la FCT.',
-          detail: error.message,
+          detail: error.response.data.detail,
           life: 5000,
         })
         resolve(false)
@@ -93,7 +93,7 @@ export function useFct() {
             toast.add({
               severity: 'error',
               summary: 'Error al finalizar la FCT.',
-              detail: error.message,
+              detail: error.response.data.detail,
               life: 5000,
             })
             resolve(false)

@@ -12,7 +12,7 @@ export function useSkill() {
       toast.add({
         severity: 'error',
         summary: 'Error al obtener las skills.',
-        detail: error.message,
+        detail: error.response.data.detail,
         life: 5000,
       })
     }

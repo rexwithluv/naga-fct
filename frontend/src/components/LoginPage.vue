@@ -47,7 +47,7 @@
       toast.add({
         severity: 'error',
         summary: 'Error de inicio de sesión',
-        detail: error.message,
+        detail: error.response.data.detail,
         life: 3000,
       })
     }

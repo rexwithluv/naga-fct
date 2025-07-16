@@ -1,95 +1,49 @@
 <script setup lang="ts">
-  import apiClient from '@/apiClient'
-  import { useAuthStore } from '@/stores/authStore'
-  import { StoreGeneric } from 'pinia'
-  import { ToastServiceMethods, useToast } from 'primevue'
+  import { useCurso } from '@/composables/useCurso'
+  import { useTutorCentro } from '@/composables/useTutorCentro'
+  import { useUsuario } from '@/composables/useUsuario'
+  import { CursoResponse } from '@/types/models/Curso'
+  import { TutorCentroRequest } from '@/types/models/TutorCentro'
+  import { Usuario } from '@/types/models/Usuario'
   import { ModelRef, ref, Ref, watch } from 'vue'
 
   const emit = defineEmits(['tutorCentroCreado'])
-  const visible: ModelRef<boolean | undefined> = defineModel('visible')
+  const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
 
-  const auth: StoreGeneric = useAuthStore()
-  const toast: ToastServiceMethods = useToast()
+  const { createTutorCentroRequest, createTutorCentro } = useTutorCentro()
+  const { getCursos } = useCurso()
+  const { getUsuarios } = useUsuario()
 
-  const cursos: Ref<any[]> = ref([])
-  const usuarios = ref([])
+  const tutorCentro: Ref<TutorCentroRequest> = ref(createTutorCentroRequest())
+  const cursos: Ref<CursoResponse[]> = ref([])
+  const usuarios: Ref<Usuario[]> = ref([])
 
-  const nuevoTutorCentro = () => ({
-    nombre: null,
-    apellidos: null,
-    email: null,
-    cursoId: null,
-    usuarioId: null,
-  })
-  const tutorCentro = ref(nuevoTutorCentro())
-
-  const crearTutorCentro = async (): Promise<void> => {
-    try {
-      await apiClient.post('/tutores-centro', tutorCentro.value)
-      toast.add({
-        severity: 'success',
-        summary: 'Tutor de centro creado correctamente',
-        detail: 'Se ha creado el tutor de centro con la información proporcionada',
-        life: 5000,
-      })
+  const handleCreateTutorCentro = async (): Promise<void> => {
+    const success = await createTutorCentro(tutorCentro.value)
+    if (success) {
       emit('tutorCentroCreado')
-      visible.value = false
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al guardar el tutor de centro.',
-        detail: error.message,
-        life: 5000,
-      })
+      isVisible.value = false
     }
   }
 
-  const obtenerCursos = async () => {
-    try {
-      const response = await apiClient.get('/cursos')
-      cursos.value = response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener los cursos.',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
-
-  const obtenerUsuarios = async () => {
-    try {
-      const response = await apiClient.get('/usuarios')
-      usuarios.value = response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener los usuarios.',
-        detail: error.message,
-        life: 5000,
-      })
-    }
-  }
-
-  watch(visible, async (newValue) => {
+  watch(isVisible, async (newValue) => {
     if (newValue) {
-      await obtenerCursos()
-      await obtenerUsuarios()
-      tutorCentro.value = nuevoTutorCentro()
+      tutorCentro.value = createTutorCentroRequest()
+      cursos.value = await getCursos(false)
+      usuarios.value = await getUsuarios(false)
     }
   })
 </script>
 
 <template>
-  <Dialog v-model:visible="visible" header="Crear tutor de centro" modal dismissableMask>
+  <Dialog v-model:visible="isVisible" header="Crear tutor de centro" modal dismissableMask>
     <div class="flex items-center gap-4 mb-4">
       <label for="nombre" class="font-semibold w-24">Nombre</label>
       <InputText
         id="nombre"
         class="flex-auto"
         autocomplete="off"
-        placeholder="Lucíaxº"
+        placeholder="Lucía"
         v-model="tutorCentro.nombre"
       />
 
@@ -141,7 +95,7 @@
     </div>
 
     <div class="text-center">
-      <Button type="button" label="Guardar" @click="crearTutorCentro" />
+      <Button type="button" label="Guardar" @click="handleCreateTutorCentro" />
     </div>
   </Dialog>
 </template>

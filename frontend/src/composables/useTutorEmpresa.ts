@@ -12,7 +12,7 @@ export function useTutorEmpresa() {
       toast.add({
         severity: 'error',
         summary: 'Error al obtener los tutores de empresas.',
-        detail: error.message,
+        detail: error.response.data.detail,
         life: 5000,
       })
     }

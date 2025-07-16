@@ -34,7 +34,7 @@
       toast.add({
         severity: 'error',
         summary: 'Error al guardar el tutor de empresa.',
-        detail: error.message,
+        detail: error.response.data.detail,
         life: 5000,
       })
     }
@@ -48,7 +48,7 @@
       toast.add({
         severity: 'error',
         summary: 'Error al obtener las empresas.',
-        detail: error.message,
+        detail: error.response.data.detail,
         life: 5000,
       })
     }

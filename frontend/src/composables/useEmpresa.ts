@@ -15,7 +15,7 @@ export function useEmpresa() {
       toast.add({
         severity: 'error',
         summary: 'Error al cargar las empresas',
-        detail: error.message,
+        detail: error.response.data.detail,
         life: 5000,
       })
     }
@@ -36,7 +36,7 @@ export function useEmpresa() {
         toast.add({
           severity: 'error',
           summary: 'Error al guardar la empresa.',
-          detail: error.message,
+          detail: error.response.data.detail,
           life: 5000,
         })
         resolve(false)
@@ -83,7 +83,7 @@ export function useEmpresa() {
             toast.add({
               severity: 'error',
               summary: 'Error al dar de baja a la empresa.',
-              detail: error.message,
+              detail: error.response.data.detail,
               life: 5000,
             })
             resolve(false)

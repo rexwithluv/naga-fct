@@ -21,7 +21,7 @@
       toast.add({
         severity: 'error',
         summary: 'Error al cargar los tutores de empresa.',
-        detail: error.message,
+        detail: error.response.data.detail,
         life: 5000,
       })
     }

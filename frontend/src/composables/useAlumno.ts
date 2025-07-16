@@ -25,7 +25,7 @@ export function useAlumno() {
       toast.add({
         severity: 'error',
         summary: 'Error al cargar los alumnos.',
-        detail: error.message,
+        detail: error.response.data.detail,
         life: 5000,
       })
     }
@@ -39,7 +39,7 @@ export function useAlumno() {
       toast.add({
         severity: 'error',
         summary: 'Error al cargar la/el alumna/o',
-        detail: error.message,
+        detail: error.response.data.detail,
         life: 5000,
       })
     }
@@ -60,7 +60,7 @@ export function useAlumno() {
         toast.add({
           severity: 'error',
           summary: 'Error al guardar la/el alumna/o.',
-          detail: error.message,
+          detail: error.response.data.detail,
           life: 5000,
         })
         resolve(false)
@@ -83,7 +83,7 @@ export function useAlumno() {
         toast.add({
           severity: 'error',
           summary: 'Error al actualizar la información del alumno.',
-          detail: error.message,
+          detail: error.response.data.detail,
           life: 5000,
         })
         resolve(false)
@@ -130,7 +130,7 @@ export function useAlumno() {
             toast.add({
               severity: 'error',
               summary: `Error al dar de baja al alumno.`,
-              detail: error.message,
+              detail: error.response.data.detail,
               life: 5000,
             })
             resolve(false)

@@ -1,104 +1,74 @@
 <script setup lang="ts">
-  import apiClient from '@/apiClient'
-  import { TutorCentro } from '@/types/models/TutorCentro'
-  import { ToastServiceMethods, useConfirm } from 'primevue'
-  import { useToast } from 'primevue/usetoast'
+  import { useTutorCentro } from '@/composables/useTutorCentro'
+  import booleanToSpanish from '@/helpers/booleanToSpanish'
+  import { TutorCentroResponse } from '@/types/models/TutorCentro'
   import { onMounted, Ref, ref } from 'vue'
   import DialogCrearTutorCentro from './DialogCrearTutorCentro.vue'
   import DialogDetallesTutorCentro from './DialogDetallesTutorCentro.vue'
 
-  const toast: ToastServiceMethods = useToast()
-  const confirm = useConfirm()
+  const { getTutoresCentro, deleteTutorCentro } = useTutorCentro()
 
-  const tutores: Ref<TutorCentro[]> = ref([])
-  const tutorID: Ref<number> = ref(0)
-  const dialogDetalles: Ref<boolean> = ref(false)
-  const dialogCrear: Ref<boolean> = ref(false)
+  const tutoresCentro: Ref<TutorCentroResponse[]> = ref([])
 
-  const getTutoresCentro = async () => {
-    try {
-      const response = await apiClient.get('/tutores-centro')
-      tutores.value = response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al cargar los tutores',
-        detail: error.message,
-        life: 5000,
-      })
+  const selectedTutorCentro: Ref<TutorCentroResponse> = ref({} as TutorCentroResponse)
+  const showDetailsDialog: Ref<boolean> = ref(false)
+  const showCreateDialog: Ref<boolean> = ref(false)
+
+  const openDetailsDialog = (tutorCentroData: TutorCentroResponse) => {
+    selectedTutorCentro.value = tutorCentroData
+    showDetailsDialog.value = true
+  }
+  const openCreateDialog = () => {
+    showCreateDialog.value = true
+  }
+
+  const handleGetTutoresCentro = async () => {
+    tutoresCentro.value = await getTutoresCentro()
+  }
+  const handleDeleteTutorCentro = async (tutorCentroData: TutorCentroResponse) => {
+    const success = await deleteTutorCentro(tutorCentroData)
+    if (success) {
+      tutoresCentro.value = await getTutoresCentro()
     }
   }
 
-  const deleteTutorCentro = async (id: number): Promise<void> => {
-    confirm.require({
-      message: '¿Estás seguro de que quieres eliminar a este tutor de centro?',
-      header: 'Eliminar tutor de centro',
-      /* icon: 'pipi', */
-      rejectProps: {
-        label: 'Cancelar',
-      },
-      acceptProps: {
-        label: 'Eliminar',
-      },
-
-      accept: async () => {
-        try {
-          await apiClient.delete(`/tutores-centro/${id}`)
-          toast.add({
-            severity: 'success',
-            summary: 'Tutor de centro eliminado correctamente.',
-            detail: `Se ha eliminado el tutor de centro con id ${id}.`,
-            life: 5000,
-          })
-          getTutoresCentro()
-        } catch (error: any) {
-          toast.add({
-            severity: 'error',
-            summary: 'Error al eliminar el tutor de centro.',
-            detail: error.message,
-            life: 5000,
-          })
-        }
-      },
-    })
-  }
-
-  const verDetalles = (id: number) => {
-    tutorID.value = id
-    dialogDetalles.value = true
-  }
-
-  const verCrear = () => {
-    dialogCrear.value = true
-  }
-
   onMounted(async () => {
-    await getTutoresCentro()
+    tutoresCentro.value = await getTutoresCentro()
   })
 </script>
 
 <template>
   <div>
     <ConfirmDialog />
-    <DialogDetallesTutorCentro v-model:tutorID="tutorID" v-model:visible="dialogDetalles" />
-    <DialogCrearTutorCentro v-model:visible="dialogCrear" @tutorCentroCreado="getTutoresCentro" />
+    <DialogDetallesTutorCentro
+      v-model:selectedTutorCentro="selectedTutorCentro"
+      v-model:isVisible="showDetailsDialog"
+    />
+    <DialogCrearTutorCentro
+      v-model:isVisible="showCreateDialog"
+      @tutorCentroCreado="handleGetTutoresCentro"
+    />
 
     <div class="mb-5 text-center">
       <h1 class="text-2xl font-bold mb-3">Tutores de centro</h1>
-      <Button label="Crear tutor de centro" @click="verCrear" />
+      <Button label="Crear tutor de centro" @click="openCreateDialog" />
     </div>
 
-    <DataTable :value="tutores" paginator :rows="10" rowHover>
+    <DataTable :value="tutoresCentro" paginator :rows="10" rowHover>
       <Column field="nombre" header="Nombre" />
       <Column field="apellidos" header="Apellidos" />
       <Column field="email" header="Email" />
       <Column field="curso" header="Curso" />
-      <Column field="activo" header="Activo" />
+      <Column field="activo" header="Activo?">
+        <template #body="{ data }">
+          {{ booleanToSpanish(data.activo) }}
+        </template>
+      </Column>
       <Column header="Acciones">
         <template #body="{ data }">
-          <Button class="mr-2" label="Ver detalles" @click="verDetalles(data.id)" />
-          <Button class="mr-2" label="Editar" @click="verDetalles(data.id)" />
-          <Button label="Marcar como inactivo" @click="deleteTutorCentro(data.id)" />
+          <Button class="mr-2" label="Ver detalles" @click="openDetailsDialog(data)" />
+          <Button class="mr-2" label="Editar" @click="openDetailsDialog(data)" disabled />
+          <Button label="Desactivar" @click="handleDeleteTutorCentro(data)" />
         </template>
       </Column>
     </DataTable>

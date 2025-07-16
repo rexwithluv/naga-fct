@@ -18,7 +18,7 @@
       toast.add({
         severity: 'error',
         summary: 'Error al cargar la/el tutora/',
-        detail: error.message,
+        detail: error.response.data.detail,
         life: 5000,
       })
     }

@@ -138,14 +138,14 @@
       <Column field="nombre" header="Nombre" />
       <Column field="concello" header="Concello" />
       <Column field="activa" header="Activa?">
-        <template #body="slotProps">
-          {{ booleanToSpanish(slotProps.data.activa) }}
+        <template #body="{ data }">
+          {{ booleanToSpanish(data.activa) }}
         </template>
       </Column>
       <Column field="plazas" header="Plazas" />
       <Column header="Skills">
-        <template #body="slotProps">
-          {{ formatList(slotProps.data.skills) }}
+        <template #body="{ data }">
+          {{ formatList(data.skills) }}
         </template>
       </Column>
       <Column header="Acciones">

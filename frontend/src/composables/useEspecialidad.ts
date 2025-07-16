@@ -12,7 +12,7 @@ export function useEspecialidad() {
       toast.add({
         severity: 'error',
         summary: 'Error al obtener las especialidades.',
-        detail: error.message,
+        detail: error.response.data.detail,
         life: 5000,
       })
     }
