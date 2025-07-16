@@ -64,13 +64,13 @@ public class TutorCentroService {
 
     if (usuarioId != null) {
       usuario = usuarioService.obtenerUsuarioPorId(usuarioId);
-      if (usuario.getTutor() != null) {
+      if (usuario.getTutorCentro() != null) {
         throw new TutorCentroConflictUsuarioException();
       }
     }
 
     Curso curso = cursoService.obtenerCursoPorId(dto.getCursoId());
-    if (curso.getTutor() != null) {
+    if (curso.getTutorCentro() != null) {
       throw new TutorCentroConflictCursoAsignadoException();
     }
     TutorCentro nuevoTutorCentro =

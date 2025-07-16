@@ -52,5 +52,5 @@ public class Curso {
 
   @OneToOne(mappedBy = "curso")
   @JsonIgnore
-  private TutorCentro tutor;
+  private TutorCentro tutorCentro;
 }

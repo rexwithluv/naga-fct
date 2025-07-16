@@ -3,6 +3,7 @@ package gal.iesteis.backend.usuario;
 import gal.iesteis.backend.config.security.UserDetailsImpl;
 import gal.iesteis.backend.usuario.dto.UsuarioDTOCreate;
 import jakarta.validation.Valid;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,8 +25,11 @@ public class UsuarioController {
   @Autowired private UsuarioService service;
 
   @GetMapping("")
-  public ResponseEntity<?> getAll(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodos(userDetails));
+  public ResponseEntity<?> getAll(
+      @AuthenticationPrincipal UserDetailsImpl userDetails,
+      @RequestParam Optional<Boolean> hasTutorCentro) {
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(service.obtenerTodos(userDetails, hasTutorCentro));
   }
 
   @GetMapping("/{id}")
@@ -38,7 +43,7 @@ public class UsuarioController {
   }
 
   @PostMapping("")
-  public ResponseEntity<?> createFct(@RequestBody @Valid UsuarioDTOCreate dto) {
+  public ResponseEntity<?> createUsuario(@RequestBody @Valid UsuarioDTOCreate dto) {
     return ResponseEntity.status(HttpStatus.OK).body(service.crearUsuario(dto));
   }
 

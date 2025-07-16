@@ -50,5 +50,5 @@ public class Usuario {
   private Boolean activo;
 
   @OneToOne(mappedBy = "usuario")
-  private TutorCentro tutor;
+  private TutorCentro tutorCentro;
 }

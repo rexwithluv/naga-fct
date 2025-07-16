@@ -12,6 +12,7 @@ import gal.iesteis.backend.usuario.exceptions.UsuarioConflictException;
 import gal.iesteis.backend.usuario.exceptions.UsuarioForbiddenException;
 import gal.iesteis.backend.usuario.exceptions.UsuarioNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -28,12 +29,22 @@ public class UsuarioService {
 
   @Lazy @Autowired private TutorCentroService tutorCentroService;
 
-  public List<UsuarioDTO> obtenerTodos(UserDetailsImpl userDetails) {
+  public List<UsuarioDTO> obtenerTodos(
+      UserDetailsImpl userDetails, Optional<Boolean> hasTutorCentro) {
     if (!AuthUtils.isAdmin(userDetails)) {
       throw new UsuarioForbiddenException();
     }
 
-    List<Usuario> usuarios = repository.findAll();
+    List<Usuario> usuarios;
+    if (hasTutorCentro.isPresent()) {
+      if (hasTutorCentro.get()) {
+        usuarios = repository.findByTutorCentroIsNotNull();
+      }
+      usuarios = repository.findByTutorCentroIsNull();
+    } else {
+      usuarios = repository.findAll();
+    }
+
     return usuarios.stream()
         .map(usuario -> dtoConverter.usuarioADtoResponseAdmin(usuario))
         .toList();

@@ -23,10 +23,10 @@ public class UsuarioDTOConverter {
 
     dto.setRol(usuario.getRol().getNombre());
 
-    // Si .getTutor() da nulo, no da la excepción sino que simplemente asgina nulo.
+    // Si .getTutorCentro() da nulo, no da la excepción sino que simplemente asgina nulo.
     // Encadenamos .map() con funciones anónimas porque Optional funciona así
     dto.setTutor(
-        Optional.ofNullable(usuario.getTutor())
+        Optional.ofNullable(usuario.getTutorCentro())
             .map(tutor -> tutor.getCurso())
             .map(curso -> curso.getNombre())
             .orElse(null));
@@ -41,7 +41,7 @@ public class UsuarioDTOConverter {
     usuario.setPassword(passwordEncoder.encode("renaido"));
     usuario.setRol(rolUsuario);
     usuario.setActivo(true);
-    usuario.setTutor(tutorCentro);
+    usuario.setTutorCentro(tutorCentro);
 
     return usuario;
   }

@@ -32,7 +32,7 @@ public class UserDetailsImpl implements UserDetails {
     List<GrantedAuthority> authorities = new ArrayList<>();
     authorities.add(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getId()));
 
-    Long tutorCentroId = usuario.getTutor() != null ? usuario.getTutor().getId() : null;
+    Long tutorCentroId = usuario.getTutorCentro() != null ? usuario.getTutorCentro().getId() : null;
 
     return new UserDetailsImpl(
         usuario.getId(), usuario.getEmail(), tutorCentroId, usuario.getPassword(), authorities);
