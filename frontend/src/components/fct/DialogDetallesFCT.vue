@@ -19,7 +19,10 @@
         :size="36"
         aria-label="Nombre del alumno y de la empresa"
       />
-      <h3 class="text-xl font-semibold text-center">{{ fct?.alumno }} <br />{{ fct?.empresa }}</h3>
+      <h3 class="text-xl font-semibold text-center">
+        {{ fct?.alumno }}<br />
+        {{ fct?.empresa }}
+      </h3>
     </div>
 
     <hr class="mb-4" />

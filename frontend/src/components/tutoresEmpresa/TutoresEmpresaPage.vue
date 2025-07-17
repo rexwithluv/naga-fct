@@ -1,60 +1,52 @@
 <script setup lang="ts">
-  import apiClient from '@/apiClient'
-  import { ToastServiceMethods } from 'primevue'
-  import { useToast } from 'primevue/usetoast'
+  import { useTutorEmpresa } from '@/composables/useTutorEmpresa'
+  import { TutorEmpresaResponse } from '@/types/models/TutorEmpresa'
   import { onMounted, Ref, ref } from 'vue'
   import DialogCrearTutorEmpresa from './DialogCrearTutorEmpresa.vue'
   import DialogDetallesTutorEmpresa from './DialogDetallesTutorEmpresa.vue'
 
-  const toast: ToastServiceMethods = useToast()
+  const { getTutoresEmpresa } = useTutorEmpresa()
 
-  const tutores = ref([])
-  const tutorID: Ref<number> = ref(0)
-  const dialogDetalles: Ref<boolean> = ref(false)
-  const dialogCrear: Ref<boolean> = ref(false)
+  const tutoresEmpresa: Ref<TutorEmpresaResponse[]> = ref([])
 
-  const getTutoresEmpresa = async () => {
-    try {
-      const response = await apiClient.get('/tutores-empresa')
-      tutores.value = response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al cargar los tutores de empresa.',
-        detail: error.response.data.detail,
-        life: 5000,
-      })
-    }
+  const selectedTutorEmpresa: Ref<TutorEmpresaResponse> = ref({} as TutorEmpresaResponse)
+  const showDetailsDialog: Ref<boolean> = ref(false)
+  const showCreateDialog: Ref<boolean> = ref(false)
+
+  const handleGetTutoresEmpresa = async () => {
+    tutoresEmpresa.value = await getTutoresEmpresa()
   }
 
-  const verDetalles = (id: number) => {
-    tutorID.value = id
-    dialogDetalles.value = true
+  const openDetailsDialog = (tutorEmpresaData: TutorEmpresaResponse) => {
+    selectedTutorEmpresa.value = tutorEmpresaData
+    showDetailsDialog.value = true
   }
-
-  const verCrear = () => {
-    dialogCrear.value = true
+  const openCreateDialog = () => {
+    showCreateDialog.value = true
   }
 
   onMounted(async () => {
-    await getTutoresEmpresa()
+    tutoresEmpresa.value = await getTutoresEmpresa()
   })
 </script>
 
 <template>
   <div>
-    <DialogDetallesTutorEmpresa v-model:tutorID="tutorID" v-model:visible="dialogDetalles" />
+    <DialogDetallesTutorEmpresa
+      v-model:selectedTutorEmpresa="selectedTutorEmpresa"
+      v-model:isVisible="showDetailsDialog"
+    />
     <DialogCrearTutorEmpresa
-      v-model:visible="dialogCrear"
-      @tutorCreado="getTutoresEmpresa"
-    ></DialogCrearTutorEmpresa>
+      v-model:isVisible="showCreateDialog"
+      @tutorEmpresaCreado="handleGetTutoresEmpresa"
+    />
 
     <div class="mb-5 text-center">
       <h1 class="text-2xl font-bold mb-3">Tutores de empresa</h1>
-      <Button label="Crear tutor de empresa" @click="verCrear" />
+      <Button label="Crear tutor de empresa" @click="openCreateDialog" />
     </div>
 
-    <DataTable :value="tutores" paginator :rows="10" rowHover>
+    <DataTable :value="tutoresEmpresa" paginator :rows="10" rowHover>
       <Column field="nombre" header="Nombre" />
       <Column field="apellidos" header="Apellidos" />
       <Column field="empresa" header="Empresa" />
@@ -62,8 +54,8 @@
       <Column field="Telefono" header="Teléfono" />
       <Column header="Acciones">
         <template #body="{ data }">
-          <Button class="mr-2" label="Detalles" @click="verDetalles(data.id)" />
-          <Button label="Editar" @click="verDetalles(data.id)" />
+          <Button class="mr-2" label="Detalles" @click="openDetailsDialog(data)" />
+          <Button label="Editar" @click="openDetailsDialog(data)" />
         </template>
       </Column>
     </DataTable>

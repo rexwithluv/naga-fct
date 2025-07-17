@@ -1,46 +1,47 @@
 <script setup lang="ts">
-  import apiClient from '@/apiClient'
-  import { TutorEmpresa } from '@/types/models/TutorEmpresa'
-  import { ToastServiceMethods, useToast } from 'primevue'
-  import { ModelRef, Ref, ref, watch } from 'vue'
+  import { TutorEmpresaResponse } from '@/types/models/TutorEmpresa'
+  import { Building2, Mail, Phone, User } from 'lucide-vue-next'
+  import { ModelRef, Ref, ref } from 'vue'
 
-  const toast: ToastServiceMethods = useToast()
-
-  const tutorID: ModelRef<number | undefined> = defineModel('tutorID')
-  const visible: ModelRef<boolean | undefined> = defineModel('visible')
-  const tutor: Ref<TutorEmpresa | null> = ref(null)
-
-  const getTutorEmpresaData = async (): Promise<void> => {
-    try {
-      const response = await apiClient.get(`/tutores-empresa/${tutorID.value}`)
-      tutor.value = response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al cargar la/el tutora/',
-        detail: error.response.data.detail,
-        life: 5000,
-      })
-    }
-  }
-
-  // Solo cuando el Dialog es visible intentamos cargar los datos
-  watch(visible, async (newValue) => {
-    if (newValue) {
-      await getTutorEmpresaData()
-    }
-  })
+  const tutorEmpresa: ModelRef<TutorEmpresaResponse | undefined> =
+    defineModel('selectedTutorEmpresa')
+  const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
 </script>
 
 <template>
-  <Dialog v-model:visible="visible" header="Detalles de tutora/" modal dismissableMask>
-    <ul>
-      <li>ID: {{ tutor?.id }}</li>
-      <li>Nombre: {{ tutor?.nombre }}</li>
-      <li>Apellidos: {{ tutor?.apellidos }}</li>
-      <li>Empresa: {{ tutor?.empresa }}</li>
-      <li>Correo electrónico: {{ tutor?.email }}</li>
-      <li>Teléfono: {{ tutor?.telefono }}</li>
-    </ul>
+  <Dialog v-model:visible="isVisible" header="Detalles del tutor de empresa" modal dismissableMask>
+    <div class="flex flex-col items-center justify-center mb-5">
+      <div class="flex">
+        <User
+          class="text-primary mb-3"
+          :size="36"
+          aria-label="Tutor de empresa del alumno en FCT"
+        />
+        <Building2
+          class="text-primary mb-3"
+          :size="36"
+          aria-label="Tutor de empresa del alumno en FCT"
+        />
+      </div>
+      <h3 class="text-xl font-semibold text-center">
+        {{ tutorEmpresa?.nombre }} {{ tutorEmpresa?.apellidos }} <br />
+        {{ tutorEmpresa?.empresa }}
+      </h3>
+    </div>
+
+    <hr class="mb-4" />
+
+    <div class="field mb-1">
+      <p class="flex items-center gap-2">
+        <Mail :size="18" aria-label="E-mail de contacto del tutor de empresa" />
+        {{ tutorEmpresa?.email }}
+      </p>
+    </div>
+    <div class="field">
+      <p class="flex items-center gap-2">
+        <Phone :size="18" aria-label="E-mail de contacto del tutor de empresa" />
+        {{ tutorEmpresa?.telefono }}
+      </p>
+    </div>
   </Dialog>
 </template>

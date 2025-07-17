@@ -1,69 +1,35 @@
 <script setup lang="ts">
-  import apiClient from '@/apiClient'
-  import { ToastServiceMethods, useToast } from 'primevue'
+  import { useEmpresa } from '@/composables/useEmpresa'
+  import { useTutorEmpresa } from '@/composables/useTutorEmpresa'
   import { ModelRef, ref, Ref, watch } from 'vue'
 
-  const emit = defineEmits(['tutorCreado'])
-  const visible: ModelRef<boolean | undefined> = defineModel('visible')
+  const emit = defineEmits(['tutorEmpresaCreado'])
+  const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
 
-  const toast: ToastServiceMethods = useToast()
+  const { createTutorEmpresaRequest, createTutorEmpresa } = useTutorEmpresa()
+  const { getEmpresas } = useEmpresa()
 
+  const tutorEmpresa = ref(createTutorEmpresaRequest())
   const empresas: Ref<any[]> = ref([])
 
-  const nuevoTutorEmpresa = () => ({
-    nombre: null,
-    apellidos: null,
-    empresaId: null,
-    email: null,
-    telefono: null,
-  })
-  const tutorEmpresa = ref(nuevoTutorEmpresa())
-
-  const crearTutorEmpresa = async (): Promise<void> => {
-    try {
-      await apiClient.post('/tutores-empresa', tutorEmpresa.value)
-      toast.add({
-        severity: 'success',
-        summary: 'Tutor de empresa creado correctamente.',
-        detail: 'Se ha creado el tutor de empresa con la información proporcionada',
-        life: 5000,
-      })
-      emit('tutorCreado')
-      visible.value = false
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al guardar el tutor de empresa.',
-        detail: error.response.data.detail,
-        life: 5000,
-      })
+  const handleCreateTutorEmpresa = async (): Promise<void> => {
+    const success = await createTutorEmpresa(tutorEmpresa.value)
+    if (success) {
+      emit('tutorEmpresaCreado')
+      isVisible.value = false
     }
   }
 
-  const obtenerEmpresas = async () => {
-    try {
-      const response = await apiClient.get('/empresas')
-      return response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener las empresas.',
-        detail: error.response.data.detail,
-        life: 5000,
-      })
-    }
-  }
-
-  watch(visible, async (newValue) => {
+  watch(isVisible, async (newValue) => {
     if (newValue) {
-      empresas.value = await obtenerEmpresas()
-      tutorEmpresa.value = nuevoTutorEmpresa()
+      empresas.value = await getEmpresas()
+      tutorEmpresa.value = createTutorEmpresaRequest()
     }
   })
 </script>
 
 <template>
-  <Dialog v-model:visible="visible" header="Crear tutor de empresa" modal dismissableMask>
+  <Dialog v-model:visible="isVisible" header="Crear tutor de empresa" modal dismissableMask>
     <div class="flex items-center gap-4 mb-4">
       <label for="nombre" class="font-semibold w-24">Nombre</label>
       <InputText
@@ -119,7 +85,7 @@
     </div>
 
     <div class="text-center">
-      <Button type="button" label="Guardar" @click="crearTutorEmpresa" />
+      <Button type="button" label="Guardar" @click="handleCreateTutorEmpresa" />
     </div>
   </Dialog>
 </template>
