@@ -7,6 +7,7 @@ import gal.iesteis.backend.config.security.AuthUtils;
 import gal.iesteis.backend.config.security.UserDetailsImpl;
 import gal.iesteis.backend.fct.dto.FCTDTO;
 import gal.iesteis.backend.fct.dto.FCTDTOCreate;
+import gal.iesteis.backend.fct.exceptions.FCTConflictFinalizadaException;
 import gal.iesteis.backend.fct.exceptions.FCTForbiddenCreateException;
 import gal.iesteis.backend.fct.exceptions.FCTForbiddenException;
 import gal.iesteis.backend.fct.exceptions.FCTNotFoundException;
@@ -110,6 +111,10 @@ public class FCTService {
   @Transactional
   public void deleteFct(UserDetailsImpl userDetails, Long id) {
     FCT fct = getFctById(userDetails, id);
+
+    if (fct.getFechaFin() != null) {
+      throw new FCTConflictFinalizadaException();
+    }
 
     LocalDate hoy = LocalDate.now();
     fct.setFechaFin(hoy);

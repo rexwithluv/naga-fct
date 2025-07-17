@@ -96,16 +96,6 @@ export function useAlumno() {
     const nombreCompleto = `${alumnoData.nombre} ${alumnoData.apellidos}`
     const estado = alumnoData.estado.nombre.toLowerCase()
 
-    if (['de baja', 'graduado'].includes(estado)) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al dar de baja al alumno.',
-        detail: 'No se puede dar de baja a un alumno graduado o que ya esté de baja.',
-        life: 5000,
-      })
-      return false
-    }
-
     return new Promise((resolve) => {
       confirm.require({
         message: `¿Estás seguro de que quieres dar de baja a ${nombreCompleto}? Actualmente está ${estado}`,

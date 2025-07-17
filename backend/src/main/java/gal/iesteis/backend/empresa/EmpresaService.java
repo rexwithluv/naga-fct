@@ -5,6 +5,7 @@ import gal.iesteis.backend.config.security.UserDetailsImpl;
 import gal.iesteis.backend.empresa.dto.EmpresaDTO;
 import gal.iesteis.backend.empresa.dto.EmpresaDTOCreate;
 import gal.iesteis.backend.empresa.exceptions.EmpresaForbiddenException;
+import gal.iesteis.backend.empresa.exceptions.EmpresaInactivaException;
 import gal.iesteis.backend.empresa.exceptions.EmpresaNotFoundException;
 import gal.iesteis.backend.especialidad.Especialidad;
 import gal.iesteis.backend.tutorCentro.TutorCentro;
@@ -93,8 +94,11 @@ public class EmpresaService {
   public void deleteEmpresa(UserDetailsImpl userDetails, Long id) {
     Empresa empresa = obtenerEmpresaPorId(userDetails, id);
 
-    empresa.setActiva(false);
+    if (!empresa.getActiva()) {
+      throw new EmpresaInactivaException();
+    }
 
+    empresa.setActiva(false);
     repository.save(empresa);
   }
 }

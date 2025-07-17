@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { TutorEmpresaResponse } from '@/types/models/TutorEmpresa'
   import { Building2, Mail, Phone, User } from 'lucide-vue-next'
-  import { ModelRef, Ref, ref } from 'vue'
+  import { ModelRef } from 'vue'
 
   const tutorEmpresa: ModelRef<TutorEmpresaResponse | undefined> =
     defineModel('selectedTutorEmpresa')

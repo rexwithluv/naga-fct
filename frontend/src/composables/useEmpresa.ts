@@ -47,17 +47,6 @@ export function useEmpresa() {
   const deleteEmpresa = async (empresaData: Empresa): Promise<boolean> => {
     const id = empresaData.id
     const nombre = empresaData.nombre
-    const isActiva = empresaData.activa
-
-    if (!isActiva) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al marcar como inactiva la empresa.',
-        detail: 'No se puede marcar como inactiva una empresa que ya lo está.',
-        life: 5000,
-      })
-      return false
-    }
 
     return new Promise((resolve) => {
       confirm.require({
@@ -88,6 +77,9 @@ export function useEmpresa() {
             })
             resolve(false)
           }
+        },
+        reject: () => {
+          resolve(false)
         },
       })
     })

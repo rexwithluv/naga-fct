@@ -9,6 +9,7 @@ import gal.iesteis.backend.tutorCentro.TutorCentroService;
 import gal.iesteis.backend.usuario.dto.UsuarioDTO;
 import gal.iesteis.backend.usuario.dto.UsuarioDTOCreate;
 import gal.iesteis.backend.usuario.exceptions.UsuarioConflictException;
+import gal.iesteis.backend.usuario.exceptions.UsuarioConflictInactivoException;
 import gal.iesteis.backend.usuario.exceptions.UsuarioForbiddenException;
 import gal.iesteis.backend.usuario.exceptions.UsuarioNotFoundException;
 import java.util.List;
@@ -111,6 +112,11 @@ public class UsuarioService {
   @Transactional
   public void deleteUsuario(Long id) {
     Usuario usuario = obtenerUsuarioPorId(id);
+
+    if (!usuario.getActivo()) {
+      throw new UsuarioConflictInactivoException();
+    }
+
     usuario.setActivo(false);
     repository.save(usuario);
   }

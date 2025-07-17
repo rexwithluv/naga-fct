@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import apiClient from '@/apiClient'
   import { useAuthStore } from '@/stores/authStore'
-  import { Usuario } from '@/types/models/Usuario'
+  import { UsuarioResponse } from '@/types/models/Usuario'
   import { StoreGeneric } from 'pinia'
   import { useToast } from 'primevue/usetoast'
   import { onMounted, ref, Ref } from 'vue'
@@ -11,7 +11,7 @@
   const router: Router = useRouter()
   const toast = useToast()
 
-  const usuario: Ref<Usuario | null> = ref(null)
+  const usuario: Ref<UsuarioResponse | null> = ref(null)
 
   const logout = (): void => {
     auth.logout()

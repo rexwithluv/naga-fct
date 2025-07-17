@@ -56,17 +56,6 @@ export function useFct() {
   const deleteFct = async (fctData: FCTResponse): Promise<boolean> => {
     const id = fctData.id
     const alumnoNombre = fctData.alumno
-    const fechaFin = fctData.fechaFin
-
-    if (fechaFin) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al finalizar la FCT.',
-        detail: 'Esta FCT ya ha finalizado.',
-        life: 5000,
-      })
-      return false
-    }
 
     return new Promise((resolve) => {
       confirm.require({

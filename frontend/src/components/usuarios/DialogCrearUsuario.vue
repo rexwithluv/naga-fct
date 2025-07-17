@@ -1,83 +1,41 @@
 <script setup lang="ts">
-  import apiClient from '@/apiClient'
-  import { ToastServiceMethods, useToast } from 'primevue'
+  import { useRol } from '@/composables/useRol'
+  import { useTutorCentro } from '@/composables/useTutorCentro'
+  import { useUsuario } from '@/composables/useUsuario'
+  import { RolUsuarioResponse } from '@/types/models/Rol'
+  import { TutorCentroResponse } from '@/types/models/TutorCentro'
   import { ModelRef, ref, Ref, watch } from 'vue'
 
   const emit = defineEmits(['usuarioCreado'])
-  const visible: ModelRef<boolean | undefined> = defineModel('visible')
+  const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
 
-  const toast: ToastServiceMethods = useToast()
+  const { createUsuarioRequest, createUsuario } = useUsuario()
+  const { getRoles } = useRol()
+  const { getTutoresCentro } = useTutorCentro()
 
-  const roles: Ref<any[]> = ref([])
-  const tutoresCentro: Ref<any[]> = ref([])
+  const usuario = ref(createUsuarioRequest())
+  const rolesUsuario: Ref<RolUsuarioResponse[]> = ref([])
+  const tutoresCentro: Ref<TutorCentroResponse[]> = ref([])
 
-  const nuevoUsuario = () => ({
-    email: null,
-    rolId: null,
-    tutorId: null,
-  })
-  const usuario = ref(nuevoUsuario())
-
-  const crearUsuario = async (): Promise<void> => {
-    try {
-      await apiClient.post('/usuarios', usuario.value)
-      toast.add({
-        severity: 'success',
-        summary: 'Usuario creado correctamente.',
-        detail: 'Se ha creado el usuario con la información proporcionada',
-        life: 5000,
-      })
+  const handleCreateUsuario = async () => {
+    const success = await createUsuario(usuario.value)
+    if (success) {
       emit('usuarioCreado')
-      visible.value = false
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al guardar el tutor de empresa.',
-        detail: error.response.data.detail,
-        life: 5000,
-      })
+      isVisible.value = false
     }
   }
 
-  const obtenerRoles = async () => {
-    try {
-      const response = await apiClient.get('/roles-usuario')
-      return response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener los roles disponibles.',
-        detail: error.response.data.detail,
-        life: 5000,
-      })
-    }
-  }
-
-  const obtenerTutoresCentro = async () => {
-    try {
-      const response = await apiClient.get('/tutores-centro')
-      return response.data
-    } catch (error: any) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al obtener los tutores del centro disponibles.',
-        detail: error.response.data.detail,
-        life: 5000,
-      })
-    }
-  }
-
-  watch(visible, async (newValue) => {
+  watch(isVisible, async (newValue) => {
     if (newValue) {
-      roles.value = await obtenerRoles()
-      tutoresCentro.value = await obtenerTutoresCentro()
-      usuario.value = nuevoUsuario()
+      usuario.value = createUsuarioRequest()
+      rolesUsuario.value = await getRoles()
+      tutoresCentro.value = await getTutoresCentro()
     }
   })
 </script>
 
 <template>
-  <Dialog v-model:visible="visible" header="Crear usuario" modal dismissableMask>
+  <Dialog v-model:visible="isVisible" header="Crear usuario" modal dismissableMask>
     <div class="flex items-center gap-4 mb-4">
       <label for="email" class="font-semibold w-24">Email</label>
       <InputText
@@ -93,7 +51,7 @@
         id="rol"
         name="rol"
         class="flex-auto"
-        :options="roles"
+        :options="rolesUsuario"
         optionValue="id"
         optionLabel="nombre"
         placeholder="Administrador"
@@ -116,7 +74,7 @@
     </div>
 
     <div class="text-center">
-      <Button type="button" label="Guardar" @click="crearUsuario" />
+      <Button type="button" label="Guardar" @click="handleCreateUsuario" />
     </div>
   </Dialog>
 </template>

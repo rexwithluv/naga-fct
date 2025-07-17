@@ -8,6 +8,7 @@ import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTO;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTOCreate;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroConflictCursoAsignadoException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroConflictCursoException;
+import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroConflictInactivoException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroConflictUsuarioException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroForbiddenException;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
@@ -104,6 +105,10 @@ public class TutorCentroService {
 
     if (tutor.getCurso() != null) {
       throw new TutorCentroConflictCursoException();
+    }
+
+    if (!tutor.getActivo()) {
+      throw new TutorCentroConflictInactivoException();
     }
 
     tutor.setActivo(false);

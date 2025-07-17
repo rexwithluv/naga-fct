@@ -4,7 +4,7 @@
   import { useUsuario } from '@/composables/useUsuario'
   import { CursoResponse } from '@/types/models/Curso'
   import { TutorCentroRequest } from '@/types/models/TutorCentro'
-  import { Usuario } from '@/types/models/Usuario'
+  import { UsuarioResponse } from '@/types/models/Usuario'
   import { ModelRef, ref, Ref, watch } from 'vue'
 
   const emit = defineEmits(['tutorCentroCreado'])
@@ -16,7 +16,7 @@
 
   const tutorCentro: Ref<TutorCentroRequest> = ref(createTutorCentroRequest())
   const cursos: Ref<CursoResponse[]> = ref([])
-  const usuarios: Ref<Usuario[]> = ref([])
+  const usuarios: Ref<UsuarioResponse[]> = ref([])
 
   const handleCreateTutorCentro = async (): Promise<void> => {
     const success = await createTutorCentro(tutorCentro.value)

@@ -1,6 +1,5 @@
 import apiClient from '@/apiClient'
 import { TutorCentroRequest, TutorCentroResponse } from '@/types/models/TutorCentro'
-import { AxiosError } from 'axios'
 import { useConfirm } from 'primevue'
 import { useToast } from 'primevue/usetoast'
 
@@ -58,17 +57,6 @@ export function useTutorCentro() {
   const deleteTutorCentro = async (tutorCentroData: TutorCentroResponse): Promise<boolean> => {
     const id = tutorCentroData.id
     const nombreCompleto = `${tutorCentroData.nombre} ${tutorCentroData.apellidos}`
-    const isActivo: boolean = tutorCentroData.activo
-
-    if (!isActivo) {
-      toast.add({
-        severity: 'error',
-        summary: 'Error al desactivar al tutor de centro.',
-        detail: 'No se puede desactivar a un tutor de centro que ya lo está.',
-        life: 5000,
-      })
-      return false
-    }
 
     return new Promise((resolve) => {
       confirm.require({

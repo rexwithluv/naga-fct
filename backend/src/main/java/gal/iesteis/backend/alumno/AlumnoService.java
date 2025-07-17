@@ -2,6 +2,7 @@ package gal.iesteis.backend.alumno;
 
 import gal.iesteis.backend.alumno.dto.AlumnoDTO;
 import gal.iesteis.backend.alumno.dto.AlumnoDTOCreate;
+import gal.iesteis.backend.alumno.exceptions.AlumnoConflictDeBajaException;
 import gal.iesteis.backend.alumno.exceptions.AlumnoConflictGraduadoException;
 import gal.iesteis.backend.alumno.exceptions.AlumnoForbiddenException;
 import gal.iesteis.backend.alumno.exceptions.AlumnoNotFoundException;
@@ -30,6 +31,14 @@ public class AlumnoService {
   private boolean isAlumnoEstadoGraduado(Alumno alumno) {
     EstadoAlumno graduado = estadoAlumnoService.getByNombre("Graduado");
     if (alumno.getEstado().equals(graduado)) {
+      return true;
+    }
+    return false;
+  }
+
+  private boolean isAlumnoEstadoDeBaja(Alumno alumno) {
+    EstadoAlumno baja = estadoAlumnoService.getByNombre("De baja");
+    if (alumno.getEstado().equals(baja)) {
       return true;
     }
     return false;
@@ -99,6 +108,10 @@ public class AlumnoService {
     // Si el alumno ya está graduado, no podemos darlo de baja
     if (isAlumnoEstadoGraduado(alumno)) {
       throw new AlumnoConflictGraduadoException();
+    }
+
+    if (isAlumnoEstadoDeBaja(alumno)) {
+      throw new AlumnoConflictDeBajaException();
     }
 
     EstadoAlumno deBaja = estadoAlumnoService.getByNombre("De baja");
