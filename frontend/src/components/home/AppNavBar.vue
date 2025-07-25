@@ -5,8 +5,7 @@
   import { Router, useRouter } from 'vue-router'
 
   const router: Router = useRouter()
-  const auth: StoreGeneric = useAuthStore()
-  const userAdmin: boolean = auth.isAdmin
+  const authStore: StoreGeneric = useAuthStore()
 
   interface Route {
     label: string
@@ -46,7 +45,7 @@
       needAdmin: false,
     },
   ]
-  const filteredRoutes: Route[] = routes.filter((route) => !route.needAdmin || userAdmin)
+  const filteredRoutes: Route[] = routes.filter((route) => !route.needAdmin || authStore.isAdmin)
 
   const goTo = (route: string): void => {
     router.push({ name: route })

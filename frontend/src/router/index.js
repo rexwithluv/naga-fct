@@ -1,11 +1,3 @@
-import AlumnosPage from '@/components/alumnos/AlumnosPage.vue'
-import EmpresasPage from '@/components/empresas/EmpresasPage.vue'
-import FCTPage from '@/components/fct/FCTPage.vue'
-import HomePage from '@/components/home/HomePage.vue'
-import PerfilPage from '@/components/PerfilPage.vue'
-import TutoresCentroPage from '@/components/tutoresCentro/TutoresCentroPage.vue'
-import TutoresEmpresaPage from '@/components/tutoresEmpresa/TutoresEmpresaPage.vue'
-import UsuariosPage from '@/components/usuarios/UsuariosPage.vue'
 import { useAuthStore } from '@/stores/authStore'
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -18,14 +10,16 @@ const router = createRouter({
       component: () => import('@/components/LandingPage.vue'),
       meta: {
         requiresAuth: false,
+        requireAdmin: false,
       },
     },
     {
       path: '/home',
       name: 'home',
-      component: () => import('@/components/home/HomePage.vue'),
+      component: () => import('@/components/HomePage.vue'),
       meta: {
-        requiresAuth: false,
+        requiresAuth: true,
+        requireAdmin: false,
       },
     },
     {
@@ -34,28 +28,31 @@ const router = createRouter({
       component: () => import('@/components/LoginPage.vue'),
       meta: {
         requiresAuth: false,
+        requireAdmin: false,
       },
     },
     {
       path: '/alumnos',
       name: 'alumnos',
-      component: AlumnosPage,
+      component: () => import('@/components/alumnos/AlumnosPage.vue'),
       meta: {
         requiresAuth: true,
+        requireAdmin: false,
       },
     },
     {
       path: '/empresas',
       name: 'empresas',
-      component: EmpresasPage,
+      component: () => import('@/components/empresas/EmpresasPage.vue'),
       meta: {
         requiresAuth: true,
+        requireAdmin: false,
       },
     },
     {
       path: '/tutores-centro',
       name: 'tutoresCentro',
-      component: TutoresCentroPage,
+      component: () => import('@/components/tutoresCentro/TutoresCentroPage.vue'),
       meta: {
         requiresAuth: true,
         requireAdmin: true,
@@ -64,7 +61,7 @@ const router = createRouter({
     {
       path: '/tutores-empresa',
       name: 'tutoresEmpresa',
-      component: TutoresEmpresaPage,
+      component: () => import('@/components/tutoresEmpresa/TutoresEmpresaPage.vue'),
       meta: {
         requiresAuth: true,
         requireAdmin: false,
@@ -73,7 +70,7 @@ const router = createRouter({
     {
       path: '/usuarios',
       name: 'usuarios',
-      component: UsuariosPage,
+      component: () => '@/components/usuarios/UsuariosPage.vue',
       meta: {
         requiresAuth: true,
         requireAdmin: true,
@@ -82,7 +79,7 @@ const router = createRouter({
     {
       path: '/fct',
       name: 'fct',
-      component: FCTPage,
+      component: () => import('@/components/fct/FCTPage.vue'),
       meta: {
         requiresAuth: true,
         requireAdmin: false,
@@ -91,7 +88,7 @@ const router = createRouter({
     {
       path: '/calendario',
       name: 'calendario',
-      component: HomePage,
+      component: () => import('@/components/HomePage.vue'),
       meta: {
         requiresAuth: true,
         requireAdmin: false,
@@ -100,33 +97,32 @@ const router = createRouter({
     {
       path: '/perfil',
       name: 'perfil',
-      component: PerfilPage,
+      component: () => import('@/components/PerfilPage.vue'),
       meta: {
         requiresAuth: true,
         requireAdmin: false,
       },
     },
-    // {
-    //   path: "/:pathMatch(.*)*",
-    //   name: "NotFound",
-    //   // component: NotFound,
-    // },
-    // {
-    //   // path: '/about',
-    //   // name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   // component: () => import('../views/AboutView.vue'),
-    // },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: () => import('@/components/NotFoundPage.vue'),
+      meta: {
+        requiresAuth: false,
+        requireAdmin: false,
+      },
+    },
   ],
 })
 
-// Guarda de Vue Router (middleware)
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
   const isAuthenticated = Boolean(authStore.token)
   const userIsAdmin = authStore.isAdmin
+
+  if (isAuthenticated && !to.meta.requiresAuth) {
+    next({ name: 'home' })
+  }
 
   if (!to.meta.requiresAuth) {
     next()
