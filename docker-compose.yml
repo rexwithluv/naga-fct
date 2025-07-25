@@ -19,51 +19,16 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-    profiles:
-      - prod
-  db-dev:
-    image: mariadb:lts
-    container_name: naga-mariadb-dev
-    environment:
-      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
-      - MARIADB_USER=${MARIADB_USER}
-      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
-      - MARIADB_DATABASE=${MARIADB_DATABASE}
-    ports:
-      - 3306:3306
-    volumes:
-      - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
-      - ./db/seed.sql:/docker-entrypoint-initdb.d/seed.sql
-    networks:
-      - naga-network-dev
-    healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      start_period: 10s
-      interval: 10s
-      timeout: 5s
-      retries: 3
-    profiles:
-      - dev
-
-  pma-dev:
-    image: phpmyadmin/phpmyadmin:latest
-    container_name: naga-phpmyadmin-dev
-    environment:
-      - PMA_HOST=db-dev
-    ports:
-      - 8080:80
-    depends_on:
-      - db-dev
-    networks:
-      - naga-network-dev
-    profiles:
-      - dev
 
   backend:
     build:
       context: ./backend
-    env_file:
-      - .env
+    environment:
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
     container_name: naga-springboot
     ports:
       - 9000:9000
@@ -72,14 +37,13 @@ services:
         condition: service_healthy
     networks:
       - naga-network
-    profiles:
-      - prod
 
   frontend:
     build:
       context: ./frontend
       args:
-        - VITE_API_BASE_URL=${VITE_API_BASE_URL}
+        - VITE_API_BASE_URL=${API_BASE_URL}
+        - VITE_BASE_URL=${FRONTEND_BASE_URL}
     env_file:
       - .env
     container_name: naga-vue
@@ -87,8 +51,6 @@ services:
       - 6321:80
     networks:
       - naga-network
-    profiles:
-      - prod
 
 networks:
   naga-network:
