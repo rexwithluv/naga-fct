@@ -70,7 +70,7 @@ const router = createRouter({
     {
       path: '/usuarios',
       name: 'usuarios',
-      component: () => '@/components/usuarios/UsuariosPage.vue',
+      component: () => import('@/components/usuarios/UsuariosPage.vue'),
       meta: {
         requiresAuth: true,
         requireAdmin: true,
@@ -115,32 +115,32 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach((to, from, next) => {
-  const authStore = useAuthStore()
-  const isAuthenticated = Boolean(authStore.token)
-  const userIsAdmin = authStore.isAdmin
+// router.beforeEach((to, from, next) => {
+//   const authStore = useAuthStore()
+//   const isAuthenticated = Boolean(authStore.token)
+//   const userIsAdmin = authStore.isAdmin
 
-  if (isAuthenticated && !to.meta.requiresAuth) {
-    next({ name: 'home' })
-  }
+//   if (isAuthenticated && !to.meta.requiresAuth) {
+//     next({ name: 'home' })
+//   }
 
-  if (!to.meta.requiresAuth) {
-    next()
-  }
+//   if (!to.meta.requiresAuth) {
+//     next()
+//   }
 
-  if (!isAuthenticated) {
-    next({ name: 'login' })
-  }
+//   if (!isAuthenticated) {
+//     next({ name: 'login' })
+//   }
 
-  if (!to.meta.requireAdmin) {
-    next()
-  } else {
-    if (userIsAdmin) {
-      next()
-    } else {
-      next({ name: 'home' })
-    }
-  }
-})
+//   if (!to.meta.requireAdmin) {
+//     next()
+//   } else {
+//     if (userIsAdmin) {
+//       next()
+//     } else {
+//       next({ name: 'home' })
+//     }
+//   }
+// })
 
 export default router

@@ -1,5 +1,6 @@
 .env
 application-dev.properties
+frontend/components.d.ts
 
 # @rexwithluv
 notas/
