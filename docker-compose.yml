@@ -56,9 +56,7 @@ networks:
   naga-network:
     name: naga-network
     driver: bridge
-  naga-network-dev:
-    name: naga-network-dev
-    driver: bridge
+  
 
 volumes:
   naga-db:

@@ -2,8 +2,6 @@ import AlumnosPage from '@/components/alumnos/AlumnosPage.vue'
 import EmpresasPage from '@/components/empresas/EmpresasPage.vue'
 import FCTPage from '@/components/fct/FCTPage.vue'
 import HomePage from '@/components/home/HomePage.vue'
-import LandingPage from '@/components/LandingPage.vue'
-import LoginPage from '@/components/LoginPage.vue'
 import PerfilPage from '@/components/PerfilPage.vue'
 import TutoresCentroPage from '@/components/tutoresCentro/TutoresCentroPage.vue'
 import TutoresEmpresaPage from '@/components/tutoresEmpresa/TutoresEmpresaPage.vue'
@@ -17,57 +15,96 @@ const router = createRouter({
     {
       path: '/',
       name: 'inicio',
-      component: LandingPage,
+      component: () => import('@/components/LandingPage.vue'),
+      meta: {
+        requiresAuth: false,
+      },
     },
     {
       path: '/home',
       name: 'home',
-      component: HomePage,
+      component: () => import('@/components/home/HomePage.vue'),
+      meta: {
+        requiresAuth: false,
+      },
     },
     {
       path: '/login',
       name: 'login',
-      component: LoginPage,
+      component: () => import('@/components/LoginPage.vue'),
+      meta: {
+        requiresAuth: false,
+      },
     },
     {
       path: '/alumnos',
       name: 'alumnos',
       component: AlumnosPage,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: '/empresas',
       name: 'empresas',
       component: EmpresasPage,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: '/tutores-centro',
       name: 'tutoresCentro',
       component: TutoresCentroPage,
+      meta: {
+        requiresAuth: true,
+        requireAdmin: true,
+      },
     },
     {
       path: '/tutores-empresa',
       name: 'tutoresEmpresa',
       component: TutoresEmpresaPage,
+      meta: {
+        requiresAuth: true,
+        requireAdmin: false,
+      },
     },
     {
       path: '/usuarios',
       name: 'usuarios',
       component: UsuariosPage,
+      meta: {
+        requiresAuth: true,
+        requireAdmin: true,
+      },
     },
     {
       path: '/fct',
       name: 'fct',
       component: FCTPage,
+      meta: {
+        requiresAuth: true,
+        requireAdmin: false,
+      },
     },
     {
       path: '/calendario',
       name: 'calendario',
       component: HomePage,
+      meta: {
+        requiresAuth: true,
+        requireAdmin: false,
+      },
     },
     {
       path: '/perfil',
       name: 'perfil',
       component: PerfilPage,
+      meta: {
+        requiresAuth: true,
+        requireAdmin: false,
+      },
     },
     // {
     //   path: "/:pathMatch(.*)*",
@@ -87,13 +124,27 @@ const router = createRouter({
 
 // Guarda de Vue Router (middleware)
 router.beforeEach((to, from, next) => {
-  const auth = useAuthStore()
+  const authStore = useAuthStore()
+  const isAuthenticated = Boolean(authStore.token)
+  const userIsAdmin = authStore.isAdmin
 
-  if (to.name !== 'login' && to.name !== 'inicio' && !auth.token) {
-    return next({ name: 'login' })
+  if (!to.meta.requiresAuth) {
+    next()
   }
 
-  next()
+  if (!isAuthenticated) {
+    next({ name: 'login' })
+  }
+
+  if (!to.meta.requireAdmin) {
+    next()
+  } else {
+    if (userIsAdmin) {
+      next()
+    } else {
+      next({ name: 'home' })
+    }
+  }
 })
 
 export default router

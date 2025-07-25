@@ -1,21 +1,22 @@
+import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import { createApp } from 'vue'
+import App from './App.vue'
 import './assets/main.css'
+import router from './router'
 
-// Importaciones de PrimeVue
+// PrimeVue imports
 import Aura from '@primeuix/themes/aura'
 import PrimeVue from 'primevue/config'
 import ConfirmationService from 'primevue/confirmationservice'
 import ToastService from 'primevue/toastservice'
 
-import { createPinia } from 'pinia'
-
-import { createApp } from 'vue'
-import App from './App.vue'
-
-import router from './router'
-
 const app = createApp(App)
+const pinia = createPinia()
 
-app.use(createPinia())
+pinia.use(piniaPluginPersistedstate)
+
+app.use(pinia)
 app.use(router)
 
 app.use(PrimeVue, {

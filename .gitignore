@@ -1,6 +1,6 @@
-# Archivos sensibles
 .env
 application-dev.properties
 
 # @rexwithluv
 notas/
+scripts/

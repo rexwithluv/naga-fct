@@ -65,11 +65,11 @@ public class SecurityConfig {
                         "/swagger-resources")
                     .permitAll()
                     .requestMatchers("/tutores-centro/**")
-                    .hasRole("1")
+                    .hasRole("admin")
                     .requestMatchers("/usuarios/yo")
                     .authenticated()
                     .requestMatchers("/usuarios/**")
-                    .hasRole("1")
+                    .hasRole("admin")
                     .anyRequest()
                     .authenticated());
 

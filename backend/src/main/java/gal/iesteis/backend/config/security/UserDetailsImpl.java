@@ -30,7 +30,7 @@ public class UserDetailsImpl implements UserDetails {
 
   public static UserDetailsImpl build(Usuario usuario) {
     List<GrantedAuthority> authorities = new ArrayList<>();
-    authorities.add(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getId()));
+    authorities.add(new SimpleGrantedAuthority("ROLE_" + usuario.getRol().getNombre()));
 
     Long tutorCentroId = usuario.getTutorCentro() != null ? usuario.getTutorCentro().getId() : null;
 
