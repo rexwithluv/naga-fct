@@ -23,7 +23,7 @@ public class JWTUtils {
   @Value("${jwt.secret}")
   private String jwtSecret;
 
-  @Value("${jwt.expiration}")
+  @Value("#{T(java.lang.Integer).parseInt('${jwt.expiration}')}")
   private int jwtExpirationMs;
 
   public String generateJwtToken(Authentication authentication) {

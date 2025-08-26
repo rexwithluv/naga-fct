@@ -7,7 +7,7 @@ import { defineConfig } from 'vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
 export default defineConfig({
-  base: process.env.VITE_BASE_URL,
+  base: process.env.DEV ? '/' : '/naga-fct/',
   plugins: [
     vue(),
     vueDevTools(),

@@ -1,5 +1,3 @@
--- TEST DATA
-
 INSERT INTO
     concellos (nombre)
 VALUES ('Agolada'),
