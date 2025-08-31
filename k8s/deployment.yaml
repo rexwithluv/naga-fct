@@ -23,15 +23,23 @@ spec:
           image: ghcr.io/rexwithluv/naga-fct-backend:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 80
-          # livenessProbe:
-          #   httpGet:
-          #     path: /health/liveness
-          #     port: 3000
-          #   initialDelaySeconds: 15
-          #   periodSeconds: 20
-          #   timeoutSeconds: 5
-          #   failureThreshold: 3
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
           env:
             - name: MARIADB_USER
               valueFrom:

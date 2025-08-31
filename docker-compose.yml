@@ -33,6 +33,19 @@ services:
     container_name: naga-springboot
     ports:
       - 9000:8080
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--spider",
+          "--quiet",
+          "http://localhost:8080/actuator/health/liveness",
+        ]
+      start_period: 20s
+      interval: 7s
+      timeout: 10s
+      retries: 3
     depends_on:
       db:
         condition: service_healthy
@@ -50,6 +63,9 @@ services:
       - 5173:5173
     networks:
       - naga-network
+    depends_on:
+      backend:
+        condition: service_healthy
 
 networks:
   naga-network:
