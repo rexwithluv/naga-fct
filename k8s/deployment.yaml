@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/rexwithluv/naga-fct-backend:test
+          image: ghcr.io/rexwithluv/naga-fct-backend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -90,7 +90,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/rexwithluv/naga-fct-frontend:test
+          image: ghcr.io/rexwithluv/naga-fct-frontend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80

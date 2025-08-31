@@ -1,5 +1,4 @@
 .env
-application-dev.properties
 frontend/components.d.ts
 secrets.yaml
 
