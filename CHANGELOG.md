@@ -1,3 +1,10 @@
+# [0.3.0](https://github.com/rexwithluv/naga-fct/compare/v0.2.3...v0.3.0) (2025-08-31)
+
+
+### Features
+
+* add .dockerignore and dev script to generate dbml from sql file ([2c25b8f](https://github.com/rexwithluv/naga-fct/commit/2c25b8f31750f39c53bec7b02203ab4e0de8615d))
+
 ## [0.2.3](https://github.com/rexwithluv/naga-fct/compare/v0.2.2...v0.2.3) (2025-08-31)
 
 
