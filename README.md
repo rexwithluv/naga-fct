@@ -9,35 +9,74 @@ NAGA nace a partir de la necesidad del profesorado por tener una plataforma que 
 - **Frontend**: Vue.js (HTML, CSS y TypeScript)
 - **Backend**: Spring Boot (Java)
 - **Base de datos**: MariaDB (SQL)
-- **Contenedores**: Docker
+- **Despliegue**: Docker y Kubernetes
 
-## Instalación y Configuración
+## Puesta en marcha
 
-### 1. Clona el repositorio
+### Desarrollo
 
-```bash
-git clone https://github.com/rexwithluv/naga-fct.git
-cd naga-fct
-```
+1. Clona el repositorio
 
-### 2. Configurar variables de entorno
+    ```bash
+    git clone https://github.com/rexwithluv/naga-fct.git
+    cd naga-fct
+    ```
 
-El repositorio tiene un archivo `env.example` que contiene las variables de entorno que usan los distintos contenedores y servicios. Copia el archivos y renómbralo a `.env` para poder desplegar la aplicación.
+2. Configura variables de entorno
 
-#### Pasos
+    ```bash
+    cp .env.example .env
+    nano .env
+    ```
 
-1. Copia y edita el archivo
+3. Ejecuta el comando para que Docker levante los contenedores
 
-```bash
-cp .env.example .env
-code .env
-```
+    ```bash
+    docker compose up -d --build
+    ```
 
-2. Levanta los servicios con docker
+Una vez que los contenedores estén listos, puedes acceder a las aplicaciones en las siguientes URLs:
 
-```bash
-docker compose --profile prod up -d --build
-```
+- **Frontend**: [http://localhost:5173](http://localhost:5173)
+- **Backend API**: [http://localhost:9000](http://localhost:9000)
+
+La base de datos **no** es accesible directamente desde tu navegador.
+
+### Producción
+
+1. Clona el repositorio
+
+    ```bash
+    git clone https://github.com/rexwithluv/naga-fct.git
+    cd naga-fct
+    ```
+
+2. Configura los secretos y el dominio donde será desplegada
+
+    ```bash
+    cd k8s/
+
+    # Secretos o variables de entorno
+    cp secrets.example.yaml secrets.yaml
+    nano secrets.yaml
+
+    # Tu dominio y subdominios
+    nano ingress.yaml
+    ```
+
+3. Crea un namespace dedicado si lo consideras y aplica los archivos
+
+    ```bash
+    kubectl create namespace naga-fct
+    kubectl apply -f k8s -n naga-fct
+    ```
+
+Una vez que el despliegue se haya completado, podrás acceder a las aplicaciones a través de tu dominio:
+
+- **Frontend**: `https://tudominio.xyz/naga-fct`
+- **Backend API**: `https://tudominio.xyz/api/naga-fct`
+
+La base de datos **no** es accesible directamente desde tu navegador.
 
 ## Estructura del Proyecto
 
@@ -47,32 +86,18 @@ docker compose --profile prod up -d --build
 │   ├── database.dbml      # .dbml de la estructura base de la DB
 │   ├── schema.sql         # Estructura base de la DB
 │   └── seed.sql           # Datos de prueba para la DB
+├── dev/                   # Archivos útiles durante el desarrollo
 ├── docs/
+│   ├── MER.png            # Modelo Entidad-Relación de la DB
 │   ├── MR.png             # Modelo relacional de la DB
-│   └── QyA.md             # Decisiones tomadas durante el desarrollo
-├── frontend/
-├── .env                   # Variables de entorno
-├── docker-compose.yml     # Orquestación de contenedores
+│   ├── postman.json       # Colección JSON para Postman
+│   ├── QyA.md             # Decisiones tomadas durante el desarrollo
+│   └── UMLClases.png      # Diagrama UML de clases sobre el backend
+├── frontend/              # Directorio con el código del frontend
+├── .env                   # Variables de entorno de desarrollo
+├── docker-compose.yml     # Orquestación de contenedores de desarrollo
 └── README.md              # Este archivo!
 ```
-
-## Uso
-
-### 1. Acceso al Frontend - Vue.js
-
-Después de levantar los contenedores con Docker Compose, puedes acceder a la interfaz de usuario del frontend en:
-
-[http://localhost:6321](http://localhost:6321)
-
-### 2. Acceso al Backend - Spring Boot
-
-La API de Spring Boot estará disponible en:
-
-[http://localhost:9000](http://localhost:9000)
-
-### 3. Acceso a la Base de Datos (MariaDB)
-
-Para no dejar la base de datos por error en algún estado incosistente, solo se puede manipular la información mediante peticiones a la API o mediante la interfaz web cuando se despliega en producción.
 
 ## Licencia
 
