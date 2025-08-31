@@ -1,17 +1,12 @@
 # Usamos la imagen oficial de maven
 FROM maven:latest AS build
+
 WORKDIR /app
 
-# Copiamos el pom.xml
-COPY pom.xml .
-
-# Descargamos las dependencias
-RUN mvn verify -DskipTests
-
-# Copiamos el resto del proyecto
+# Copiamos el proyecto
 COPY . .
 
-# Generamos el .jar
+# Descargamos las dependencias y construimos
 RUN mvn clean package -DskipTests --quiet --no-transfer-progress
 
 # La imagen oficial de JDK está obsoleta
