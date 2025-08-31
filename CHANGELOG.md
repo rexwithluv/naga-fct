@@ -1,3 +1,10 @@
+## [0.2.2](https://github.com/rexwithluv/naga-fct/compare/v0.2.1...v0.2.2) (2025-08-31)
+
+
+### Bug Fixes
+
+* remove unused ci ([502cdb3](https://github.com/rexwithluv/naga-fct/commit/502cdb3cc53ab494e725d25c9431ac075215c086))
+
 ## [0.2.1](https://github.com/rexwithluv/naga-fct/compare/v0.2.0...v0.2.1) (2025-08-31)
 
 
