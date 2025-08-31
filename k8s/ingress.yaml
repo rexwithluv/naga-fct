@@ -1,0 +1,51 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: naga-fct
+  name: ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: 'true'
+    traefik.ingress.kubernetes.io/router.middlewares: naga-fct-strip-prefix@kubernetescrd
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: 'rexwithluv.dev'
+      http:
+        paths:
+          - pathType: Prefix
+            path: /api/naga-fct
+            backend:
+              service:
+                name: springboot-service
+                port:
+                  number: 8080
+          - pathType: Prefix
+            path: /naga-fct
+            backend:
+              service:
+                name: vue-service
+                port:
+                  number: 80
+    - host: 'www.rexwithluv.dev'
+      http:
+        paths:
+          - pathType: Prefix
+            path: /api/naga-fct
+            backend:
+              service:
+                name: springboot-service
+                port:
+                  number: 8080
+          - pathType: Prefix
+            path: /naga-fct
+            backend:
+              service:
+                name: vue-service
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - 'rexwithluv.dev'
+        - 'www.rexwithluv.dev'
+      secretName: rexwithluv-tls

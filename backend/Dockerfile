@@ -16,7 +16,10 @@ RUN mvn clean package -DskipTests
 
 # La imagen oficial de JDK está obsoleta
 FROM eclipse-temurin:21
+
 WORKDIR /app
+
+LABEL org.opencontainers.image.source="https://github.com/rexwithluv/naga-fct"
 
 # Copiamos el .jar generado en la imagen con JDK
 COPY --from=build /app/target/*.jar /app/app.jar

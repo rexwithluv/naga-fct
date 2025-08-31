@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: naga-fct
+  name: naga-fct-mariadb
+spec:
+  serviceName: mariadb-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: naga-fct
+      tier: db
+  template:
+    metadata:
+      labels:
+        app: naga-fct
+        tier: db
+    spec:
+      containers:
+        - name: mariadb
+          image: mariadb:lts
+          ports:
+            - containerPort: 3306
+          livenessProbe:
+            exec:
+              command:
+                - healthcheck.sh
+                - --connect
+                - --innodb_initialized
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          env:
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: mariadb-root-password
+            - name: MARIADB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: mariadb-user
+            - name: MARIADB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: mariadb-password
+            - name: MARIADB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: mariadb-database
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/mysql
+            - name: mariadb-config
+              mountPath: /docker-entrypoint-initdb.d/schema.sql
+              subPath: schema.sql
+            - name: mariadb-config
+              mountPath: /docker-entrypoint-initdb.d/seed.sql
+              subPath: seed.sql
+      volumes:
+        - name: mariadb-config
+          configMap:
+            name: mariadb-configmap
+  volumeClaimTemplates:
+    - metadata:
+        namespace: naga-fct
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi

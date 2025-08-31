@@ -29,9 +29,23 @@ services:
       - MARIADB_DATABASE=${MARIADB_DATABASE}
       - JWT_SECRET=${JWT_SECRET}
       - JWT_EXPIRATION=${JWT_EXPIRATION}
+      - SPRING_PROFILES_ACTIVE=dev
     container_name: naga-springboot
     ports:
-      - 9000:9000
+      - 9000:8080
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--spider",
+          "--quiet",
+          "http://localhost:8080/actuator/health/liveness",
+        ]
+      start_period: 20s
+      interval: 7s
+      timeout: 10s
+      retries: 3
     depends_on:
       db:
         condition: service_healthy
@@ -39,24 +53,24 @@ services:
       - naga-network
 
   frontend:
-    build:
-      context: ./frontend
-      args:
-        - VITE_API_BASE_URL=${API_BASE_URL}
-        - VITE_BASE_URL=${FRONTEND_BASE_URL}
-    env_file:
-      - .env
+    image: node:22-alpine
     container_name: naga-vue
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    command: npm run dev
     ports:
-      - 6321:80
+      - 5173:5173
     networks:
       - naga-network
+    depends_on:
+      backend:
+        condition: service_healthy
 
 networks:
   naga-network:
     name: naga-network
     driver: bridge
-  
 
 volumes:
   naga-db:

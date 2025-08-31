@@ -1,0 +1,10 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  namespace: naga-fct
+  name: strip-prefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /naga-fct
+      - /api/naga-fct
