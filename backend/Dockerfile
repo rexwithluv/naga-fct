@@ -12,7 +12,7 @@ RUN mvn verify -DskipTests
 COPY . .
 
 # Generamos el .jar
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests --quiet
 
 # La imagen oficial de JDK está obsoleta
 FROM eclipse-temurin:21
