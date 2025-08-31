@@ -1,3 +1,10 @@
+## [0.2.1](https://github.com/rexwithluv/naga-fct/compare/v0.2.0...v0.2.1) (2025-08-31)
+
+
+### Bug Fixes
+
+* change requests and limits for the backend deployment ([fab6ea8](https://github.com/rexwithluv/naga-fct/commit/fab6ea8a9231dd38b47d1a8686a4cb80e3804716))
+
 # [0.2.0](https://github.com/rexwithluv/naga-fct/compare/v0.1.0...v0.2.0) (2025-08-31)
 
 
