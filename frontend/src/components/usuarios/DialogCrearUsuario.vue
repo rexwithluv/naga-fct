@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useRol } from '@/composables/useRol'
+  import { useRolUsuario } from '@/composables/useRol'
   import { useTutorCentro } from '@/composables/useTutorCentro'
   import { useUsuario } from '@/composables/useUsuario'
   import { RolUsuarioResponse } from '@/types/models/Rol'
@@ -10,7 +10,7 @@
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
 
   const { createUsuarioRequest, createUsuario } = useUsuario()
-  const { getRoles } = useRol()
+  const { getRolesUsuario } = useRolUsuario()
   const { getTutoresCentro } = useTutorCentro()
 
   const usuario = ref(createUsuarioRequest())
@@ -28,7 +28,7 @@
   watch(isVisible, async (newValue) => {
     if (newValue) {
       usuario.value = createUsuarioRequest()
-      rolesUsuario.value = await getRoles()
+      rolesUsuario.value = await getRolesUsuario()
       tutoresCentro.value = await getTutoresCentro()
     }
   })
