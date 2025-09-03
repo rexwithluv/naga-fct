@@ -85,4 +85,15 @@ public class TutorEmpresaService {
     TutorEmpresa nuevoTutorEmpresa = repository.save(dtoConverter.dtoATutorEmpresa(dto, empresa));
     return dtoConverter.tutorEmpresaADtoResponse(nuevoTutorEmpresa);
   }
+
+  @Transactional
+  public TutorEmpresaDTO updateTutorEmpresa(
+      UserDetailsImpl userDetails, TutorEmpresaDTOCreate dto, Long id) {
+    Empresa empresa = empresaService.obtenerEmpresaPorId(userDetails, dto.getEmpresaId());
+    TutorEmpresa tutorEmpresa = dtoConverter.dtoATutorEmpresa(dto, empresa);
+    tutorEmpresa.setId(id);
+
+    tutorEmpresa = repository.save(tutorEmpresa);
+    return dtoConverter.tutorEmpresaADtoResponse(tutorEmpresa);
+  }
 }

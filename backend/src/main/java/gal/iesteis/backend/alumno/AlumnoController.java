@@ -22,24 +22,24 @@ public class AlumnoController {
   @Autowired private AlumnoService service;
 
   @GetMapping("")
-  public ResponseEntity<?> getAll(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+  public ResponseEntity<?> getAlumnos(@AuthenticationPrincipal UserDetailsImpl userDetails) {
     return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodos(userDetails));
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<?> getById(
+  public ResponseEntity<?> getAlumnoById(
       @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
     return ResponseEntity.status(HttpStatus.OK).body(service.obtenerPorId(userDetails, id));
   }
 
   @PostMapping("")
-  public ResponseEntity<?> create(
+  public ResponseEntity<?> createAlumno(
       @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody AlumnoDTOCreate dto) {
     return ResponseEntity.status(HttpStatus.CREATED).body(service.crearAlumno(userDetails, dto));
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<?> put(
+  public ResponseEntity<?> updateAlumno(
       @AuthenticationPrincipal UserDetailsImpl userDetails,
       @RequestBody AlumnoDTOCreate dto,
       @PathVariable Long id) {
@@ -47,7 +47,7 @@ public class AlumnoController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<?> delete(
+  public ResponseEntity<?> deleteAlumno(
       @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
     service.deleteAlumno(userDetails, id);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
