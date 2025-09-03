@@ -20,6 +20,21 @@ services:
       timeout: 5s
       retries: 3
 
+  pma:
+    image: phpmyadmin:latest
+    container_name: naga-pma
+    environment:
+      - PMA_HOST=db
+      - PMA_USER=root
+      - PMA_PASSWORD=${MARIADB_ROOT_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8088:80
+    networks:
+      - naga-network
+
   backend:
     build:
       context: ./backend
