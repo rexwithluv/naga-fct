@@ -4,22 +4,24 @@
   import { useSkill } from '@/composables/useSkill'
   import booleanToSpanish from '@/helpers/booleanToSpanish'
   import formatList from '@/helpers/formatList'
-  import { Empresa } from '@/types/models/Empresa'
+  import { EmpresaResponse } from '@/types/models/Empresa'
   import { FilterMatchMode } from '@primevue/core/api'
   import { onMounted, Ref, ref } from 'vue'
+  import DialogUpdateEmpresa from './DialogUpdateEmpresa.vue'
 
   const { getEmpresas, deleteEmpresa } = useEmpresa()
   const { getConcellos } = useConcello()
   const { getSkills } = useSkill()
 
-  const empresas: Ref<Empresa[]> = ref([])
+  const empresas: Ref<EmpresaResponse[]> = ref([])
   const concellos = ref([])
   const skills = ref([])
 
-  const selectedEmpresa: Ref<Empresa | null> = ref(null)
+  const selectedEmpresa: Ref<EmpresaResponse | null> = ref(null)
   const showContactDialog: Ref<boolean> = ref(false)
   const showDetailsDialog: Ref<boolean> = ref(false)
   const showCreateDialog: Ref<boolean> = ref(false)
+  const showUpdateDialog: Ref<boolean> = ref(false)
 
   const filters = ref({
     nombre: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -28,22 +30,26 @@
     activa: { value: null, matchMode: FilterMatchMode.EQUALS },
   })
 
-  const openContactDialog = (empresaData: Empresa) => {
+  const openContactDialog = (empresaData: EmpresaResponse) => {
     selectedEmpresa.value = empresaData || null
     showContactDialog.value = true
   }
-  const openDetailsDialog = (empresaData: Empresa) => {
+  const openDetailsDialog = (empresaData: EmpresaResponse) => {
     selectedEmpresa.value = empresaData || null
     showDetailsDialog.value = true
   }
   const openCreateDialog = () => {
     showCreateDialog.value = true
   }
+  const openUpdateDialog = (empresaData: EmpresaResponse) => {
+    selectedEmpresa.value = empresaData
+    showUpdateDialog.value = true
+  }
 
   const handleGetEmpresas = async () => {
     empresas.value = await getEmpresas()
   }
-  const handleDeleteEmpresa = async (empresaData: Empresa) => {
+  const handleDeleteEmpresa = async (empresaData: EmpresaResponse) => {
     const success: boolean = await deleteEmpresa(empresaData)
     if (success) {
       empresas.value = await getEmpresas()
@@ -68,10 +74,12 @@
       v-model:selectedEmpresa="selectedEmpresa"
       v-model:isVisible="showDetailsDialog"
     />
-    <DialogCrearEmpresa
-      v-model:isVisible="showCreateDialog"
-      @empresaCreada="handleGetEmpresas"
-    ></DialogCrearEmpresa>
+    <DialogCrearEmpresa v-model:isVisible="showCreateDialog" @empresaCreada="handleGetEmpresas" />
+    <DialogUpdateEmpresa
+      v-model:isVisible="showUpdateDialog"
+      v-model:selectedEmpresa="selectedEmpresa"
+      @empresaEditada="handleGetEmpresas"
+    />
 
     <div class="mb-5 text-center">
       <div class="mb-5">
@@ -136,7 +144,11 @@
       rowHover
     >
       <Column field="nombre" header="Nombre" />
-      <Column field="concello" header="Concello" />
+      <Column field="concello" header="Concello">
+        <template #body="{ data }">
+          {{ data.concello.nombre }}
+        </template>
+      </Column>
       <Column field="activa" header="Activa?">
         <template #body="{ data }">
           {{ booleanToSpanish(data.activa) }}
@@ -152,7 +164,7 @@
         <template #body="{ data }">
           <Button class="mr-2" label="Ver contacto" @click="openContactDialog(data)" />
           <Button class="mr-2" label="Ver detalles" @click="openDetailsDialog(data)" />
-          <Button class="mr-2" label="Editar" @click="openDetailsDialog(data)" disabled />
+          <Button class="mr-2" label="Editar" @click="openUpdateDialog(data)" />
           <Button label="Marcar como inactiva" @click="handleDeleteEmpresa(data)" />
         </template>
       </Column>

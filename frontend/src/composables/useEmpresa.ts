@@ -1,5 +1,5 @@
 import apiClient from '@/apiClient'
-import { Empresa } from '@/types/models/Empresa'
+import { EmpresaRequest, EmpresaResponse } from '@/types/models/Empresa'
 import { useConfirm } from 'primevue'
 import { useToast } from 'primevue/usetoast'
 
@@ -21,7 +21,7 @@ export function useEmpresa() {
     }
   }
 
-  const createEmpresa = async (empresaData: Empresa): Promise<boolean> => {
+  const createEmpresa = async (empresaData: EmpresaRequest): Promise<boolean> => {
     return new Promise(async (resolve) => {
       try {
         await apiClient.post('/empresas', empresaData)
@@ -44,7 +44,34 @@ export function useEmpresa() {
     })
   }
 
-  const deleteEmpresa = async (empresaData: Empresa): Promise<boolean> => {
+  const updateEmpresa = async (empresaData: EmpresaResponse): Promise<boolean> => {
+    const updatedEmpresa = JSON.parse(JSON.stringify(empresaData))
+    updatedEmpresa.concello = updatedEmpresa.concello.id
+    updatedEmpresa.especialidad = updatedEmpresa.especialidad.id
+
+    return new Promise(async (resolve) => {
+      try {
+        await apiClient.put(`/empresas/${updatedEmpresa.id}`, updatedEmpresa)
+        toast.add({
+          severity: 'success',
+          summary: 'Empresa actualizada correctamente.',
+          detail: 'Se ha actualizado la información de la empresa.',
+          life: 5000,
+        })
+        resolve(true)
+      } catch (error: any) {
+        toast.add({
+          severity: 'error',
+          summary: 'Error al actualizar la información de la empresa.',
+          detail: error.response.data.detail,
+          life: 5000,
+        })
+        resolve(false)
+      }
+    })
+  }
+
+  const deleteEmpresa = async (empresaData: EmpresaResponse): Promise<boolean> => {
     const id = empresaData.id
     const nombre = empresaData.nombre
 
@@ -85,5 +112,5 @@ export function useEmpresa() {
     })
   }
 
-  return { getEmpresas, createEmpresa, deleteEmpresa }
+  return { getEmpresas, createEmpresa, updateEmpresa, deleteEmpresa }
 }

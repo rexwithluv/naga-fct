@@ -1,38 +1,35 @@
 <script setup lang="ts">
+  import { useConcello } from '@/composables/useConcello'
+  import { useEmpresa } from '@/composables/useEmpresa'
+  import { useEspecialidad } from '@/composables/useEspecialidad'
+  import { useSkill } from '@/composables/useSkill'
   import { useAuthStore } from '@/stores/authStore'
-  import { EmpresaRequest } from '@/types/models/Empresa'
-  import { StoreGeneric } from 'pinia'
-  import { ModelRef, ref, Ref, watch } from 'vue'
-  import { useConcello } from '../../composables/useConcello'
-  import { useEmpresa } from '../../composables/useEmpresa'
-  import { useEspecialidad } from '../../composables/useEspecialidad'
-  import { useSkill } from '../../composables/useSkill'
+  import { EmpresaResponse } from '@/types/models/Empresa'
+  import { ModelRef, Ref, ref, watch } from 'vue'
 
-  const emit = defineEmits(['empresaCreada'])
+  const emit = defineEmits(['empresaEditada'])
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
+  const empresaSeleccionada: ModelRef<EmpresaResponse | undefined> = defineModel('selectedEmpresa')
 
-  const authStore: StoreGeneric = useAuthStore()
-  const { createEmpresa } = useEmpresa()
-  const { getSkills } = useSkill()
+  const authStore = useAuthStore()
+  const { updateEmpresa } = useEmpresa()
   const { getConcellos } = useConcello()
+  const { getSkills } = useSkill()
   const { getEspecialidades } = useEspecialidad()
 
-  const concellos: Ref<any[]> = ref([])
-  const especialidades = ref([])
+  const concellos = ref([])
   const skills = ref([])
+  const especialidades = ref([])
 
-  const empresa: Ref<EmpresaRequest> = ref({
-    contacto: {
-      nombre: '',
-      telefono: '',
-      email: '',
-    },
-  } as EmpresaRequest)
+  const empresa: Ref<EmpresaResponse> = ref({
+    concello: { id: 0 },
+    especialidad: { id: 0 },
+  } as EmpresaResponse)
 
-  const handleCreateEmpresa = async () => {
-    const success = await createEmpresa(empresa.value)
+  const handleUpdateEmpresa = async () => {
+    const success = await updateEmpresa(empresa.value)
     if (success) {
-      emit('empresaCreada')
+      emit('empresaEditada')
       isVisible.value = false
     }
   }
@@ -45,12 +42,15 @@
       if (authStore.isAdmin) {
         especialidades.value = await getEspecialidades()
       }
+
+      empresa.value = JSON.parse(JSON.stringify(empresaSeleccionada.value))
+      empresa.value.skills = empresa.value.skills.map((skill) => skill.id)
     }
   })
 </script>
 
 <template>
-  <Dialog v-model:visible="isVisible" header="Crear empresa" modal dismissableMask>
+  <Dialog v-model:visible="isVisible" header="Editar empresa" modal dismissableMask>
     <div class="flex items-center gap-4 mb-4">
       <label for="nombre" class="font-semibold w-24">Nombre</label>
       <InputText
@@ -70,7 +70,7 @@
         optionValue="id"
         optionLabel="nombre"
         placeholder="Selecciona un concello..."
-        v-model="empresa.concello"
+        v-model="empresa.concello.id"
       />
     </div>
 
@@ -86,34 +86,34 @@
     </div>
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="nombreContacto" class="font-semibold w-24">Nombre de contacto</label>
+      <!-- <label for="nombreContacto" class="font-semibold w-24">Nombre de contacto</label>
       <InputText
         id="nombreContacto"
         class="flex-auto"
         placeholder="María Belén"
         autocomplete="off"
         v-model="empresa.contacto.nombre"
-      />
+      /> -->
 
-      <label for="telefonoContacto" class="font-semibold w-24">Teléfono de contacto</label>
+      <!-- <label for="telefonoContacto" class="font-semibold w-24">Teléfono de contacto</label>
       <InputText
         id="telefonoContacto"
         class="flex-auto"
         placeholder="Esteban Menéndez"
         autocomplete="off"
         v-model="empresa.contacto.telefono"
-      />
+      /> -->
     </div>
 
     <div class="flex items-center gap-4 mb-4">
-      <label for="emailContacto" class="font-semibold w-24">Email de contacto</label>
+      <!-- <label for="emailContacto" class="font-semibold w-24">Email de contacto</label>
       <InputText
         id="emailContacto"
         class="flex-auto"
         placeholder="belenestaban@email.com"
         autocomplete="off"
         v-model="empresa.contacto.email"
-      />
+      /> -->
 
       <template v-if="authStore.isAdmin">
         <label for="especialidad" class="font-semibold w-24">Especialidad</label>
@@ -125,7 +125,7 @@
           optionValue="id"
           optionLabel="nombre"
           placeholder="Selecciona una especialidad..."
-          v-model="empresa.especialidad"
+          v-model="empresa.especialidad.id"
         />
       </template>
     </div>
@@ -156,7 +156,7 @@
     </div>
 
     <div class="text-center">
-      <Button type="button" label="Guardar" @click="handleCreateEmpresa" />
+      <Button type="button" label="Guardar" @click="handleUpdateEmpresa" />
     </div>
   </Dialog>
 </template>

@@ -1,14 +1,28 @@
+import { Concello } from './Concello'
 import { ContactoEmpresa } from './ContactoEmpresa'
-
-export interface Empresa {
-  id: number
+import { Especialidad } from './Especialidad'
+import { Skill } from './Skill'
+export interface EmpresaRequest {
+  id?: number
   nombre: string
-  concello: string
+  concello: number
   direccion: string
   observaciones: string
-  especialidad: string
   contacto: ContactoEmpresa
   activa: boolean
   plazas: number
-  skills: string[]
+  skills: number[]
+  especialidad?: Especialidad
+}
+export interface EmpresaResponse {
+  id: number
+  nombre: string
+  concello: Concello
+  direccion: string
+  observaciones: string
+  contacto: ContactoEmpresa
+  activa: boolean
+  plazas: number
+  skills: Skill[]
+  especialidad?: Especialidad
 }

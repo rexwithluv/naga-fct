@@ -1,16 +1,18 @@
-export default function formatList(lista: string[]): string {
-  const len = lista.length
+import { Skill } from '@/types/models/Skill'
 
-  if (!lista || len === 0) {
+export default function formatList(array: Skill[]): string {
+  const len = array.length
+
+  if (!array || len === 0) {
     return ''
   }
 
   if (len === 1) {
-    return lista[0]
+    return array[0].nombre
   }
 
-  const allExceptLast = lista.slice(0, -1)
-  const lastElement = lista[len - 1]
+  const allExceptLast = array.slice(0, -1)
+  const lastElement = array[len - 1]
 
-  return `${allExceptLast.join(', ')} y ${lastElement}`
+  return `${allExceptLast.map((skill) => skill.nombre).join(', ')} y ${lastElement.nombre}`
 }
