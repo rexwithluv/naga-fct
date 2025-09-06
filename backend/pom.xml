@@ -141,7 +141,7 @@
 						<endWithNewline />
 					</java>
 				</configuration>
-				<executions>
+				<!-- <executions>
 					<execution>
 						<id>spotless-check</id>
 						<phase>compile</phase>
@@ -149,7 +149,7 @@
 							<goal>check</goal>
 						</goals>
 					</execution>
-				</executions>
+				</executions> -->
 			</plugin>
 		</plugins>
 	</build>

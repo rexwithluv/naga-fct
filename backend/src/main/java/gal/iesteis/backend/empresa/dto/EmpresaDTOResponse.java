@@ -14,11 +14,11 @@ import lombok.Setter;
 public class EmpresaDTOResponse extends EmpresaDTO {
   private Long id;
   private String nombre;
-  private String concello;
+  private Map<String, Object> concello;
   private String direccion;
   private String observaciones;
   private Map<String, String> contacto;
   private Boolean activa;
-  private Byte plazas;
-  private Set<String> skills;
+  private Short plazas;
+  private Set<Map<String, Object>> skills;
 }

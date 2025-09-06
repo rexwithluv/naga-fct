@@ -36,8 +36,7 @@ services:
       - naga-network
 
   backend:
-    build:
-      context: ./backend
+    image: maven:latest
     environment:
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
@@ -46,6 +45,10 @@ services:
       - JWT_EXPIRATION=${JWT_EXPIRATION}
       - SPRING_PROFILES_ACTIVE=dev
     container_name: naga-springboot
+    command: mvn org.springframework.boot:spring-boot-maven-plugin:run
+    working_dir: /app
+    volumes:
+      - ./backend:/app
     ports:
       - 9000:8080
     healthcheck:
