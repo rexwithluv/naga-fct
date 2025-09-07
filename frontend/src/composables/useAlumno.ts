@@ -1,5 +1,5 @@
-import apiClient from '@/apiClient'
-import { Alumno } from '@/types/models/Alumno'
+import apiClient from '@/apiClient.js'
+import { Alumno } from '@/types/models/Alumno.js'
 import { useConfirm } from 'primevue'
 import { useToast } from 'primevue/usetoast'
 

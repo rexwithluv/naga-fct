@@ -1,5 +1,5 @@
-import apiClient from '@/apiClient'
-import { TutorCentroRequest, TutorCentroResponse } from '@/types/models/TutorCentro'
+import apiClient from '@/apiClient.js'
+import { TutorCentro } from '@/types/models/TutorCentro.js'
 import { useConfirm } from 'primevue'
 import { useToast } from 'primevue/usetoast'
 
@@ -7,13 +7,14 @@ export function useTutorCentro() {
   const toast = useToast()
   const confirm = useConfirm()
 
-  const createTutorCentroRequest = (): TutorCentroRequest => {
+  const createTutorCentroRequest = (): TutorCentro => {
     return {
+      id: 0,
       nombre: '',
       apellidos: '',
       email: '',
-      cursoId: 0,
-      usuarioId: null,
+      curso: 0,
+      usuario: null,
     }
   }
 
@@ -31,7 +32,7 @@ export function useTutorCentro() {
     }
   }
 
-  const createTutorCentro = async (tutorCentroData: TutorCentroRequest): Promise<boolean> => {
+  const createTutorCentro = async (tutorCentroData: TutorCentro): Promise<boolean> => {
     return new Promise(async (resolve) => {
       try {
         await apiClient.post('/tutores-centro', tutorCentroData)
@@ -54,7 +55,34 @@ export function useTutorCentro() {
     })
   }
 
-  const deleteTutorCentro = async (tutorCentroData: TutorCentroResponse): Promise<boolean> => {
+  const updateTutorCentro = async (tutorCentroData: TutorCentro): Promise<boolean> => {
+    const updatedTutorCentro = JSON.parse(JSON.stringify(tutorCentroData))
+    updatedTutorCentro.curso = tutorCentroData.curso.id
+    updatedTutorCentro.usuario = tutorCentroData.usuario.id
+
+    return new Promise(async (resolve) => {
+      try {
+        await apiClient.put(`/tutores-centro/${tutorCentroData.id}`, updatedTutorCentro)
+        toast.add({
+          severity: 'success',
+          summary: 'Tutor de centro actualizado correctamente.',
+          detail: 'Se ha actualizado la información del tutor de centro.',
+          life: 5000,
+        })
+        resolve(true)
+      } catch (error: any) {
+        toast.add({
+          severity: 'error',
+          summary: 'Error al actualizar la información del tutor de centro.',
+          detail: error.response.data.detail,
+          life: 5000,
+        })
+        resolve(false)
+      }
+    })
+  }
+
+  const deleteTutorCentro = async (tutorCentroData: TutorCentro): Promise<boolean> => {
     const id = tutorCentroData.id
     const nombreCompleto = `${tutorCentroData.nombre} ${tutorCentroData.apellidos}`
 
@@ -95,5 +123,11 @@ export function useTutorCentro() {
     })
   }
 
-  return { createTutorCentroRequest, getTutoresCentro, createTutorCentro, deleteTutorCentro }
+  return {
+    createTutorCentroRequest,
+    getTutoresCentro,
+    createTutorCentro,
+    updateTutorCentro,
+    deleteTutorCentro,
+  }
 }
