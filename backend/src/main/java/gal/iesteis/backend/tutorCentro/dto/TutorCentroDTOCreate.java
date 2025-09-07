@@ -27,7 +27,7 @@ public class TutorCentroDTOCreate extends TutorCentroDTO {
 
   @NotNull(message = "El ID de curso no puede ser nulo.")
   @Min(value = 1, message = "El ID de curso debe ser un número positivo.")
-  private Short cursoId;
+  private Short curso;
 
-  @Nullable private Long usuarioId;
+  @Nullable private Long usuario;
 }
