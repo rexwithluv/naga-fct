@@ -4,7 +4,7 @@
   import { useTutorEmpresa } from '@/composables/useTutorEmpresa'
   import { Alumno } from '@/types/models/Alumno'
   import { FCTRequest } from '@/types/models/FCT'
-  import { TutorEmpresaResponse } from '@/types/models/TutorEmpresa'
+  import { TutorEmpresa } from '@/types/models/TutorEmpresa'
   import { ModelRef, ref, Ref, watch } from 'vue'
 
   const emit = defineEmits(['fctCreada'])
@@ -16,7 +16,7 @@
 
   const fct: Ref<FCTRequest> = ref(createFCTRequest())
   const alumnos: Ref<Alumno[]> = ref([])
-  const tutoresEmpresa: Ref<TutorEmpresaResponse[]> = ref([])
+  const tutoresEmpresa: Ref<TutorEmpresa[]> = ref([])
 
   const handleCreateFct = async () => {
     const success = await createFct(fct.value)

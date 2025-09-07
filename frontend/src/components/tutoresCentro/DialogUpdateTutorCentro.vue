@@ -2,17 +2,15 @@
   import { useCurso } from '@/composables/useCurso'
   import { useTutorCentro } from '@/composables/useTutorCentro'
   import { useUsuario } from '@/composables/useUsuario'
-  import { useAuthStore } from '@/stores/authStore'
   import { EmpresaResponse } from '@/types/models/Empresa'
   import { TutorCentro } from '@/types/models/TutorCentro'
   import { ModelRef, Ref, ref, watch } from 'vue'
 
   const emit = defineEmits(['tutorCentroEditado'])
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
-  const empresaSeleccionada: ModelRef<EmpresaResponse | undefined> =
+  const tutorCentroSeleccionado: ModelRef<EmpresaResponse | undefined> =
     defineModel('selectedTutorCentro')
 
-  const authStore = useAuthStore()
   const { updateTutorCentro } = useTutorCentro()
   const { getCursos } = useCurso()
   const { getUsuarios } = useUsuario()
@@ -35,7 +33,7 @@
       cursos.value = await getCursos()
       usuarios.value = await getUsuarios()
 
-      tutorCentro.value = JSON.parse(JSON.stringify(empresaSeleccionada.value))
+      tutorCentro.value = JSON.parse(JSON.stringify(tutorCentroSeleccionado.value))
     }
   })
 </script>
