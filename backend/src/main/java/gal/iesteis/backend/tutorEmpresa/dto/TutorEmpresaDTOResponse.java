@@ -1,5 +1,7 @@
 package gal.iesteis.backend.tutorEmpresa.dto;
 
+import java.util.Map;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +15,7 @@ import lombok.Setter;
 // necesitan saber la misma información
 public class TutorEmpresaDTOResponse extends TutorEmpresaDTO {
   private Long id;
-  private String empresa;
+  private Map<String, Object> empresa;
   private String nombre;
   private String apellidos;
   private String email;
