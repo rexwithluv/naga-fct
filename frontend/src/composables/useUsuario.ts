@@ -57,7 +57,7 @@ export function useUsuario() {
   const updateUsuario = async (data: Usuario): Promise<boolean> => {
     return new Promise(async (resolve) => {
       try {
-        await apiClient.put(`/alumnos/${data.id}`, prepareUsuarioPayload(data))
+        await apiClient.put(`/usuarios/${data.id}`, prepareUsuarioPayload(data))
         toast.add({
           severity: 'success',
           summary: 'Usuario actualizado correctamente.',

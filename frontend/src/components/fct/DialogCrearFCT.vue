@@ -28,6 +28,7 @@
 
   watch(isVisible, async (newValue) => {
     if (newValue) {
+      fct.value = {} as Fct
       alumnos.value = await getAlumnos()
       tutoresEmpresa.value = await getTutoresEmpresa()
     }

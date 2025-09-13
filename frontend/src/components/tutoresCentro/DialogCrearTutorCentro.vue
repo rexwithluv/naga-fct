@@ -14,11 +14,12 @@
   const { getCursos } = useCurso()
   const { getUsuarios } = useUsuario()
 
-  const tutorCentro: Ref<TutorCentro> = ref({} as TutorCentro)
+  const tutorCentro: Ref<TutorCentro> = ref({ activo: false } as TutorCentro)
   const cursos: Ref<CursoResponse[]> = ref([])
   const usuarios: Ref<Usuario[]> = ref([])
 
   const handleCreateTutorCentro = async (): Promise<void> => {
+    console.log(tutorCentro.value)
     const success = await createTutorCentro(tutorCentro.value)
     if (success) {
       emit('tutorCentroCreado')
@@ -28,6 +29,7 @@
 
   watch(isVisible, async (newValue) => {
     if (newValue) {
+      tutorCentro.value = { activo: false } as TutorCentro
       cursos.value = await getCursos(false)
       usuarios.value = await getUsuarios(false)
     }
@@ -65,6 +67,9 @@
         placeholder="example@email.com"
         v-model="tutorCentro.email"
       />
+
+      <label for="activo" class="font-semibold w-24">Activo</label>
+      <Checkbox id="activo" name="activo" class="flex-auto" v-model="tutorCentro.activo" binary />
     </div>
 
     <div class="flex items-center gap-4 mb-4">
@@ -77,7 +82,7 @@
         optionValue="id"
         optionLabel="codigo"
         placeholder="Selecciona un curso..."
-        v-model="tutorCentro.curso.id"
+        v-model="tutorCentro.curso"
       />
 
       <label for="usuario" class="font-semibold w-24">Usuario</label>
@@ -89,7 +94,7 @@
         optionValue="id"
         optionLabel="email"
         placeholder="Selecciona un usuario..."
-        v-model="tutorCentro.usuario.id"
+        v-model="tutorCentro.usuario"
       />
     </div>
 

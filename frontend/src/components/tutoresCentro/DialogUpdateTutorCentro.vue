@@ -17,7 +17,11 @@
   const cursos = ref([])
   const usuarios = ref([])
 
-  const tutorCentro: Ref<TutorCentro> = ref({ curso: { id: 0 }, usuario: { id: 0 } } as TutorCentro)
+  // @ts-ignore
+  const tutorCentro: Ref<TutorCentro> = ref({
+    curso: { id: 0 },
+    usuario: { id: null },
+  } as TutorCentro)
 
   const handleUpdateTutorCentro = async () => {
     const success = await updateTutorCentro(tutorCentro.value)
@@ -33,6 +37,9 @@
       usuarios.value = await getUsuarios()
 
       tutorCentro.value = JSON.parse(JSON.stringify(tutorCentroSeleccionado.value))
+      if (tutorCentro.value?.usuario === null) {
+        tutorCentro.value.usuario = { id: 0, email: '' }
+      }
     }
   })
 </script>
@@ -68,6 +75,9 @@
         placeholder="example@email.com"
         v-model="tutorCentro.email"
       />
+
+      <label for="activo" class="font-semibold w-24">Activo</label>
+      <Checkbox id="activo" name="activo" class="flex-auto" v-model="tutorCentro.activo" binary />
     </div>
 
     <div class="flex items-center gap-4 mb-4">

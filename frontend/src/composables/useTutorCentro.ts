@@ -7,6 +7,14 @@ export function useTutorCentro() {
   const toast = useToast()
   const confirm = useConfirm()
 
+  const preparePayload = (data: TutorCentro): TutorCentro => {
+    return {
+      ...data,
+      curso: data.curso?.id,
+      usuario: data.usuario?.id,
+    }
+  }
+
   const getTutoresCentro = async () => {
     try {
       const response = await apiClient.get('/tutores-centro')
@@ -21,10 +29,10 @@ export function useTutorCentro() {
     }
   }
 
-  const createTutorCentro = async (tutorCentroData: TutorCentro): Promise<boolean> => {
+  const createTutorCentro = async (data: TutorCentro): Promise<boolean> => {
     return new Promise(async (resolve) => {
       try {
-        await apiClient.post('/tutores-centro', tutorCentroData)
+        await apiClient.post('/tutores-centro', data)
         toast.add({
           severity: 'success',
           summary: 'Tutor de centro creado correctamente.',
@@ -44,14 +52,10 @@ export function useTutorCentro() {
     })
   }
 
-  const updateTutorCentro = async (tutorCentroData: TutorCentro): Promise<boolean> => {
-    const updatedTutorCentro = JSON.parse(JSON.stringify(tutorCentroData))
-    updatedTutorCentro.curso = tutorCentroData.curso.id
-    updatedTutorCentro.usuario = tutorCentroData.usuario.id
-
+  const updateTutorCentro = async (data: TutorCentro): Promise<boolean> => {
     return new Promise(async (resolve) => {
       try {
-        await apiClient.put(`/tutores-centro/${tutorCentroData.id}`, updatedTutorCentro)
+        await apiClient.put(`/tutores-centro/${data.id}`, preparePayload(data))
         toast.add({
           severity: 'success',
           summary: 'Tutor de centro actualizado correctamente.',
@@ -71,9 +75,9 @@ export function useTutorCentro() {
     })
   }
 
-  const deleteTutorCentro = async (tutorCentroData: TutorCentro): Promise<boolean> => {
-    const id = tutorCentroData.id
-    const nombreCompleto = `${tutorCentroData.nombre} ${tutorCentroData.apellidos}`
+  const deleteTutorCentro = async (data: TutorCentro): Promise<boolean> => {
+    const id = data.id
+    const nombreCompleto = `${data.nombre} ${data.apellidos}`
 
     return new Promise((resolve) => {
       confirm.require({

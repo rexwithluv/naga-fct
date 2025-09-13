@@ -60,7 +60,7 @@
         optionValue="id"
         optionLabel="nombre"
         placeholder='Taller "Todo sobre Ruedas"'
-        v-model="tutorEmpresa.empresaId"
+        v-model="tutorEmpresa.empresa"
       />
     </div>
 

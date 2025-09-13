@@ -8,27 +8,28 @@
   import { Checkbox } from 'primevue'
   import { ModelRef, ref, Ref, watch } from 'vue'
 
-  const emit = defineEmits(['usuarioCreado'])
+  const emit = defineEmits(['updatedUsuario'])
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
 
   const { createUsuario } = useUsuario()
   const { getRolesUsuario } = useRolUsuario()
   const { getTutoresCentro } = useTutorCentro()
 
-  const usuario = ref({} as Usuario)
+  const usuario = ref({ activo: false } as Usuario)
   const rolesUsuario: Ref<RolUsuarioResponse[]> = ref([])
   const tutoresCentro: Ref<TutorCentro[]> = ref([])
 
   const handleCreateUsuario = async () => {
     const success = await createUsuario(usuario.value)
     if (success) {
-      emit('usuarioCreado')
+      emit('updatedUsuario')
       isVisible.value = false
     }
   }
 
   watch(isVisible, async (newValue) => {
     if (newValue) {
+      usuario.value = { activo: false } as Usuario
       rolesUsuario.value = await getRolesUsuario()
       tutoresCentro.value = await getTutoresCentro()
     }

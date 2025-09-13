@@ -7,7 +7,7 @@
   import { Usuario } from '@/types/models/Usuario'
   import { ModelRef, ref, Ref, watch } from 'vue'
 
-  const emit = defineEmits(['usuarioCreado'])
+  const emit = defineEmits(['updatedUsuario'])
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
   const selectedUsuario = defineModel('selectedUsuario')
 
@@ -22,7 +22,7 @@
   const handleUpdateUsuario = async () => {
     const success = await updateUsuario(usuario.value)
     if (success) {
-      emit('usuarioCreado')
+      emit('updatedUsuario')
       isVisible.value = false
     }
   }
