@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import { UsuarioResponse } from '@/types/models/Usuario'
+  import { Usuario } from '@/types/models/Usuario'
   import { BookUser, CircleCheck, CircleX, ShieldOff, ShieldUser, User } from 'lucide-vue-next'
   import { ModelRef, ref, Ref, watch } from 'vue'
 
-  const usuario: ModelRef<UsuarioResponse | undefined> = defineModel('selectedUsuario')
+  const usuario: ModelRef<Usuario | undefined> = defineModel('selectedUsuario')
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
 
   const isActivo: Ref<boolean | null> = ref(null)
@@ -12,7 +12,7 @@
   watch(isVisible, (newValue) => {
     if (newValue) {
       isActivo.value = usuario.value?.activo || false
-      isAdmin.value = usuario.value?.rol === 'admin'
+      isAdmin.value = usuario.value?.rol.nombre === 'admin'
     }
   })
 </script>
@@ -53,7 +53,8 @@
     <div class="field">
       <p class="flex items-center gap-2">
         <BookUser :size="18" aria-label="Curso que tutoriza si corresponde" />
-        {{ usuario?.tutor ?? 'No tutoriza ningún curso' }}
+        <span v-if="usuario?.tutorCentro === null">No tutoriza ningún curso</span>
+        <span v-else>{{ usuario?.tutorCentro.nombre }} {{ usuario?.tutorCentro.apellidos }}</span>
       </p>
     </div>
   </Dialog>

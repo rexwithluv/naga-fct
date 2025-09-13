@@ -1,9 +1,8 @@
 package gal.iesteis.backend.fct.dto;
 
-import java.time.LocalDate;
-
 import io.micrometer.common.lang.Nullable;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +22,5 @@ public class FCTDTOCreate extends FCTDTO {
   @NotNull(message = "La fecha de inicio no puede ser nula.")
   private LocalDate fechaInicio;
 
-  @Nullable
-  private LocalDate fechaFin;
+  @Nullable private LocalDate fechaFin;
 }

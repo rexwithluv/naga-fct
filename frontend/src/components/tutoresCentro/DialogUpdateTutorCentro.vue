@@ -2,14 +2,13 @@
   import { useCurso } from '@/composables/useCurso'
   import { useTutorCentro } from '@/composables/useTutorCentro'
   import { useUsuario } from '@/composables/useUsuario'
-  import { EmpresaResponse } from '@/types/models/Empresa'
+  import { Empresa } from '@/types/models/Empresa'
   import { TutorCentro } from '@/types/models/TutorCentro'
   import { ModelRef, Ref, ref, watch } from 'vue'
 
   const emit = defineEmits(['tutorCentroEditado'])
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
-  const tutorCentroSeleccionado: ModelRef<EmpresaResponse | undefined> =
-    defineModel('selectedTutorCentro')
+  const tutorCentroSeleccionado: ModelRef<Empresa | undefined> = defineModel('selectedTutorCentro')
 
   const { updateTutorCentro } = useTutorCentro()
   const { getCursos } = useCurso()

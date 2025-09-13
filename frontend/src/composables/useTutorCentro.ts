@@ -7,17 +7,6 @@ export function useTutorCentro() {
   const toast = useToast()
   const confirm = useConfirm()
 
-  const createTutorCentroRequest = (): TutorCentro => {
-    return {
-      id: 0,
-      nombre: '',
-      apellidos: '',
-      email: '',
-      curso: 0,
-      usuario: null,
-    }
-  }
-
   const getTutoresCentro = async () => {
     try {
       const response = await apiClient.get('/tutores-centro')
@@ -124,7 +113,6 @@ export function useTutorCentro() {
   }
 
   return {
-    createTutorCentroRequest,
     getTutoresCentro,
     createTutorCentro,
     updateTutorCentro,

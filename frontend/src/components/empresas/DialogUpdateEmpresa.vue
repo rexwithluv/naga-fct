@@ -4,12 +4,12 @@
   import { useEspecialidad } from '@/composables/useEspecialidad'
   import { useSkill } from '@/composables/useSkill'
   import { useAuthStore } from '@/stores/authStore'
-  import { EmpresaResponse } from '@/types/models/Empresa'
+  import { Empresa } from '@/types/models/Empresa'
   import { ModelRef, Ref, ref, watch } from 'vue'
 
   const emit = defineEmits(['empresaEditada'])
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
-  const empresaSeleccionada: ModelRef<EmpresaResponse | undefined> = defineModel('selectedEmpresa')
+  const empresaSeleccionada: ModelRef<Empresa | undefined> = defineModel('selectedEmpresa')
 
   const authStore = useAuthStore()
   const { updateEmpresa } = useEmpresa()
@@ -21,10 +21,10 @@
   const skills = ref([])
   const especialidades = ref([])
 
-  const empresa: Ref<EmpresaResponse> = ref({
+  const empresa: Ref<Empresa> = ref({
     concello: { id: 0 },
     especialidad: { id: 0 },
-  } as EmpresaResponse)
+  } as Empresa)
 
   const handleUpdateEmpresa = async () => {
     const success = await updateEmpresa(empresa.value)
@@ -44,6 +44,8 @@
       }
 
       empresa.value = JSON.parse(JSON.stringify(empresaSeleccionada.value))
+
+      // @ts-ignore
       empresa.value.skills = empresa.value.skills.map((skill) => skill.id)
     }
   })

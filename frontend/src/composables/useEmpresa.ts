@@ -1,5 +1,5 @@
-import apiClient from '@/apiClient'
-import { EmpresaRequest, EmpresaResponse } from '@/types/models/Empresa'
+import apiClient from '@/apiClient.js'
+import { Empresa } from '@/types/models/Empresa.js'
 import { useConfirm } from 'primevue'
 import { useToast } from 'primevue/usetoast'
 
@@ -21,7 +21,7 @@ export function useEmpresa() {
     }
   }
 
-  const createEmpresa = async (empresaData: EmpresaRequest): Promise<boolean> => {
+  const createEmpresa = async (empresaData: Empresa): Promise<boolean> => {
     return new Promise(async (resolve) => {
       try {
         await apiClient.post('/empresas', empresaData)
@@ -44,7 +44,7 @@ export function useEmpresa() {
     })
   }
 
-  const updateEmpresa = async (empresaData: EmpresaResponse): Promise<boolean> => {
+  const updateEmpresa = async (empresaData: Empresa): Promise<boolean> => {
     const updatedEmpresa = JSON.parse(JSON.stringify(empresaData))
     updatedEmpresa.concello = updatedEmpresa.concello.id
     updatedEmpresa.especialidad = updatedEmpresa.especialidad.id
@@ -71,7 +71,7 @@ export function useEmpresa() {
     })
   }
 
-  const deleteEmpresa = async (empresaData: EmpresaResponse): Promise<boolean> => {
+  const deleteEmpresa = async (empresaData: Empresa): Promise<boolean> => {
     const id = empresaData.id
     const nombre = empresaData.nombre
 

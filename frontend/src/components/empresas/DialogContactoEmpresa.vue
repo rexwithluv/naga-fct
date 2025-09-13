@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import { ContactoEmpresa } from '@/types/models/ContactoEmpresa'
-  import { EmpresaResponse } from '@/types/models/Empresa'
+  import { Empresa } from '@/types/models/Empresa'
   import { BookUser, Mail, Phone } from 'lucide-vue-next'
   import { ModelRef, ref, Ref, watch } from 'vue'
 
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
-  const selectedEmpresa: ModelRef<EmpresaResponse | undefined> = defineModel('selectedEmpresa')
+  const selectedEmpresa: ModelRef<Empresa | undefined> = defineModel('selectedEmpresa')
   const contactData: Ref<ContactoEmpresa | null> = ref(null)
 
   watch(isVisible, (newValue) => {

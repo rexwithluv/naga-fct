@@ -3,20 +3,20 @@
   import { useTutorCentro } from '@/composables/useTutorCentro'
   import { useUsuario } from '@/composables/useUsuario'
   import { CursoResponse } from '@/types/models/Curso'
-  import { TutorCentroRequest } from '@/types/models/TutorCentro'
-  import { UsuarioResponse } from '@/types/models/Usuario'
+  import { TutorCentro } from '@/types/models/TutorCentro'
+  import { Usuario } from '@/types/models/Usuario'
   import { ModelRef, ref, Ref, watch } from 'vue'
 
   const emit = defineEmits(['tutorCentroCreado'])
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
 
-  const { createTutorCentroRequest, createTutorCentro } = useTutorCentro()
+  const { createTutorCentro } = useTutorCentro()
   const { getCursos } = useCurso()
   const { getUsuarios } = useUsuario()
 
-  const tutorCentro: Ref<TutorCentroRequest> = ref(createTutorCentroRequest())
+  const tutorCentro: Ref<TutorCentro> = ref({} as TutorCentro)
   const cursos: Ref<CursoResponse[]> = ref([])
-  const usuarios: Ref<UsuarioResponse[]> = ref([])
+  const usuarios: Ref<Usuario[]> = ref([])
 
   const handleCreateTutorCentro = async (): Promise<void> => {
     const success = await createTutorCentro(tutorCentro.value)
@@ -28,7 +28,6 @@
 
   watch(isVisible, async (newValue) => {
     if (newValue) {
-      tutorCentro.value = createTutorCentroRequest()
       cursos.value = await getCursos(false)
       usuarios.value = await getUsuarios(false)
     }
@@ -78,7 +77,7 @@
         optionValue="id"
         optionLabel="codigo"
         placeholder="Selecciona un curso..."
-        v-model="tutorCentro.cursoId"
+        v-model="tutorCentro.curso.id"
       />
 
       <label for="usuario" class="font-semibold w-24">Usuario</label>
@@ -90,7 +89,7 @@
         optionValue="id"
         optionLabel="email"
         placeholder="Selecciona un usuario..."
-        v-model="tutorCentro.usuarioId"
+        v-model="tutorCentro.usuario.id"
       />
     </div>
 

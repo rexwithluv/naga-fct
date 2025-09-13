@@ -1,4 +1,4 @@
-import { Skill } from '@/types/models/Skill'
+import { Skill } from '@/types/models/Skill.js'
 
 export default function formatList(array: Skill[]): string {
   const len = array.length

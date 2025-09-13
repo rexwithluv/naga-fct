@@ -66,7 +66,7 @@
         </template>
       </Column>
       <Column field="email" header="Email" />
-      <Column field="Telefono" header="Teléfono" />
+      <Column field="telefono" header="Teléfono" />
       <Column header="Acciones">
         <template #body="{ data }">
           <Button class="mr-2" label="Detalles" @click="openDetailsDialog(data)" />

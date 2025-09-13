@@ -5,5 +5,5 @@ export interface Fct {
   tutorCentro?: { id: number; nombre: string; apellidos: string }
   tutorEmpresa: { id: number; nombre: string; apellidos: string }
   fechaInicio: string
-  fechaFin: string
+  fechaFin: string | null
 }

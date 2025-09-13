@@ -4,7 +4,7 @@
   import { useSkill } from '@/composables/useSkill'
   import booleanToSpanish from '@/helpers/booleanToSpanish'
   import formatList from '@/helpers/formatList'
-  import { EmpresaResponse } from '@/types/models/Empresa'
+  import { Empresa } from '@/types/models/Empresa'
   import { FilterMatchMode } from '@primevue/core/api'
   import { onMounted, Ref, ref } from 'vue'
   import DialogUpdateEmpresa from './DialogUpdateEmpresa.vue'
@@ -13,11 +13,11 @@
   const { getConcellos } = useConcello()
   const { getSkills } = useSkill()
 
-  const empresas: Ref<EmpresaResponse[]> = ref([])
+  const empresas: Ref<Empresa[]> = ref([])
   const concellos = ref([])
   const skills = ref([])
 
-  const selectedEmpresa: Ref<EmpresaResponse | null> = ref(null)
+  const selectedEmpresa: Ref<Empresa | null> = ref(null)
   const showContactDialog: Ref<boolean> = ref(false)
   const showDetailsDialog: Ref<boolean> = ref(false)
   const showCreateDialog: Ref<boolean> = ref(false)
@@ -30,18 +30,18 @@
     activa: { value: null, matchMode: FilterMatchMode.EQUALS },
   })
 
-  const openContactDialog = (empresaData: EmpresaResponse) => {
+  const openContactDialog = (empresaData: Empresa) => {
     selectedEmpresa.value = empresaData || null
     showContactDialog.value = true
   }
-  const openDetailsDialog = (empresaData: EmpresaResponse) => {
+  const openDetailsDialog = (empresaData: Empresa) => {
     selectedEmpresa.value = empresaData || null
     showDetailsDialog.value = true
   }
   const openCreateDialog = () => {
     showCreateDialog.value = true
   }
-  const openUpdateDialog = (empresaData: EmpresaResponse) => {
+  const openUpdateDialog = (empresaData: Empresa) => {
     selectedEmpresa.value = empresaData
     showUpdateDialog.value = true
   }
@@ -49,7 +49,7 @@
   const handleGetEmpresas = async () => {
     empresas.value = await getEmpresas()
   }
-  const handleDeleteEmpresa = async (empresaData: EmpresaResponse) => {
+  const handleDeleteEmpresa = async (empresaData: Empresa) => {
     const success: boolean = await deleteEmpresa(empresaData)
     if (success) {
       empresas.value = await getEmpresas()

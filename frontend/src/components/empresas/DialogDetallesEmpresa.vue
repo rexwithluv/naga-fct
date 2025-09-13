@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import formatList from '@/helpers/formatList'
-  import { EmpresaResponse } from '@/types/models/Empresa'
+  import { Empresa } from '@/types/models/Empresa'
   import {
     BriefcaseBusiness,
     CircleCheck,
@@ -18,7 +18,7 @@
   const authStore = useAuthStore()
 
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
-  const empresa: ModelRef<EmpresaResponse | undefined> = defineModel('selectedEmpresa')
+  const empresa: ModelRef<Empresa | undefined> = defineModel('selectedEmpresa')
 
   const isActiva: Ref<boolean | null> = ref(null)
 

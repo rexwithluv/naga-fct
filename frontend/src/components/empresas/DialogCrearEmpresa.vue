@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useAuthStore } from '@/stores/authStore'
-  import { EmpresaRequest } from '@/types/models/Empresa'
+  import { Empresa } from '@/types/models/Empresa'
   import { StoreGeneric } from 'pinia'
   import { ModelRef, ref, Ref, watch } from 'vue'
   import { useConcello } from '../../composables/useConcello'
@@ -21,13 +21,13 @@
   const especialidades = ref([])
   const skills = ref([])
 
-  const empresa: Ref<EmpresaRequest> = ref({
+  const empresa: Ref<Empresa> = ref({
     contacto: {
       nombre: '',
       telefono: '',
       email: '',
     },
-  } as EmpresaRequest)
+  } as Empresa)
 
   const handleCreateEmpresa = async () => {
     const success = await createEmpresa(empresa.value)
