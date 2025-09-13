@@ -82,9 +82,8 @@ public class FCTService {
     }
 
     TutorCentro tutor = tutorCentroService.obtenerTutorCentroPorid(userDetails.getTutorCentroId());
-    Alumno alumno = alumnoService.obtenerAlumnoPorId(userDetails, dto.getAlumnoId());
-    TutorEmpresa tutorEmpresa =
-        tutorEmpresaService.obtenerTutorEmpresaPorId(dto.getTutorEmpresaId());
+    Alumno alumno = alumnoService.obtenerAlumnoPorId(userDetails, dto.getAlumno());
+    TutorEmpresa tutorEmpresa = tutorEmpresaService.obtenerTutorEmpresaPorId(dto.getTutorEmpresa());
     boolean esTutorDelAlumno = alumno.getTutorCentro().equals(tutor);
     boolean esEmpresaEspecialidad =
         tutor.getCurso().getEspecialidad().equals(tutorEmpresa.getEmpresa().getEspecialidad());

@@ -1,14 +1,5 @@
 package gal.iesteis.backend.empresa;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import gal.iesteis.backend.concello.Concello;
 import gal.iesteis.backend.concello.ConcelloService;
 import gal.iesteis.backend.config.security.AuthUtils;
@@ -24,24 +15,26 @@ import gal.iesteis.backend.skill.SkillNotFoundException;
 import gal.iesteis.backend.skill.SkillRepository;
 import gal.iesteis.backend.tutorCentro.TutorCentroRepository;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class EmpresaDTOConverter {
 
-  @Autowired
-  private ConcelloService concelloService;
+  @Autowired private ConcelloService concelloService;
 
-  @Autowired
-  private EspecialidadService especialidadService;
+  @Autowired private EspecialidadService especialidadService;
 
-  @Autowired
-  private TutorCentroRepository tutorCentroRepository;
+  @Autowired private TutorCentroRepository tutorCentroRepository;
 
-  @Autowired
-  private SkillRepository skillRepository;
+  @Autowired private SkillRepository skillRepository;
 
-  @Autowired
-  private ModelMapper modelMapper;
+  @Autowired private ModelMapper modelMapper;
 
   public EmpresaDTO empresaADTOResponse(Empresa empresa, boolean isAdmin) {
     if (isAdmin) {
@@ -65,12 +58,16 @@ public class EmpresaDTOConverter {
       dto.setActiva(empresa.getActiva());
       dto.setPlazas(empresa.getPlazas());
       dto.setSkills(
-          empresa.getSkills().stream().map(skill -> new HashMap<String, Object>() {
-            {
-              put("id", skill.getId());
-              put("nombre", skill.getNombre());
-            }
-          }).collect(Collectors.toSet()));
+          empresa.getSkills().stream()
+              .map(
+                  skill ->
+                      new HashMap<String, Object>() {
+                        {
+                          put("id", skill.getId());
+                          put("nombre", skill.getNombre());
+                        }
+                      })
+              .collect(Collectors.toSet()));
       dto.setEspecialidad(
           Map.of(
               "id", empresa.getEspecialidad().getId(),
@@ -98,12 +95,16 @@ public class EmpresaDTOConverter {
     dto.setActiva(empresa.getActiva());
     dto.setPlazas(empresa.getPlazas());
     dto.setSkills(
-        empresa.getSkills().stream().map(skill -> new HashMap<String, Object>() {
-          {
-            put("id", skill.getId());
-            put("nombre", skill.getNombre());
-          }
-        }).collect(Collectors.toSet()));
+        empresa.getSkills().stream()
+            .map(
+                skill ->
+                    new HashMap<String, Object>() {
+                      {
+                        put("id", skill.getId());
+                        put("nombre", skill.getNombre());
+                      }
+                    })
+            .collect(Collectors.toSet()));
     return dto;
   }
 
@@ -115,16 +116,18 @@ public class EmpresaDTOConverter {
     String contactoNombre = dto.getContacto().get("nombre");
     String contactoEmail = dto.getContacto().get("email");
     String contactoTelefono = dto.getContacto().get("telefono");
-    Set<Skill> skills = dto.getSkills().stream()
-        .map(s -> skillRepository.findById(s).orElseThrow(() -> new SkillNotFoundException(s)))
-        .collect(Collectors.toSet());
-    Especialidad especialidad = isAdmin
-        ? especialidadService.obtenerPorId(dto.getEspecialidad())
-        : (tutorCentroRepository
-            .findById(userDetails.getTutorCentroId())
-            .orElseThrow(() -> new TutorCentroNotFoundException(userDetails.getTutorCentroId()))
-            .getCurso()
-            .getEspecialidad());
+    Set<Skill> skills =
+        dto.getSkills().stream()
+            .map(s -> skillRepository.findById(s).orElseThrow(() -> new SkillNotFoundException(s)))
+            .collect(Collectors.toSet());
+    Especialidad especialidad =
+        isAdmin
+            ? especialidadService.obtenerPorId(dto.getEspecialidad())
+            : (tutorCentroRepository
+                .findById(userDetails.getTutorCentroId())
+                .orElseThrow(() -> new TutorCentroNotFoundException(userDetails.getTutorCentroId()))
+                .getCurso()
+                .getEspecialidad());
 
     empresa.setConcello(concello);
     empresa.setContactoNombre(contactoNombre);

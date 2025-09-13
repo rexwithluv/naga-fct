@@ -1,22 +1,19 @@
 package gal.iesteis.backend.tutorCentro;
 
-import java.util.Map;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import gal.iesteis.backend.curso.Curso;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTO;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTOCreate;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTOResponseAdmin;
 import gal.iesteis.backend.usuario.Usuario;
+import java.util.Map;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class TutorCentroDTOConverter {
 
-  @Autowired
-  private ModelMapper modelMapper;
+  @Autowired private ModelMapper modelMapper;
 
   public TutorCentroDTO tutorCentroADtoResponseAdmin(TutorCentro tutor) {
     TutorCentroDTOResponseAdmin dto = modelMapper.map(tutor, TutorCentroDTOResponseAdmin.class);
