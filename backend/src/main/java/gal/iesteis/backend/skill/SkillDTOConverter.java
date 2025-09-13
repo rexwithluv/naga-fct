@@ -1,8 +1,12 @@
 package gal.iesteis.backend.skill;
 
+import java.util.Map;
+
+import org.springframework.stereotype.Component;
+
+import gal.iesteis.backend.especialidad.Especialidad;
 import gal.iesteis.backend.skill.dto.SkillDTO;
 import gal.iesteis.backend.skill.dto.SkillDTOResponse;
-import org.springframework.stereotype.Component;
 
 @Component
 public class SkillDTOConverter {
@@ -12,7 +16,10 @@ public class SkillDTOConverter {
 
     dto.setId(skill.getId());
     dto.setNombre(skill.getNombre());
-    dto.setEspecialidadId(skill.getEspecialidad().getId());
+    Especialidad especialidad = skill.getEspecialidad();
+    dto.setEspecialidad(Map.of(
+        "id", especialidad.getId(),
+        "nombre", especialidad.getNombre()));
 
     return dto;
   }

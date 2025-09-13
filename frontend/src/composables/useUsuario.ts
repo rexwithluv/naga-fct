@@ -1,5 +1,5 @@
-import apiClient from '@/apiClient'
-import { UsuarioRequest, UsuarioResponse } from '@/types/models/Usuario'
+import apiClient from '@/apiClient.js'
+import { Usuario } from '@/types/models/Usuario.js'
 import { useConfirm } from 'primevue'
 import { useToast } from 'primevue/usetoast'
 
@@ -7,12 +7,8 @@ export function useUsuario() {
   const confirm = useConfirm()
   const toast = useToast()
 
-  const createUsuarioRequest = (): UsuarioRequest => {
-    return {
-      email: '',
-      rolId: 0,
-      tutorId: null,
-    }
+  const prepareUsuarioPayload = (data: Usuario) => {
+    return { ...data, rol: data.rol.id, tutorCentro: data.tutorCentro.id }
   }
 
   const getUsuarios = async (hasTutorCentro?: boolean) => {
@@ -35,10 +31,10 @@ export function useUsuario() {
     }
   }
 
-  const createUsuario = async (usuarioData: UsuarioRequest): Promise<boolean> => {
+  const createUsuario = async (data: Usuario): Promise<boolean> => {
     return new Promise(async (resolve) => {
       try {
-        await apiClient.post('/usuarios', usuarioData)
+        await apiClient.post('/usuarios', data)
         toast.add({
           severity: 'success',
           summary: 'Usuario creado correctamente.',
@@ -58,8 +54,31 @@ export function useUsuario() {
     })
   }
 
-  const deleteUsuario = async (usuarioData: UsuarioResponse): Promise<boolean> => {
-    const id = usuarioData.id
+  const updateUsuario = async (data: Usuario): Promise<boolean> => {
+    return new Promise(async (resolve) => {
+      try {
+        await apiClient.put(`/usuarios/${data.id}`, prepareUsuarioPayload(data))
+        toast.add({
+          severity: 'success',
+          summary: 'Usuario actualizado correctamente.',
+          detail: 'Se ha actualizado la información del usuario.',
+          life: 5000,
+        })
+        resolve(true)
+      } catch (error: any) {
+        toast.add({
+          severity: 'error',
+          summary: 'Error al actualizar la información del usuario.',
+          detail: error.response.data.detail,
+          life: 5000,
+        })
+        resolve(false)
+      }
+    })
+  }
+
+  const deleteUsuario = async (data: Usuario): Promise<boolean> => {
+    const id = data.id
 
     return new Promise((resolve) => {
       confirm.require({
@@ -98,5 +117,5 @@ export function useUsuario() {
     })
   }
 
-  return { createUsuarioRequest, getUsuarios, createUsuario, deleteUsuario }
+  return { getUsuarios, createUsuario, updateUsuario, deleteUsuario }
 }

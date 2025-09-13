@@ -1,19 +1,22 @@
 <script setup lang="ts">
   import { useEmpresa } from '@/composables/useEmpresa'
   import { useTutorEmpresa } from '@/composables/useTutorEmpresa'
+  import { TutorEmpresa } from '@/types/models/TutorEmpresa'
   import { ModelRef, ref, Ref, watch } from 'vue'
 
   const emit = defineEmits(['tutorEmpresaEditado'])
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
+  const tutorEmpresaSeleccionado = defineModel('selectedTutorEmpresa')
 
-  const { createTutorEmpresaRequest, createTutorEmpresa } = useTutorEmpresa()
+  const { updateTutorEmpresa } = useTutorEmpresa()
   const { getEmpresas } = useEmpresa()
 
-  const tutorEmpresa = ref(createTutorEmpresaRequest())
   const empresas: Ref<any[]> = ref([])
 
-  const handleCreateTutorEmpresa = async (): Promise<void> => {
-    const success = await createTutorEmpresa(tutorEmpresa.value)
+  const tutorEmpresa = ref({ empresa: { id: 0 } } as TutorEmpresa)
+
+  const handleUpdateTutorEmpresa = async (): Promise<void> => {
+    const success = await updateTutorEmpresa(tutorEmpresa.value)
     if (success) {
       emit('tutorEmpresaEditado')
       isVisible.value = false
@@ -23,13 +26,14 @@
   watch(isVisible, async (newValue) => {
     if (newValue) {
       empresas.value = await getEmpresas()
-      tutorEmpresa.value = createTutorEmpresaRequest()
+
+      tutorEmpresa.value = JSON.parse(JSON.stringify(tutorEmpresaSeleccionado.value))
     }
   })
 </script>
 
 <template>
-  <Dialog v-model:visible="isVisible" header="Crear tutor de empresa" modal dismissableMask>
+  <Dialog v-model:visible="isVisible" header="Editar tutor de empresa" modal dismissableMask>
     <div class="flex items-center gap-4 mb-4">
       <label for="nombre" class="font-semibold w-24">Nombre</label>
       <InputText
@@ -60,7 +64,7 @@
         optionValue="id"
         optionLabel="nombre"
         placeholder='Taller "Todo sobre Ruedas"'
-        v-model="tutorEmpresa.empresa"
+        v-model="tutorEmpresa.empresa.id"
       />
     </div>
 
@@ -85,7 +89,7 @@
     </div>
 
     <div class="text-center">
-      <Button type="button" label="Guardar" @click="handleCreateTutorEmpresa" />
+      <Button type="button" label="Guardar" @click="handleUpdateTutorEmpresa" />
     </div>
   </Dialog>
 </template>

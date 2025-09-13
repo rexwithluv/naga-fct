@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 public class TutorEmpresaDTOCreate extends TutorEmpresaDTO {
   @NotNull(message = "El ID de la empresa no puede ser nulo.")
-  private Long empresaId;
+  private Long empresa;
 
   @NotBlank(message = "El nombre no puede estar vacío.")
   private String nombre;

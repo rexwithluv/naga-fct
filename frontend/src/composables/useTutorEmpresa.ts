@@ -1,13 +1,14 @@
-import apiClient from '@/apiClient'
-import { TutorEmpresaRequest } from '@/types/models/TutorEmpresa'
+import apiClient from '@/apiClient.js'
+import { TutorEmpresa } from '@/types/models/TutorEmpresa.js'
 import { useToast } from 'primevue'
 
 export function useTutorEmpresa() {
   const toast = useToast()
 
-  const createTutorEmpresaRequest = (): TutorEmpresaRequest => {
+  const createTutorEmpresaRequest = (): TutorEmpresa => {
     return {
-      empresaId: 0,
+      id: 0,
+      empresa: 0,
       nombre: '',
       apellidos: '',
       email: '',
@@ -29,7 +30,7 @@ export function useTutorEmpresa() {
     }
   }
 
-  const createTutorEmpresa = async (tutorEmpresaData: TutorEmpresaRequest): Promise<boolean> => {
+  const createTutorEmpresa = async (tutorEmpresaData: TutorEmpresa): Promise<boolean> => {
     return new Promise(async (resolve) => {
       try {
         await apiClient.post('/tutores-empresa', tutorEmpresaData)
@@ -52,5 +53,32 @@ export function useTutorEmpresa() {
     })
   }
 
-  return { createTutorEmpresaRequest, getTutoresEmpresa, createTutorEmpresa }
+  const updateTutorEmpresa = async (tutorEmpresaData: TutorEmpresa): Promise<boolean> => {
+    const updatedTutorEmpresa = JSON.parse(JSON.stringify(tutorEmpresaData))
+
+    updatedTutorEmpresa.empresa = tutorEmpresaData.empresa.id
+
+    return new Promise(async (resolve) => {
+      try {
+        await apiClient.put(`/tutores-empresa/${updatedTutorEmpresa.id}`, updatedTutorEmpresa)
+        toast.add({
+          severity: 'success',
+          summary: 'Tutor de empresa actualizado correctamente.',
+          detail: 'Se ha actualizado la información del tutor de empresa.',
+          life: 5000,
+        })
+        resolve(true)
+      } catch (error: any) {
+        toast.add({
+          severity: 'error',
+          summary: 'Error al actualizar la información del tutor de empresa.',
+          detail: error.response.data.detail,
+          life: 5000,
+        })
+        resolve(false)
+      }
+    })
+  }
+
+  return { createTutorEmpresaRequest, getTutoresEmpresa, updateTutorEmpresa, createTutorEmpresa }
 }

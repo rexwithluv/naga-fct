@@ -16,6 +16,7 @@ import gal.iesteis.backend.skill.SkillRepository;
 import gal.iesteis.backend.tutorCentro.TutorCentroRepository;
 import gal.iesteis.backend.tutorCentro.exceptions.TutorCentroNotFoundException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
@@ -37,9 +38,15 @@ public class EmpresaDTOConverter {
 
   public EmpresaDTO empresaADTOResponse(Empresa empresa, boolean isAdmin) {
     if (isAdmin) {
-      EmpresaDTOResponseAdmin dto = modelMapper.map(empresa, EmpresaDTOResponseAdmin.class);
-      dto.setConcello(empresa.getConcello().getNombre());
-      dto.setEspecialidad(empresa.getEspecialidad().getNombre());
+      EmpresaDTOResponseAdmin dto = new EmpresaDTOResponseAdmin();
+      dto.setId(empresa.getId());
+      dto.setNombre(empresa.getNombre());
+      dto.setConcello(
+          Map.of(
+              "id", empresa.getConcello().getId(),
+              "nombre", empresa.getConcello().getNombre()));
+      dto.setDireccion(empresa.getDireccion());
+      dto.setObservaciones(empresa.getObservaciones());
       dto.setContacto(
           new HashMap<String, String>() {
             {
@@ -48,12 +55,35 @@ public class EmpresaDTOConverter {
               put("telefono", empresa.getContactoTelefono());
             }
           });
+      dto.setActiva(empresa.getActiva());
+      dto.setPlazas(empresa.getPlazas());
       dto.setSkills(
-          empresa.getSkills().stream().map(skill -> skill.getNombre()).collect(Collectors.toSet()));
+          empresa.getSkills().stream()
+              .map(
+                  skill ->
+                      new HashMap<String, Object>() {
+                        {
+                          put("id", skill.getId());
+                          put("nombre", skill.getNombre());
+                        }
+                      })
+              .collect(Collectors.toSet()));
+      dto.setEspecialidad(
+          Map.of(
+              "id", empresa.getEspecialidad().getId(),
+              "nombre", empresa.getEspecialidad().getNombre()));
+
       return dto;
     }
-    EmpresaDTOResponse dto = modelMapper.map(empresa, EmpresaDTOResponse.class);
-    dto.setConcello(empresa.getConcello().getNombre());
+    EmpresaDTOResponse dto = new EmpresaDTOResponse();
+    dto.setId(empresa.getId());
+    dto.setNombre(empresa.getNombre());
+    dto.setConcello(
+        Map.of(
+            "id", empresa.getConcello().getId(),
+            "nombre", empresa.getConcello().getNombre()));
+    dto.setDireccion(empresa.getDireccion());
+    dto.setObservaciones(empresa.getObservaciones());
     dto.setContacto(
         new HashMap<String, String>() {
           {
@@ -62,8 +92,19 @@ public class EmpresaDTOConverter {
             put("telefono", empresa.getContactoTelefono());
           }
         });
+    dto.setActiva(empresa.getActiva());
+    dto.setPlazas(empresa.getPlazas());
     dto.setSkills(
-        empresa.getSkills().stream().map(skill -> skill.getNombre()).collect(Collectors.toSet()));
+        empresa.getSkills().stream()
+            .map(
+                skill ->
+                    new HashMap<String, Object>() {
+                      {
+                        put("id", skill.getId());
+                        put("nombre", skill.getNombre());
+                      }
+                    })
+            .collect(Collectors.toSet()));
     return dto;
   }
 

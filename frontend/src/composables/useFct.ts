@@ -1,5 +1,5 @@
-import apiClient from '@/apiClient'
-import { FCTRequest, FCTResponse } from '@/types/models/FCT'
+import apiClient from '@/apiClient.js'
+import { Fct } from '@/types/models/Fct.js'
 import { useConfirm } from 'primevue'
 import { useToast } from 'primevue/usetoast'
 
@@ -7,13 +7,15 @@ export function useFct() {
   const toast = useToast()
   const confirm = useConfirm()
 
-  const createFCTRequest = (): FCTRequest => {
+  const preparePayload = (data: Fct) => {
+    console.log(`Estoy en la función preparePayload: ${data}`)
+    console.log(data)
     return {
-      alumnoId: 0,
-      tutorEmpresaId: 0,
-      fechaInicio: null,
-      fechaFin: null,
-    } as FCTRequest
+      ...data,
+      alumno: data.alumno.id,
+      tutorCentro: data?.tutorCentro?.id,
+      tutorEmpresa: data.tutorEmpresa.id,
+    }
   }
 
   const getAllFct = async () => {
@@ -23,17 +25,17 @@ export function useFct() {
     } catch (error: any) {
       toast.add({
         severity: 'error',
-        summary: 'Error al cargar los alumnos.',
+        summary: 'Error al cargar las FCT.',
         detail: error.response.data.detail,
         life: 5000,
       })
     }
   }
 
-  const createFct = async (fctData: FCTRequest): Promise<boolean> => {
+  const createFct = async (data: Fct): Promise<boolean> => {
     return new Promise(async (resolve) => {
       try {
-        await apiClient.post('/fct', fctData)
+        await apiClient.post('/fct', data)
         toast.add({
           severity: 'success',
           summary: 'FCT creada correctamente.',
@@ -53,9 +55,34 @@ export function useFct() {
     })
   }
 
-  const deleteFct = async (fctData: FCTResponse): Promise<boolean> => {
-    const id = fctData.id
-    const alumnoNombre = fctData.alumno
+  const updateFct = async (data: Fct): Promise<boolean> => {
+    const id = data.id
+
+    return new Promise(async (resolve) => {
+      try {
+        await apiClient.put(`/fct/${id}`, preparePayload(data))
+        toast.add({
+          severity: 'success',
+          summary: 'FCT actualizada correctamente.',
+          detail: 'Se ha actualizado la información de la FCT.',
+          life: 5000,
+        })
+        resolve(true)
+      } catch (error: any) {
+        toast.add({
+          severity: 'error',
+          summary: 'Error al actualizar la información de la FCT.',
+          detail: error.response.data.detail,
+          life: 5000,
+        })
+        resolve(false)
+      }
+    })
+  }
+
+  const deleteFct = async (data: Fct): Promise<boolean> => {
+    const id = data.id
+    const alumnoNombre = data.alumno.nombre
 
     return new Promise((resolve) => {
       confirm.require({
@@ -95,5 +122,5 @@ export function useFct() {
     })
   }
 
-  return { createFCTRequest, getAllFct, createFct, deleteFct }
+  return { getAllFct, createFct, updateFct, deleteFct }
 }

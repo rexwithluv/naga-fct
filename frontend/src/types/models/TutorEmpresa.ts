@@ -1,14 +1,6 @@
-export interface TutorEmpresaResponse {
+export interface TutorEmpresa {
   id: number
-  empresa: string
-  nombre: string
-  apellidos: string
-  email: string
-  telefono: string
-}
-
-export interface TutorEmpresaRequest {
-  empresaId: number
+  empresa: { id: string; nombre: string } | number
   nombre: string
   apellidos: string
   email: string

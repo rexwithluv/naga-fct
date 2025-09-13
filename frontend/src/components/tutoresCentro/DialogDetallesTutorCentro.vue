@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import { TutorCentroResponse } from '@/types/models/TutorCentro'
+  import { TutorCentro } from '@/types/models/TutorCentro'
   import { Book, BookUser, CircleCheck, CircleX, Mail } from 'lucide-vue-next'
   import { ModelRef, Ref, ref, watch } from 'vue'
 
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
-  const tutorCentro: ModelRef<TutorCentroResponse | undefined> = defineModel('selectedTutorCentro')
+  const tutorCentro: ModelRef<TutorCentro | undefined> = defineModel('selectedTutorCentro')
 
   const isActivo: Ref<boolean | null> = ref(null)
 
@@ -33,7 +33,7 @@
     <div class="field mb-1">
       <p class="flex items-center gap-2">
         <Book :size="18" aria-label="E-mail de contacto" />
-        {{ tutorCentro?.curso }}
+        {{ tutorCentro?.curso?.codigo }}
       </p>
     </div>
     <div class="field">

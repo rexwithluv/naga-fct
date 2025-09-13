@@ -1,10 +1,9 @@
 <script setup lang="ts">
-  import { TutorEmpresaResponse } from '@/types/models/TutorEmpresa'
+  import { TutorEmpresa } from '@/types/models/TutorEmpresa'
   import { Building2, Mail, Phone, User } from 'lucide-vue-next'
   import { ModelRef } from 'vue'
 
-  const tutorEmpresa: ModelRef<TutorEmpresaResponse | undefined> =
-    defineModel('selectedTutorEmpresa')
+  const tutorEmpresa: ModelRef<TutorEmpresa | undefined> = defineModel('selectedTutorEmpresa')
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
 </script>
 
@@ -25,7 +24,11 @@
       </div>
       <h3 class="text-xl font-semibold text-center">
         {{ tutorEmpresa?.nombre }} {{ tutorEmpresa?.apellidos }} <br />
-        {{ tutorEmpresa?.empresa }}
+
+        {{
+          //@ts-ignore
+          tutorEmpresa?.empresa.nombre
+        }}
       </h3>
     </div>
 

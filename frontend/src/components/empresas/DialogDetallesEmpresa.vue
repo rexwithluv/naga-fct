@@ -41,7 +41,7 @@
     <div class="field mb-1">
       <p class="flex items-center gap-2">
         <MapPin :size="18" aria-label="Concello de la empresa" />
-        {{ empresa?.concello }}
+        {{ empresa?.concello.nombre }}
       </p>
     </div>
     <div class="field mb-1">
@@ -53,7 +53,7 @@
     <div class="field mb-1" v-if="authStore.isAdmin">
       <p class="flex items-center gap-2">
         <Star :size="18" aria-label="Especialidad de la empresa" />
-        {{ empresa?.especialidad }}
+        {{ empresa?.especialidad?.nombre }}
       </p>
     </div>
     <div class="field mb-1">

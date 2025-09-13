@@ -1,14 +1,17 @@
-import { ContactoEmpresa } from './ContactoEmpresa'
+import { Concello } from './Concello.js'
+import { ContactoEmpresa } from './ContactoEmpresa.js'
+import { Especialidad } from './Especialidad.js'
+import { Skill } from './Skill.js'
 
 export interface Empresa {
   id: number
   nombre: string
-  concello: string
+  concello: Concello
   direccion: string
   observaciones: string
-  especialidad: string
   contacto: ContactoEmpresa
   activa: boolean
   plazas: number
-  skills: string[]
+  skills: Skill[]
+  especialidad: Especialidad
 }

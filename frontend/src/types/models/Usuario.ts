@@ -1,13 +1,7 @@
-export interface UsuarioResponse {
+export interface Usuario {
   id: number
   email: string
-  rol: string
-  tutor: string | null
+  rol: { id: number; nombre: string }
+  tutorCentro: { id: number; nombre: string; apellidos: string }
   activo: boolean
-}
-
-export interface UsuarioRequest {
-  email: string
-  rolId: number
-  tutorId: number | null
 }

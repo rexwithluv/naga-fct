@@ -1,5 +1,5 @@
-import apiClient from '@/apiClient'
-import { Empresa } from '@/types/models/Empresa'
+import apiClient from '@/apiClient.js'
+import { Empresa } from '@/types/models/Empresa.js'
 import { useConfirm } from 'primevue'
 import { useToast } from 'primevue/usetoast'
 
@@ -36,6 +36,33 @@ export function useEmpresa() {
         toast.add({
           severity: 'error',
           summary: 'Error al guardar la empresa.',
+          detail: error.response.data.detail,
+          life: 5000,
+        })
+        resolve(false)
+      }
+    })
+  }
+
+  const updateEmpresa = async (empresaData: Empresa): Promise<boolean> => {
+    const updatedEmpresa = JSON.parse(JSON.stringify(empresaData))
+    updatedEmpresa.concello = updatedEmpresa.concello.id
+    updatedEmpresa.especialidad = updatedEmpresa.especialidad.id
+
+    return new Promise(async (resolve) => {
+      try {
+        await apiClient.put(`/empresas/${updatedEmpresa.id}`, updatedEmpresa)
+        toast.add({
+          severity: 'success',
+          summary: 'Empresa actualizada correctamente.',
+          detail: 'Se ha actualizado la información de la empresa.',
+          life: 5000,
+        })
+        resolve(true)
+      } catch (error: any) {
+        toast.add({
+          severity: 'error',
+          summary: 'Error al actualizar la información de la empresa.',
           detail: error.response.data.detail,
           life: 5000,
         })
@@ -85,5 +112,5 @@ export function useEmpresa() {
     })
   }
 
-  return { getEmpresas, createEmpresa, deleteEmpresa }
+  return { getEmpresas, createEmpresa, updateEmpresa, deleteEmpresa }
 }

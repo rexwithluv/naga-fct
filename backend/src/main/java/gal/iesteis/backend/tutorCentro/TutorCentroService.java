@@ -60,7 +60,7 @@ public class TutorCentroService {
 
   @Transactional
   public TutorCentroDTO crearTutorCentro(TutorCentroDTOCreate dto) {
-    final Long usuarioId = dto.getUsuarioId();
+    final Long usuarioId = dto.getUsuario();
     Usuario usuario = null;
 
     if (usuarioId != null) {
@@ -70,7 +70,7 @@ public class TutorCentroService {
       }
     }
 
-    Curso curso = cursoService.obtenerCursoPorId(dto.getCursoId());
+    Curso curso = cursoService.obtenerCursoPorId(dto.getCurso());
     if (curso.getTutorCentro() != null) {
       throw new TutorCentroConflictCursoAsignadoException();
     }
@@ -87,10 +87,10 @@ public class TutorCentroService {
   @Transactional
   public TutorCentroDTO updateTutorCentro(
       UserDetailsImpl userDetails, @RequestBody TutorCentroDTOCreate dto, Long id) {
-    Curso curso = cursoService.obtenerCursoPorId(dto.getCursoId());
+    Curso curso = cursoService.obtenerCursoPorId(dto.getCurso());
     Usuario usuario = null;
-    if (dto.getUsuarioId() != null) {
-      usuario = usuarioService.obtenerUsuarioPorId(dto.getUsuarioId());
+    if (dto.getUsuario() != null) {
+      usuario = usuarioService.obtenerUsuarioPorId(dto.getUsuario());
     }
     TutorCentro tutorCentro = dtoConverter.dtoCreateATutorCentro(dto, curso, usuario);
     tutorCentro.setId(id);

@@ -62,7 +62,7 @@ public class TutorEmpresaService {
   @Transactional
   public TutorEmpresaDTO crearTutorEmpresa(UserDetailsImpl userDetails, TutorEmpresaDTOCreate dto) {
     boolean isAdmin = AuthUtils.isAdmin(userDetails);
-    Empresa empresa = empresaService.obtenerEmpresaPorId(userDetails, dto.getEmpresaId());
+    Empresa empresa = empresaService.obtenerEmpresaPorId(userDetails, dto.getEmpresa());
 
     if (isAdmin) {
       TutorEmpresa nuevoTutorEmpresa = repository.save(dtoConverter.dtoATutorEmpresa(dto, empresa));
@@ -84,5 +84,16 @@ public class TutorEmpresaService {
 
     TutorEmpresa nuevoTutorEmpresa = repository.save(dtoConverter.dtoATutorEmpresa(dto, empresa));
     return dtoConverter.tutorEmpresaADtoResponse(nuevoTutorEmpresa);
+  }
+
+  @Transactional
+  public TutorEmpresaDTO updateTutorEmpresa(
+      UserDetailsImpl userDetails, TutorEmpresaDTOCreate dto, Long id) {
+    Empresa empresa = empresaService.obtenerEmpresaPorId(userDetails, dto.getEmpresa());
+    TutorEmpresa tutorEmpresa = dtoConverter.dtoATutorEmpresa(dto, empresa);
+    tutorEmpresa.setId(id);
+
+    tutorEmpresa = repository.save(tutorEmpresa);
+    return dtoConverter.tutorEmpresaADtoResponse(tutorEmpresa);
   }
 }

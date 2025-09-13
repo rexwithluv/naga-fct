@@ -3,7 +3,7 @@ import axios from 'axios'
 import { ref } from 'vue'
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.DEV ? "http://localhost:9000" : "/api/naga-fct",
+  baseURL: import.meta.env.DEV ? 'http://localhost:9000' : '/api/naga-fct',
 })
 
 apiClient.interceptors.request.use(

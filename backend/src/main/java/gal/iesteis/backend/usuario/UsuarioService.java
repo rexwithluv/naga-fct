@@ -74,16 +74,16 @@ public class UsuarioService {
   // en este caso la DB en un estado inconsistente
   @Transactional
   public UsuarioDTO crearUsuario(UsuarioDTOCreate dto) {
-    final Long tutorId = dto.getTutorId();
+    final Long tutorId = dto.getTutorCentro();
     TutorCentro tutorCentro = null;
     if (tutorId != null) {
-      tutorCentro = tutorCentroService.obtenerTutorCentroPorid(dto.getTutorId());
+      tutorCentro = tutorCentroService.obtenerTutorCentroPorid(dto.getTutorCentro());
       if (tutorCentro.getUsuario() != null) {
         throw new UsuarioConflictException();
       }
     }
 
-    RolUsuario rolUsuario = rolUsuarioService.obtenerRolUsuarioPorId(dto.getRolId());
+    RolUsuario rolUsuario = rolUsuarioService.obtenerRolUsuarioPorId(dto.getRol());
     Usuario nuevoUsuario = dtoConverter.dtoAUsuario(dto, tutorCentro, rolUsuario);
     Usuario usuarioGuardado = repository.save(nuevoUsuario);
 
@@ -97,11 +97,11 @@ public class UsuarioService {
   @Transactional
   public UsuarioDTO updateUsuario(UserDetailsImpl userDetails, UsuarioDTOCreate dto, Long id) {
     TutorCentro tutorCentro = null;
-    if (dto.getTutorId() != null) {
-      tutorCentro = tutorCentroService.obtenerTutorCentroPorid(dto.getTutorId());
+    if (dto.getTutorCentro() != null) {
+      tutorCentro = tutorCentroService.obtenerTutorCentroPorid(dto.getTutorCentro());
     }
 
-    RolUsuario rolUsuario = rolUsuarioService.obtenerRolUsuarioPorId(dto.getRolId());
+    RolUsuario rolUsuario = rolUsuarioService.obtenerRolUsuarioPorId(dto.getRol());
     Usuario usuario = dtoConverter.dtoAUsuario(dto, tutorCentro, rolUsuario);
 
     usuario.setId(id);

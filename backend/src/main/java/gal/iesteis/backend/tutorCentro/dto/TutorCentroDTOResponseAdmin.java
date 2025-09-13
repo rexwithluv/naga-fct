@@ -1,5 +1,6 @@
 package gal.iesteis.backend.tutorCentro.dto;
 
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ public class TutorCentroDTOResponseAdmin extends TutorCentroDTO {
   private String nombre;
   private String apellidos;
   private String email;
-  private String curso;
+  private Map<String, Object> curso;
   private boolean activo;
+  private Map<String, Object> usuario;
 }

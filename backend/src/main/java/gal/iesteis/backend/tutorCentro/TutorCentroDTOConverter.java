@@ -5,6 +5,7 @@ import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTO;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTOCreate;
 import gal.iesteis.backend.tutorCentro.dto.TutorCentroDTOResponseAdmin;
 import gal.iesteis.backend.usuario.Usuario;
+import java.util.Map;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,14 @@ public class TutorCentroDTOConverter {
     TutorCentroDTOResponseAdmin dto = modelMapper.map(tutor, TutorCentroDTOResponseAdmin.class);
 
     if (tutor.getCurso() != null) {
-      dto.setCurso(tutor.getCurso().getNombre());
+      dto.setCurso(Map.of("id", tutor.getCurso().getId(), "codigo", tutor.getCurso().getCodigo()));
+    }
+
+    if (tutor.getUsuario() != null) {
+      dto.setUsuario(
+          Map.of(
+              "id", tutor.getUsuario().getId(),
+              "email", tutor.getUsuario().getEmail()));
     }
 
     return dto;

@@ -19,7 +19,11 @@ public class UsuarioDTOCreate extends UsuarioDTO {
   private String email;
 
   @NotNull(message = "El ID de rol no puede ser nulo.")
-  private Byte rolId;
+  private Byte rol;
 
-  @Nullable private Long tutorId;
+  @Nullable
+  private Long tutorCentro;
+
+  @NotNull
+  private Boolean activo;
 }

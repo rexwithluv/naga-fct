@@ -1,17 +1,19 @@
 <script setup lang="ts">
   import { useFct } from '@/composables/useFct'
   import formatDate from '@/helpers/formatDate'
-  import { FCTResponse } from '@/types/models/FCT'
+  import { Fct } from '@/types/models/Fct'
   import { FilterMatchMode } from '@primevue/core/api'
   import { onMounted, Ref, ref } from 'vue'
+  import DialogUpdateFCT from './DialogUpdateFCT.vue'
 
   const { getAllFct, deleteFct } = useFct()
 
-  const fct: Ref<FCTResponse[]> = ref([])
+  const fct: Ref<Fct[]> = ref([])
 
-  const selectedFct: Ref<FCTResponse | object> = ref({})
+  const selectedFct: Ref<Fct | object> = ref({})
   const showDetailsDialog: Ref<boolean> = ref(false)
   const showCreateDialog: Ref<boolean> = ref(false)
+  const showUpdateDialog: Ref<boolean> = ref(false)
 
   const filters = ref({
     alumno: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -19,18 +21,22 @@
     fechaFin: { value: null, matchMode: FilterMatchMode.DATE_IS },
   })
 
-  const openDetailsDialog = (fctData: FCTResponse) => {
+  const openDetailsDialog = (fctData: Fct) => {
     selectedFct.value = fctData
     showDetailsDialog.value = true
   }
   const openCreateDialog = () => {
     showCreateDialog.value = true
   }
+  const openUpdateDialog = (fctData: Fct) => {
+    selectedFct.value = fctData
+    showUpdateDialog.value = true
+  }
 
   const handleGetAllFct = async () => {
     fct.value = await getAllFct()
   }
-  const handleDeleteFct = async (fctData: FCTResponse) => {
+  const handleDeleteFct = async (fctData: Fct) => {
     const success = await deleteFct(fctData)
     if (success) {
       fct.value = await getAllFct()
@@ -47,6 +53,11 @@
     <ConfirmDialog />
     <DialogDetallesFCT v-model:selectedFct="selectedFct" v-model:isVisible="showDetailsDialog" />
     <DialogCrearFCT v-model:isVisible="showCreateDialog" @fctCreada="handleGetAllFct" />
+    <DialogUpdateFCT
+      v-model:selectedFct="selectedFct"
+      v-model:isVisible="showUpdateDialog"
+      @updatedFct="handleGetAllFct"
+    />
 
     <div class="mb-5 text-center">
       <div class="mb-5">
@@ -98,9 +109,21 @@
       :rows="10"
       rowHover
     >
-      <Column field="alumno" header="Alumno" />
-      <Column field="tutorEmpresa" header="Tutor en la empresa" />
-      <Column field="empresa" header="Empresa" />
+      <Column field="alumno" header="Alumno">
+        <template #body="{ data }">
+          {{ data.alumno.nombre }}
+        </template>
+      </Column>
+      <Column field="tutorEmpresa" header="Tutor en la empresa">
+        <template #body="{ data }">
+          {{ data.tutorEmpresa.nombre }} {{ data.tutorEmpresa.apellidos }}
+        </template>
+      </Column>
+      <Column field="empresa" header="Empresa">
+        <template #body="{ data }">
+          {{ data.empresa.nombre }}
+        </template>
+      </Column>
       <Column header="Fecha de inicio">
         <template #body="{ data }">
           {{ formatDate(data.fechaInicio) }}
@@ -108,13 +131,13 @@
       </Column>
       <Column field="fechaFin" header="Fecha de fin">
         <template #body="{ data }">
-          {{ formatDate(data.fechaFin) }}
+          {{ formatDate(data.fechaFin) ?? 'Sin finalizar' }}
         </template>
       </Column>
       <Column header="Acciones">
         <template #body="{ data }">
           <Button class="mr-2" label="Ver detalles" @click="openDetailsDialog(data)" />
-          <Button class="mr-2" label="Editar" @click="openDetailsDialog(data)" disabled />
+          <Button class="mr-2" label="Editar" @click="openUpdateDialog(data)" />
           <Button label="Finalizar" @click="handleDeleteFct(data)" />
         </template>
       </Column>

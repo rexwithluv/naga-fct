@@ -2,42 +2,50 @@
   import { useCurso } from '@/composables/useCurso'
   import { useTutorCentro } from '@/composables/useTutorCentro'
   import { useUsuario } from '@/composables/useUsuario'
-  import { CursoResponse } from '@/types/models/Curso'
+  import { Empresa } from '@/types/models/Empresa'
   import { TutorCentro } from '@/types/models/TutorCentro'
-  import { Usuario } from '@/types/models/Usuario'
-  import { ModelRef, ref, Ref, watch } from 'vue'
+  import { ModelRef, Ref, ref, watch } from 'vue'
 
-  const emit = defineEmits(['tutorCentroCreado'])
+  const emit = defineEmits(['tutorCentroEditado'])
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
+  const tutorCentroSeleccionado: ModelRef<Empresa | undefined> = defineModel('selectedTutorCentro')
 
-  const { createTutorCentro } = useTutorCentro()
+  const { updateTutorCentro } = useTutorCentro()
   const { getCursos } = useCurso()
   const { getUsuarios } = useUsuario()
 
-  const tutorCentro: Ref<TutorCentro> = ref({ activo: false } as TutorCentro)
-  const cursos: Ref<CursoResponse[]> = ref([])
-  const usuarios: Ref<Usuario[]> = ref([])
+  const cursos = ref([])
+  const usuarios = ref([])
 
-  const handleCreateTutorCentro = async (): Promise<void> => {
-    console.log(tutorCentro.value)
-    const success = await createTutorCentro(tutorCentro.value)
+  // @ts-ignore
+  const tutorCentro: Ref<TutorCentro> = ref({
+    curso: { id: 0 },
+    usuario: { id: null },
+  } as TutorCentro)
+
+  const handleUpdateTutorCentro = async () => {
+    const success = await updateTutorCentro(tutorCentro.value)
     if (success) {
-      emit('tutorCentroCreado')
+      emit('tutorCentroEditado')
       isVisible.value = false
     }
   }
 
   watch(isVisible, async (newValue) => {
     if (newValue) {
-      tutorCentro.value = { activo: false } as TutorCentro
-      cursos.value = await getCursos(false)
-      usuarios.value = await getUsuarios(false)
+      cursos.value = await getCursos()
+      usuarios.value = await getUsuarios()
+
+      tutorCentro.value = JSON.parse(JSON.stringify(tutorCentroSeleccionado.value))
+      if (tutorCentro.value?.usuario === null) {
+        tutorCentro.value.usuario = { id: 0, email: '' }
+      }
     }
   })
 </script>
 
 <template>
-  <Dialog v-model:visible="isVisible" header="Crear tutor de centro" modal dismissableMask>
+  <Dialog v-model:visible="isVisible" header="Editar tutor de centro" modal dismissableMask>
     <div class="flex items-center gap-4 mb-4">
       <label for="nombre" class="font-semibold w-24">Nombre</label>
       <InputText
@@ -82,7 +90,7 @@
         optionValue="id"
         optionLabel="codigo"
         placeholder="Selecciona un curso..."
-        v-model="tutorCentro.curso"
+        v-model="tutorCentro.curso.id"
       />
 
       <label for="usuario" class="font-semibold w-24">Usuario</label>
@@ -94,12 +102,12 @@
         optionValue="id"
         optionLabel="email"
         placeholder="Selecciona un usuario..."
-        v-model="tutorCentro.usuario"
+        v-model="tutorCentro.usuario.id"
       />
     </div>
 
     <div class="text-center">
-      <Button type="button" label="Guardar" @click="handleCreateTutorCentro" />
+      <Button type="button" label="Guardar" @click="handleUpdateTutorCentro" />
     </div>
   </Dialog>
 </template>

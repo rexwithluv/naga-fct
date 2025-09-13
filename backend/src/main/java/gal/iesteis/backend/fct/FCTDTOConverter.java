@@ -10,6 +10,7 @@ import gal.iesteis.backend.fct.dto.FCTDTOResponseAdmin;
 import gal.iesteis.backend.tutorCentro.TutorCentro;
 import gal.iesteis.backend.tutorEmpresa.TutorEmpresa;
 import gal.iesteis.backend.tutorEmpresa.TutorEmpresaService;
+import java.util.Map;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,21 +28,49 @@ public class FCTDTOConverter {
     if (isAdmin) {
       FCTDTOResponseAdmin dto = modelMapper.map(fct, FCTDTOResponseAdmin.class);
 
-      dto.setAlumno(fct.getAlumno().getNombre());
+      dto.setAlumno(
+          Map.of(
+              "id", fct.getAlumno().getId(),
+              "nombre", fct.getAlumno().getNombre(),
+              "apellidos", fct.getAlumno().getApellidos()));
       dto.setTutorEmpresa(
-          fct.getTutorEmpresa().getNombre() + " " + fct.getTutorEmpresa().getApellidos());
-      dto.setEmpresa(fct.getTutorEmpresa().getEmpresa().getNombre());
+          Map.of(
+              "id", fct.getTutorEmpresa().getId(),
+              "nombre", fct.getTutorEmpresa().getNombre(),
+              "apellidos", fct.getTutorEmpresa().getApellidos()));
+      dto.setEmpresa(
+          Map.of(
+              "id",
+              fct.getTutorEmpresa().getEmpresa().getId(),
+              "nombre",
+              fct.getTutorEmpresa().getEmpresa().getNombre()));
       TutorCentro tutorAlumno = fct.getAlumno().getTutorCentro();
-      dto.setTutorCentro(tutorAlumno.getNombre() + " " + tutorAlumno.getApellidos());
+      dto.setTutorCentro(
+          Map.of(
+              "id", tutorAlumno.getId(),
+              "nombre", tutorAlumno.getNombre(),
+              "apellidos", tutorAlumno.getApellidos()));
 
       return dto;
     }
     FCTDTOResponse dto = modelMapper.map(fct, FCTDTOResponse.class);
 
-    dto.setAlumno(fct.getAlumno().getNombre());
+    dto.setAlumno(
+        Map.of(
+            "id", fct.getAlumno().getId(),
+            "nombre", fct.getAlumno().getNombre(),
+            "apellidos", fct.getAlumno().getApellidos()));
     dto.setTutorEmpresa(
-        fct.getTutorEmpresa().getNombre() + " " + fct.getTutorEmpresa().getApellidos());
-    dto.setEmpresa(fct.getTutorEmpresa().getEmpresa().getNombre());
+        Map.of(
+            "id", fct.getTutorEmpresa().getId(),
+            "nombre", fct.getTutorEmpresa().getNombre(),
+            "apellidos", fct.getTutorEmpresa().getApellidos()));
+    dto.setEmpresa(
+        Map.of(
+            "id",
+            fct.getTutorEmpresa().getEmpresa().getId(),
+            "nombre",
+            fct.getTutorEmpresa().getEmpresa().getNombre()));
 
     return dto;
   }
@@ -49,9 +78,8 @@ public class FCTDTOConverter {
   public FCT dtoCreateAFct(UserDetailsImpl userDetails, FCTDTOCreate dto) {
     FCT fct = new FCT();
 
-    Alumno alumno = alumnoService.obtenerAlumnoPorId(userDetails, dto.getAlumnoId());
-    TutorEmpresa tutorEmpresa =
-        tutorEmpresaService.obtenerTutorEmpresaPorId(dto.getTutorEmpresaId());
+    Alumno alumno = alumnoService.obtenerAlumnoPorId(userDetails, dto.getAlumno());
+    TutorEmpresa tutorEmpresa = tutorEmpresaService.obtenerTutorEmpresaPorId(dto.getTutorEmpresa());
 
     fct.setAlumno(alumno);
     fct.setTutorEmpresa(tutorEmpresa);

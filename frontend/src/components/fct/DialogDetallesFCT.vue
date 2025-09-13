@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import formatDate from '@/helpers/formatDate'
   import { useAuthStore } from '@/stores/authStore'
-  import { FCTResponse } from '@/types/models/FCT'
+  import { Fct } from '@/types/models/Fct'
   import { Building, Building2, Calendar, School, User } from 'lucide-vue-next'
   import { ModelRef } from 'vue'
 
-  const fct: ModelRef<FCTResponse | undefined> = defineModel('selectedFct')
+  const fct: ModelRef<Fct | undefined> = defineModel('selectedFct')
   const isVisible: ModelRef<boolean | undefined> = defineModel('isVisible')
 
   const authStore = useAuthStore()
@@ -20,8 +20,8 @@
         aria-label="Nombre del alumno y de la empresa"
       />
       <h3 class="text-xl font-semibold text-center">
-        {{ fct?.alumno }}<br />
-        {{ fct?.empresa }}
+        {{ fct?.alumno.nombre }} {{ fct?.alumno.apellidos }}<br />
+        {{ fct?.empresa.nombre }}
       </h3>
     </div>
 
@@ -33,7 +33,7 @@
           <User :size="18" aria-label="Tutor de centro del alumno en FCT" />
           <School :size="18" aria-label="Tutor de centro del alumno en FCT" />
         </div>
-        {{ fct?.tutorCentro }}
+        {{ fct?.tutorCentro.nombre }} {{ fct?.tutorCentro.apellidos }}
       </div>
     </div>
     <div class="field mb-1">
@@ -42,7 +42,7 @@
           <User :size="18" aria-label="Tutor de empresa del alumno en FCT" />
           <Building2 :size="18" aria-label="Tutor de empresa del alumno en FCT" />
         </div>
-        {{ fct?.tutorEmpresa }}
+        {{ fct?.tutorEmpresa.nombre }} {{ fct?.tutorEmpresa.apellidos }}
       </div>
     </div>
     <div class="field">

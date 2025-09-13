@@ -1,31 +1,37 @@
 <script setup lang="ts">
   import { useTutorCentro } from '@/composables/useTutorCentro'
   import booleanToSpanish from '@/helpers/booleanToSpanish'
-  import { TutorCentroResponse } from '@/types/models/TutorCentro'
+  import { TutorCentro } from '@/types/models/TutorCentro'
   import { onMounted, Ref, ref } from 'vue'
   import DialogCrearTutorCentro from './DialogCrearTutorCentro.vue'
   import DialogDetallesTutorCentro from './DialogDetallesTutorCentro.vue'
+  import DialogUpdateTutorCentro from './DialogUpdateTutorCentro.vue'
 
   const { getTutoresCentro, deleteTutorCentro } = useTutorCentro()
 
-  const tutoresCentro: Ref<TutorCentroResponse[]> = ref([])
+  const tutoresCentro: Ref<TutorCentro[]> = ref([])
 
-  const selectedTutorCentro: Ref<TutorCentroResponse> = ref({} as TutorCentroResponse)
+  const selectedTutorCentro: Ref<TutorCentro> = ref({} as TutorCentro)
   const showDetailsDialog: Ref<boolean> = ref(false)
   const showCreateDialog: Ref<boolean> = ref(false)
+  const showUpdateDialog: Ref<boolean> = ref(false)
 
-  const openDetailsDialog = (tutorCentroData: TutorCentroResponse) => {
+  const openDetailsDialog = (tutorCentroData: TutorCentro) => {
     selectedTutorCentro.value = tutorCentroData
     showDetailsDialog.value = true
   }
   const openCreateDialog = () => {
     showCreateDialog.value = true
   }
+  const openUpdateDialog = (tutorCentroData: TutorCentro) => {
+    selectedTutorCentro.value = tutorCentroData
+    showUpdateDialog.value = true
+  }
 
   const handleGetTutoresCentro = async () => {
     tutoresCentro.value = await getTutoresCentro()
   }
-  const handleDeleteTutorCentro = async (tutorCentroData: TutorCentroResponse) => {
+  const handleDeleteTutorCentro = async (tutorCentroData: TutorCentro) => {
     const success = await deleteTutorCentro(tutorCentroData)
     if (success) {
       tutoresCentro.value = await getTutoresCentro()
@@ -48,6 +54,11 @@
       v-model:isVisible="showCreateDialog"
       @tutorCentroCreado="handleGetTutoresCentro"
     />
+    <DialogUpdateTutorCentro
+      v-model:selectedTutorCentro="selectedTutorCentro"
+      v-model:isVisible="showUpdateDialog"
+      @tutorCentroEditado="handleGetTutoresCentro"
+    />
 
     <div class="mb-5 text-center">
       <h1 class="text-2xl font-bold mb-3">Tutores de centro</h1>
@@ -58,7 +69,11 @@
       <Column field="nombre" header="Nombre" />
       <Column field="apellidos" header="Apellidos" />
       <Column field="email" header="Email" />
-      <Column field="curso" header="Curso" />
+      <Column field="curso" header="Curso">
+        <template #body="{ data }">
+          {{ data.curso.codigo }}
+        </template>
+      </Column>
       <Column field="activo" header="Activo?">
         <template #body="{ data }">
           {{ booleanToSpanish(data.activo) }}
@@ -67,8 +82,8 @@
       <Column header="Acciones">
         <template #body="{ data }">
           <Button class="mr-2" label="Ver detalles" @click="openDetailsDialog(data)" />
-          <Button class="mr-2" label="Editar" @click="openDetailsDialog(data)" disabled />
-          <Button label="Desactivar" @click="handleDeleteTutorCentro(data)" />
+          <Button class="mr-2" label="Editar" @click="openUpdateDialog(data)" />
+          <Button label="Dar de baja" @click="handleDeleteTutorCentro(data)" />
         </template>
       </Column>
     </DataTable>
