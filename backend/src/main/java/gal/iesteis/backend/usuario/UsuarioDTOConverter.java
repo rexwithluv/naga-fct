@@ -43,7 +43,7 @@ public class UsuarioDTOConverter {
     usuario.setEmail(dto.getEmail());
     usuario.setPassword(passwordEncoder.encode("renaido"));
     usuario.setRol(rolUsuario);
-    usuario.setActivo(true);
+    usuario.setActivo(dto.getActivo());
     usuario.setTutorCentro(tutorCentro);
 
     return usuario;

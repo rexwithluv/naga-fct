@@ -29,5 +29,8 @@ public class TutorCentroDTOCreate extends TutorCentroDTO {
   @Min(value = 1, message = "El ID de curso debe ser un número positivo.")
   private Short curso;
 
-  @Nullable private Long usuario;
+  @Nullable
+  private Long usuario;
+
+  private boolean activo;
 }
