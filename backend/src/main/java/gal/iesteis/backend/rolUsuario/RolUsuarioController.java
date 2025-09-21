@@ -13,7 +13,7 @@ public class RolUsuarioController {
   @Autowired private RolUsuarioService service;
 
   @GetMapping("")
-  public ResponseEntity<?> obtenerTodos() {
-    return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodos());
+  public ResponseEntity<?> getAll() {
+    return ResponseEntity.status(HttpStatus.OK).body(service.getAll());
   }
 }

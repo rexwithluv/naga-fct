@@ -1,4 +1,4 @@
-package gal.iesteis.backend.rolUsuario;
+package gal.iesteis.backend.rolUsuario.exception;
 
 public class RolUsuarioNotFoundException extends RuntimeException {
   public RolUsuarioNotFoundException(Byte id) {

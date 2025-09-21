@@ -83,7 +83,7 @@ public class UsuarioService {
       }
     }
 
-    RolUsuario rolUsuario = rolUsuarioService.obtenerRolUsuarioPorId(dto.getRol());
+    RolUsuario rolUsuario = rolUsuarioService.getRolUsuarioById(dto.getRol());
     Usuario nuevoUsuario = dtoConverter.dtoAUsuario(dto, tutorCentro, rolUsuario);
     Usuario usuarioGuardado = repository.save(nuevoUsuario);
 
@@ -101,7 +101,7 @@ public class UsuarioService {
       tutorCentro = tutorCentroService.obtenerTutorCentroPorid(dto.getTutorCentro());
     }
 
-    RolUsuario rolUsuario = rolUsuarioService.obtenerRolUsuarioPorId(dto.getRol());
+    RolUsuario rolUsuario = rolUsuarioService.getRolUsuarioById(dto.getRol());
     Usuario usuario = dtoConverter.dtoAUsuario(dto, tutorCentro, rolUsuario);
 
     usuario.setId(id);
