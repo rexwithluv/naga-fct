@@ -28,7 +28,7 @@ public class TutorCentroService {
 
   @Autowired private TutorCentroRepository repository;
 
-  @Autowired private CursoService cursoService;
+  @Lazy @Autowired private CursoService cursoService;
 
   @Lazy @Autowired private UsuarioService usuarioService;
 
@@ -70,7 +70,7 @@ public class TutorCentroService {
       }
     }
 
-    Curso curso = cursoService.obtenerCursoPorId(dto.getCurso());
+    Curso curso = cursoService.getCursoById(dto.getCurso());
     if (curso.getTutorCentro() != null) {
       throw new TutorCentroConflictCursoAsignadoException();
     }
@@ -87,7 +87,7 @@ public class TutorCentroService {
   @Transactional
   public TutorCentroDTO updateTutorCentro(
       UserDetailsImpl userDetails, @RequestBody TutorCentroDTOCreate dto, Long id) {
-    Curso curso = cursoService.obtenerCursoPorId(dto.getCurso());
+    Curso curso = cursoService.getCursoById(dto.getCurso());
     Usuario usuario = null;
     if (dto.getUsuario() != null) {
       usuario = usuarioService.obtenerUsuarioPorId(dto.getUsuario());

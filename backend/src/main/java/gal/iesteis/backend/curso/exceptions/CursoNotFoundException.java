@@ -1,4 +1,4 @@
-package gal.iesteis.backend.curso;
+package gal.iesteis.backend.curso.exceptions;
 
 public class CursoNotFoundException extends RuntimeException {
   public CursoNotFoundException(Short id) {

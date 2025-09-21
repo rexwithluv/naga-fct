@@ -15,7 +15,7 @@ public class CursoController {
   @Autowired private CursoService service;
 
   @GetMapping("")
-  public ResponseEntity<?> getAll(@RequestParam Optional<Boolean> hasTutorCurso) {
-    return ResponseEntity.status(HttpStatus.OK).body(service.obtenerCursos(hasTutorCurso));
+  public ResponseEntity<?> getAll(@RequestParam Optional<Boolean> hasTutorCentro) {
+    return ResponseEntity.status(HttpStatus.OK).body(service.getAll(hasTutorCentro));
   }
 }
