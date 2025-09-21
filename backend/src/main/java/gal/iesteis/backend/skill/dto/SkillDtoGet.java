@@ -1,7 +1,5 @@
 package gal.iesteis.backend.skill.dto;
 
-import java.util.Map;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class SkillDTOResponse extends SkillDTO {
+public class SkillDtoGet extends SkillDto {
   private Integer id;
   private String nombre;
-  private Map<String, Object> especialidad;
 }

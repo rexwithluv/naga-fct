@@ -16,6 +16,6 @@ public class SkillController {
 
   @GetMapping("")
   public ResponseEntity<?> getAll(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-    return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodas(userDetails));
+    return ResponseEntity.status(HttpStatus.OK).body(service.getAll(userDetails));
   }
 }
