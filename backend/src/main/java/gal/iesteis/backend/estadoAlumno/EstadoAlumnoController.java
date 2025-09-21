@@ -14,7 +14,7 @@ public class EstadoAlumnoController {
   @Autowired private EstadoAlumnoService service;
 
   @GetMapping("")
-  public ResponseEntity<?> obtenerTodos() {
-    return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodos());
+  public ResponseEntity<?> getAll() {
+    return ResponseEntity.status(HttpStatus.OK).body(service.getAll());
   }
 }

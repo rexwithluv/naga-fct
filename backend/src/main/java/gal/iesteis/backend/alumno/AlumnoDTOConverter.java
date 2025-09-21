@@ -66,7 +66,7 @@ public class AlumnoDTOConverter {
     boolean isAdmin = AuthUtils.isAdmin(userDetails);
 
     Concello concello = concelloService.obtenerPorId(dto.getConcello());
-    EstadoAlumno estado = estadoAlumnoService.obtenerPorId(dto.getEstado());
+    EstadoAlumno estado = estadoAlumnoService.getById(dto.getEstado());
     TutorCentro tutor =
         isAdmin
             ? tutorCentroRepository

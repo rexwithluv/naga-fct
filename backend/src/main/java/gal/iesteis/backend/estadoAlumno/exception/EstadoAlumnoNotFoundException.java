@@ -1,4 +1,4 @@
-package gal.iesteis.backend.estadoAlumno;
+package gal.iesteis.backend.estadoAlumno.exception;
 
 public class EstadoAlumnoNotFoundException extends RuntimeException {
   public EstadoAlumnoNotFoundException(String nombre) {

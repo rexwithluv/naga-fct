@@ -4,16 +4,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gal.iesteis.backend.estadoAlumno.exception.EstadoAlumnoNotFoundException;
+
 @Service
 public class EstadoAlumnoService {
 
   @Autowired private EstadoAlumnoRepository repository;
 
-  public List<EstadoAlumno> obtenerTodos() {
+  public List<EstadoAlumno> getAll() {
     return repository.findAll();
   }
 
-  public EstadoAlumno obtenerPorId(Byte id) {
+  public EstadoAlumno getById(Byte id) {
     return repository.findById(id).orElseThrow(() -> new EstadoAlumnoNotFoundException(id));
   }
 
