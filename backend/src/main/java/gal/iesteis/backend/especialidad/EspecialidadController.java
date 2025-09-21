@@ -15,6 +15,6 @@ public class EspecialidadController {
 
   @GetMapping("")
   public ResponseEntity<?> getAll() {
-    return ResponseEntity.status(HttpStatus.OK).body(service.obtenerTodas());
+    return ResponseEntity.status(HttpStatus.OK).body(service.getAll());
   }
 }

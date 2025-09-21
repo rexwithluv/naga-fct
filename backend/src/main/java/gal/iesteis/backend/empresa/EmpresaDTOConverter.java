@@ -122,7 +122,7 @@ public class EmpresaDTOConverter {
             .collect(Collectors.toSet());
     Especialidad especialidad =
         isAdmin
-            ? especialidadService.obtenerPorId(dto.getEspecialidad())
+            ? especialidadService.getById(dto.getEspecialidad())
             : (tutorCentroRepository
                 .findById(userDetails.getTutorCentroId())
                 .orElseThrow(() -> new TutorCentroNotFoundException(userDetails.getTutorCentroId()))

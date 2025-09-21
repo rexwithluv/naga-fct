@@ -1,4 +1,4 @@
-package gal.iesteis.backend.especialidad;
+package gal.iesteis.backend.especialidad.exception;
 
 public class EspecialidadNotFoundException extends RuntimeException {
   public EspecialidadNotFoundException(Byte id) {

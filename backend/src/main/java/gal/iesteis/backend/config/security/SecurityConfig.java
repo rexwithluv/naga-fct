@@ -73,6 +73,8 @@ public class SecurityConfig {
                     .hasRole("admin")
                     .requestMatchers("/roles-usuario/**")
                     .hasRole("admin")
+                    .requestMatchers("/especialidades/**")
+                    .hasRole("admin")
                     .requestMatchers("/cursos/**")
                     .hasRole("admin")
                     .anyRequest()
