@@ -76,6 +76,6 @@ public class Alumno {
   @JoinColumn(
       name = "tutor_centro_id",
       nullable = false,
-      foreignKey = @ForeignKey(name = "fk_alumnos_tutor_centro"))
+      foreignKey = @ForeignKey(name = "fk_alumnos_estado_alumnos"))
   private TutorCentro tutorCentro;
 }

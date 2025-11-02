@@ -9,12 +9,12 @@ CREATE TABLE IF NOT EXISTS especialidades (
     nombre VARCHAR(500) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS estados_alumnos (
+CREATE TABLE IF NOT EXISTS estados_alumno (
     id TINYINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS roles_usuarios (
+CREATE TABLE IF NOT EXISTS roles_usuario (
     id TINYINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(500) NOT NULL
 );
@@ -115,7 +115,7 @@ ALTER TABLE alumnos
 ADD CONSTRAINT fk_alumnos_concello FOREIGN KEY (concello_id) REFERENCES concellos (id);
 
 ALTER TABLE alumnos
-ADD CONSTRAINT fk_alumnos_estado_alumnos FOREIGN KEY (estado_id) REFERENCES estados_alumnos (id);
+ADD CONSTRAINT fk_alumnos_estado_alumnos FOREIGN KEY (estado_id) REFERENCES estados_alumno (id);
 
 ALTER TABLE alumnos
 ADD CONSTRAINT fk_alumnos_tutor_centro FOREIGN KEY (tutor_centro_id) REFERENCES tutores_centro (id);
@@ -160,7 +160,7 @@ ALTER TABLE tutores_empresa
 ADD CONSTRAINT fk_tutores_empresa FOREIGN KEY (empresa_id) REFERENCES empresas (id) ON DELETE CASCADE;
 
 ALTER TABLE usuarios
-ADD CONSTRAINT fk_usuarios_rol FOREIGN KEY (rol_id) REFERENCES roles_usuarios (id);
+ADD CONSTRAINT fk_usuarios_rol FOREIGN KEY (rol_id) REFERENCES roles_usuario (id);
 
 -- Índices únicos (UNIQUE INDEX)
 CREATE UNIQUE INDEX idx_alumnos_dni_nie ON alumnos (dni_nie);
