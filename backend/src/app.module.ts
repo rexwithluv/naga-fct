@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { AlumnoModule } from './alumno/alumno.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { AuthModule } from './auth/auth.module'
 import { ConcelloModule } from './concello/concello.module'
 import { CorreoModule } from './correo/correo.module'
 import { CursoModule } from './curso/curso.module'
@@ -19,12 +20,13 @@ import { UsuarioModule } from './usuario/usuario.module'
 
 @Module({
   imports: [
+    AuthModule,
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
+      type: 'mariadb',
+      host: '127.0.0.1',
       port: 3306,
-      username: 'admin',
+      username: 'user',
       password: 'abc123.',
       database: 'naga-fct',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],

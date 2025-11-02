@@ -5,6 +5,6 @@ export class RolUsuario {
   @PrimaryGeneratedColumn({ type: 'tinyint' })
   id: number
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, length: 500 })
   nombre: string
 }

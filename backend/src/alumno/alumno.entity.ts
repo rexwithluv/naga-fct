@@ -3,7 +3,8 @@ import { Concello } from '../concello/concello.entity'
 import { EstadoAlumno } from '../estado-alumno/estado-alumno.entity'
 import { TutorCentro } from '../tutor-centro/tutor-centro.entity'
 @Entity('alumnos')
-@Unique(['dni_nie', 'numero_seguridad_social'])
+@Unique('idx_alumnos_dni_nie', ['dniNie'])
+@Unique('idx_alumnos_numero_seguridad_social', ['numeroSeguridadSocial'])
 export class Alumno {
   @PrimaryGeneratedColumn()
   id: number

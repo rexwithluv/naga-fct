@@ -70,16 +70,16 @@ VALUES (
     ("Imagen Personal");
 
 INSERT INTO
-    estados_alumnos (nombre)
+    estados_alumno (nombre)
 VALUES ('Cursando'),
     ('De baja'),
     ('Graduado'),
     ('En prácticas');
 
 INSERT INTO
-    roles_usuarios (nombre)
-VALUES ("admin"),
-    ("comun");
+    roles_usuario (nombre)
+VALUES ("ADMIN"),
+    ("ESTANDAR");
 
 ---
 
@@ -333,8 +333,8 @@ VALUES (
     (
         'marta@edu.xunta.gal',
         '$2a$12$i0Jo1orADsIW08bF.pGshuRXQyCVeqOSzJarfE8NPMBtYsw1smAJK', -- nigiri
-        2,
-        false
+        1,
+        true
     ),
     (
         'patricia@edu.xunta.gal',
@@ -375,7 +375,7 @@ VALUES (
     (
         'Marta',
         'Reina López',
-        null,
+        2,
         'marta@edu.xunta.gal',
         14,
         false
