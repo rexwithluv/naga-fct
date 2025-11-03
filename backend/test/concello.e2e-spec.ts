@@ -5,9 +5,9 @@ import { App } from 'supertest/types'
 import { AppModule } from '../src/app.module'
 import { loginAsAdmin, loginAsStandard } from './auth-helpers'
 
-describe('RolUsuarioController (e2e)', () => {
+describe('ConcelloController (e2e)', () => {
   let app: INestApplication<App>
-  const endpoint = '/roles-usuario'
+  const endpoint = '/concellos'
   let adminToken: string
   let standardToken: string
 
@@ -27,8 +27,8 @@ describe('RolUsuarioController (e2e)', () => {
     await app.close()
   })
 
-  describe('GET /roles-usuario', () => {
-    it('GET /roles-usuario (ADMIN)', async () => {
+  describe('GET /concellos', () => {
+    it('GET /concellos (ADMIN)', async () => {
       const response = await request(app.getHttpServer())
         .get(endpoint)
         .set('Authorization', `Bearer ${adminToken}`)
@@ -45,14 +45,24 @@ describe('RolUsuarioController (e2e)', () => {
       expect(typeof role.nombre).toBe('string')
     })
 
-    it('GET /roles-usuario (STANDARD)', () => {
-      return request(app.getHttpServer())
+    it('GET /concellos (STANDARD)', async () => {
+      const response = await request(app.getHttpServer())
         .get(endpoint)
         .set('Authorization', `Bearer ${standardToken}`)
-        .expect(403)
+        .expect(200)
+
+      expect(response.body).toBeInstanceOf(Array)
+
+      const role = response.body[0]
+
+      expect(role).toHaveProperty('id')
+      expect(typeof role.id).toBe('string')
+
+      expect(role).toHaveProperty('nombre')
+      expect(typeof role.nombre).toBe('string')
     })
 
-    it('GET /roles-usuario (without token)', () => {
+    it('GET /concellos (without token)', () => {
       return request(app.getHttpServer()).get(endpoint).expect(401)
     })
   })

@@ -31,7 +31,7 @@ import { UsuarioModule } from './usuario/usuario.module'
       database: 'naga-fct',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
-      logging: 'all',
+      logging: ['error', 'warn'],
     }),
     AlumnoModule,
     ConcelloModule,

@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { EntityNotFoundError, IsNull, Not, Repository } from 'typeorm'
+import { IsNull, Not, Repository } from 'typeorm'
 import { Usuario } from './usuario.entity'
 
 @Injectable()
@@ -43,16 +43,9 @@ export class UsuarioService {
   }
 
   async getById(id: number): Promise<Usuario> {
-    try {
-      return await this.repository.findOneOrFail({
-        where: { id: id },
-        relations: ['rol', 'tutorCentro'],
-      })
-    } catch (error) {
-      if (error instanceof EntityNotFoundError) {
-        throw new NotFoundException(`Usuario con ID ${id} no encontrado.`)
-      }
-      throw error
-    }
+    return await this.repository.findOneOrFail({
+      where: { id: id },
+      relations: ['rol', 'tutorCentro'],
+    })
   }
 }

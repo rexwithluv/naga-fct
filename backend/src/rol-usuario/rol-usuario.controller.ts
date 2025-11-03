@@ -17,14 +17,13 @@ import { RolUsuarioService } from './rol-usuario.service'
 
 @Controller('roles-usuario')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'), RolesGuard)
+@Roles(Rol.ADMIN)
 export class RolUsuarioController {
   constructor(private readonly service: RolUsuarioService) {}
 
   @Get()
-  @Roles(Rol.ADMIN)
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async getAll(): Promise<RolUsuarioResponseDto[]> {
     const roles = await this.service.getAll()
 

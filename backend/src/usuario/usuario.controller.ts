@@ -20,14 +20,13 @@ import { UsuarioService } from './usuario.service'
 
 @Controller('usuarios')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'), RolesGuard)
+@Roles(Rol.ADMIN)
 export class UsuarioController {
   constructor(private readonly service: UsuarioService) {}
 
   @Get()
-  @Roles(Rol.ADMIN)
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async getAll(@Query('hasTutorCentro') hasTutorCentro?: boolean): Promise<UsuarioResponseDto[]> {
     const usersData = await this.service.getAll(hasTutorCentro)
 
@@ -38,9 +37,7 @@ export class UsuarioController {
   }
 
   @Get(':id')
-  @Roles(Rol.ADMIN)
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
   async getById(@Param('id', ParseIntPipe) id: number): Promise<UsuarioResponseDto> {
     const userData = await this.service.getById(id)
 
