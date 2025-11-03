@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import request from 'supertest'
 import { App } from 'supertest/types'
 import { AppModule } from '../src/app.module'
+import { EspecialidadResponseDto } from '../src/especialidad/dto/especialidad-response.dto'
 import { loginAsAdmin, loginAsStandard } from './auth-helpers'
 
 describe('ConcelloController (e2e)', () => {
@@ -28,42 +29,85 @@ describe('ConcelloController (e2e)', () => {
   })
 
   describe('GET /concellos', () => {
-    it('GET /concellos (ADMIN)', async () => {
-      const response = await request(app.getHttpServer())
-        .get(endpoint)
-        .set('Authorization', `Bearer ${adminToken}`)
-        .expect(200)
+    describe('Authorization', () => {
+      it('should return 200', () => {
+        return request(app.getHttpServer())
+          .get(endpoint)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .expect(200)
+      })
 
-      expect(response.body).toBeInstanceOf(Array)
+      it('should return 200', () => {
+        return request(app.getHttpServer())
+          .get(endpoint)
+          .set('Authorization', `Bearer ${standardToken}`)
+          .expect(200)
+      })
 
-      const role = response.body[0]
-
-      expect(role).toHaveProperty('id')
-      expect(typeof role.id).toBe('string')
-
-      expect(role).toHaveProperty('nombre')
-      expect(typeof role.nombre).toBe('string')
+      it('should return 401', () => {
+        return request(app.getHttpServer()).get(endpoint).expect(401)
+      })
     })
 
-    it('GET /concellos (STANDARD)', async () => {
-      const response = await request(app.getHttpServer())
-        .get(endpoint)
-        .set('Authorization', `Bearer ${standardToken}`)
-        .expect(200)
+    describe('Response', () => {
+      it('should return an array with id and nombre', async () => {
+        const response = await request(app.getHttpServer())
+          .get(endpoint)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .expect(200)
 
-      expect(response.body).toBeInstanceOf(Array)
+        expect(response.body).toBeInstanceOf(Array)
 
-      const role = response.body[0]
+        const role = response.body[0]
 
-      expect(role).toHaveProperty('id')
-      expect(typeof role.id).toBe('string')
+        expect(role).toHaveProperty('id')
+        expect(typeof role.id).toBe('string')
 
-      expect(role).toHaveProperty('nombre')
-      expect(typeof role.nombre).toBe('string')
+        expect(role).toHaveProperty('nombre')
+        expect(typeof role.nombre).toBe('string')
+      })
+
+      it('should return an array with id and nombre', async () => {
+        const response = await request(app.getHttpServer())
+          .get(endpoint)
+          .set('Authorization', `Bearer ${standardToken}`)
+          .expect(200)
+
+        expect(response.body).toBeInstanceOf(Array)
+
+        const role = response.body[0]
+
+        expect(role).toHaveProperty('id')
+        expect(typeof role.id).toBe('string')
+
+        expect(role).toHaveProperty('nombre')
+        expect(typeof role.nombre).toBe('string')
+      })
     })
 
-    it('GET /concellos (without token)', () => {
-      return request(app.getHttpServer()).get(endpoint).expect(401)
+    describe('Filters', () => {
+      const filterEndpoint = `${endpoint}?nombre=Tui`
+      it('should return an array where all the names start with "Tui"', async () => {
+        const response = await request(app.getHttpServer())
+          .get(filterEndpoint)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .expect(200)
+
+        expect(
+          response.body.every((c: EspecialidadResponseDto) => c.nombre.startsWith('Tui')),
+        ).toBe(true)
+      })
+
+      it('should return an array where all the names start with "Tui"', async () => {
+        const response = await request(app.getHttpServer())
+          .get(filterEndpoint)
+          .set('Authorization', `Bearer ${standardToken}`)
+          .expect(200)
+
+        expect(
+          response.body.every((c: EspecialidadResponseDto) => c.nombre.startsWith('Tui')),
+        ).toBe(true)
+      })
     })
   })
 })

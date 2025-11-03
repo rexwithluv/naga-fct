@@ -30,10 +30,7 @@ export class UsuarioController {
   async getAll(@Query('hasTutorCentro') hasTutorCentro?: boolean): Promise<UsuarioResponseDto[]> {
     const usersData = await this.service.getAll(hasTutorCentro)
 
-    return plainToInstance(UsuarioResponseDto, usersData, {
-      groups: ['admin'],
-      excludeExtraneousValues: true,
-    }) as UsuarioResponseDto[]
+    return plainToInstance(UsuarioResponseDto, usersData)
   }
 
   @Get(':id')
@@ -41,10 +38,7 @@ export class UsuarioController {
   async getById(@Param('id', ParseIntPipe) id: number): Promise<UsuarioResponseDto> {
     const userData = await this.service.getById(id)
 
-    return plainToInstance(UsuarioResponseDto, userData, {
-      groups: ['admin'],
-      excludeExtraneousValues: true,
-    })
+    return plainToInstance(UsuarioResponseDto, userData)
   }
 
   /* @Get('me')

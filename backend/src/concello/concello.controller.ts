@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Query,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
@@ -20,8 +21,8 @@ export class ConcelloController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getAll(): Promise<ConcelloResponseDto[]> {
-    const concellos = await this.service.getAll()
+  async getAll(@Query('name') name?: string): Promise<ConcelloResponseDto[]> {
+    const concellos = await this.service.getAll(name)
 
     return plainToInstance(ConcelloResponseDto, concellos)
   }

@@ -5,9 +5,9 @@ import { App } from 'supertest/types'
 import { AppModule } from '../src/app.module'
 import { loginAsAdmin, loginAsStandard } from './auth-helpers'
 
-describe('RolUsuarioController (e2e)', () => {
+describe('EspecialidadController (e2e)', () => {
   let app: INestApplication<App>
-  const endpoint = '/roles-usuario'
+  const endpoint = '/especialidades'
   let adminToken: string
   let standardToken: string
 
@@ -27,7 +27,7 @@ describe('RolUsuarioController (e2e)', () => {
     await app.close()
   })
 
-  describe('GET /roles-usuario', () => {
+  describe('GET /especialidades', () => {
     describe('Authorization', () => {
       it('should return 200', () => {
         return request(app.getHttpServer())
@@ -49,7 +49,7 @@ describe('RolUsuarioController (e2e)', () => {
     })
 
     describe('Response', () => {
-      it('should return an array with id and nombre', async () => {
+      it('should an array with id and nombre', async () => {
         const response = await request(app.getHttpServer())
           .get(endpoint)
           .set('Authorization', `Bearer ${adminToken}`)
