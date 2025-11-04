@@ -33,7 +33,7 @@ export class AuthService {
     const payload: UsuarioPayloadDto = {
       id: user.id,
       email: user.email,
-      rolNombre: user.rol.nombre,
+      rol: user.rol.nombre,
     }
 
     return {

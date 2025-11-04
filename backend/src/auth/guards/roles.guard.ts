@@ -25,6 +25,6 @@ export class RolesGuard implements CanActivate {
       return false
     }
 
-    return requiredRoles.some((rol) => rol === usuario.rolNombre)
+    return requiredRoles.some((rol) => rol === usuario.rol)
   }
 }
