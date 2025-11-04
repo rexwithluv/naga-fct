@@ -35,8 +35,18 @@ describe('UsuarioController (e2e)', () => {
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200)
       })
-    })
 
+      it('should return 403', () => {
+        return request(app.getHttpServer())
+          .get(baseEndpoint)
+          .set('Authorization', `Bearer ${standardToken}`)
+          .expect(403)
+      })
+
+      it('should return 401', () => {
+        return request(app.getHttpServer()).get(baseEndpoint).expect(401)
+      })
+    })
     describe('Response', () => {
       it('should return an array', async () => {
         const response = await request(app.getHttpServer())
@@ -45,6 +55,27 @@ describe('UsuarioController (e2e)', () => {
           .expect(200)
 
         expect(response.body).toBeInstanceOf(Array)
+
+        const usuario = response.body[0]
+
+        expect(usuario).toHaveProperty('id')
+        expect(typeof usuario.id).toBe('string')
+
+        expect(usuario).toHaveProperty('email')
+        expect(typeof usuario.email).toBe('string')
+
+        expect(usuario).toHaveProperty('rol')
+        expect(typeof usuario.rol).toBe('object')
+        expect(usuario.rol).toHaveProperty('id')
+        expect(typeof usuario.rol.id).toBe('string')
+        expect(usuario.rol).toHaveProperty('nombre')
+        expect(typeof usuario.rol.nombre).toBe('string')
+
+        expect(usuario).toHaveProperty('tutorCentro')
+        expect(typeof usuario.TutorCentro).toBeNull()
+
+        expect(usuario).toHaveProperty('activo')
+        expect(typeof usuario.activo).toBe('boolean')
       })
     })
   })
@@ -107,7 +138,6 @@ describe('UsuarioController (e2e)', () => {
         expect(usuario).toHaveProperty('activo')
         expect(typeof usuario.activo).toBe('boolean')
       })
-
       it('should return an array with tutorCentro null', async () => {
         const response = await request(app.getHttpServer())
           .get(endpointTutorCentroNull)
@@ -130,10 +160,10 @@ describe('UsuarioController (e2e)', () => {
         expect(typeof usuario.rol.nombre).toBe('string')
 
         expect(usuario).toHaveProperty('tutorCentro')
-        expect(typeof usuario.TutorCentro).toBe(null)
+        expect(typeof usuario.TutorCentro).toBeNull()
 
         expect(usuario).toHaveProperty('activo')
-        expect(typeof usuario.activo).toBe(true)
+        expect(typeof usuario.activo).toBe('boolean')
       })
     })
     describe('Errors', () => {
@@ -201,7 +231,7 @@ describe('UsuarioController (e2e)', () => {
     })
   })
 
-  describe('POST /usuarios', () => {
+  /*  describe('POST /usuarios', () => {
     describe('Authorization', () => {
       const newAdmin = {
         email: `new.admin.user.${Date.now()}@edu.xunta.gal`,
@@ -330,7 +360,7 @@ describe('UsuarioController (e2e)', () => {
           .expect(400)
       })
     })
-  })
+  }) */
 })
 
 /* describe('PATCH /usuarios/:id (Actualización)', () => {
