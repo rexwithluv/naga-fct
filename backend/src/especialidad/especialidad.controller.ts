@@ -27,6 +27,9 @@ export class EspecialidadController {
   async getAll(): Promise<EspecialidadResponseDto[]> {
     const especialidades = await this.service.getAll()
 
-    return plainToInstance(EspecialidadResponseDto, especialidades)
+    return plainToInstance(EspecialidadResponseDto, especialidades, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    })
   }
 }

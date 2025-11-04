@@ -28,17 +28,23 @@ export class UsuarioController {
   @Get()
   @HttpCode(HttpStatus.OK)
   async getAll(@Query('hasTutorCentro') hasTutorCentro?: boolean): Promise<UsuarioResponseDto[]> {
-    const usersData = await this.service.getAll(hasTutorCentro)
+    const users = await this.service.getAll(hasTutorCentro)
 
-    return plainToInstance(UsuarioResponseDto, usersData)
+    return plainToInstance(UsuarioResponseDto, users, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    })
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async getById(@Param('id', ParseIntPipe) id: number): Promise<UsuarioResponseDto> {
-    const userData = await this.service.getById(id)
+    const user = await this.service.getById(id)
 
-    return plainToInstance(UsuarioResponseDto, userData)
+    return plainToInstance(UsuarioResponseDto, user, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    })
   }
 
   /* @Get('me')

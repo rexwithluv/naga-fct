@@ -27,6 +27,9 @@ export class RolUsuarioController {
   async getAll(): Promise<RolUsuarioResponseDto[]> {
     const roles = await this.service.getAll()
 
-    return plainToInstance(RolUsuarioResponseDto, roles)
+    return plainToInstance(RolUsuarioResponseDto, roles, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    })
   }
 }
