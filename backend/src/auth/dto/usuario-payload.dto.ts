@@ -1,5 +1,5 @@
 export class UsuarioPayloadDto {
-  id: number
-  email: string
-  rol: string
+  readonly id: number
+  readonly email: string
+  readonly rol: string
 }

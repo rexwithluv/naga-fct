@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { APP_GUARD } from '@nestjs/core'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { AlumnoModule } from './alumno/alumno.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
+import { JwtGuard } from './auth/guards/jwt.guard'
 import { ConcelloModule } from './concello/concello.module'
 import { CorreoModule } from './correo/correo.module'
 import { CursoModule } from './curso/curso.module'
@@ -48,6 +50,6 @@ import { UsuarioModule } from './usuario/usuario.module'
     EmpresaModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, { provide: APP_GUARD, useClass: JwtGuard }],
 })
 export class AppModule {}
