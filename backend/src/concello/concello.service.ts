@@ -10,8 +10,8 @@ export class ConcelloService {
     private readonly repository: Repository<Concello>,
   ) {}
 
-  async getAll(name?: string): Promise<Concello[]> {
-    if (name) {
+  async getAll(name: string): Promise<Concello[]> {
+    if (name !== '') {
       return await this.repository.find({ where: { nombre: Like(`${name}%`) } })
     }
     return await this.repository.find()
