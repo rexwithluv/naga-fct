@@ -1,33 +1,9 @@
-import { INestApplication } from '@nestjs/common'
-import { Test, TestingModule } from '@nestjs/testing'
 import request from 'supertest'
-import { App } from 'supertest/types'
-import { AppModule } from '../src/app.module'
-import { loginAsAdmin, loginAsStandard } from './auth-helpers'
 
 describe('AlumnoController (e2e)', () => {
-  let app: INestApplication<App>
   const baseEndpoint = '/alumnos'
-  let adminToken: string
-  let standardToken: string
 
-  beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile()
-
-    app = moduleFixture.createNestApplication()
-    await app.init()
-
-    adminToken = await loginAsAdmin(app)
-    standardToken = await loginAsStandard(app)
-  })
-
-  afterAll(async () => {
-    await app.close()
-  })
-
-  describe('GET /alumnos', () => {
+  describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200 - admin', () => {
         return request(app.getHttpServer())
@@ -163,8 +139,7 @@ describe('AlumnoController (e2e)', () => {
       })
     })
   })
-
-  /* describe('GET /alumnos/:id', () => {
+  describe(`GET ${baseEndpoint}/:id`, () => {
     const endpoint = `${baseEndpoint}/1`
 
     describe('Authorization', () => {
@@ -302,5 +277,11 @@ describe('AlumnoController (e2e)', () => {
           .expect(404)
       })
     })
-  }) */
+  })
+
+  describe(`POST ${baseEndpoint}`, () => {})
+
+  describe(`PUT ${baseEndpoint}/:id`, () => {})
+
+  describe(`DELETE ${baseEndpoint}/id`, () => {})
 })
