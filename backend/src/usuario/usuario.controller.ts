@@ -1,5 +1,4 @@
 import {
-  ClassSerializerInterceptor,
   Controller,
   Get,
   HttpCode,
@@ -8,56 +7,58 @@ import {
   ParseIntPipe,
   Query,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common'
-import { AuthGuard } from '@nestjs/passport'
 import { plainToInstance } from 'class-transformer'
 import { RolesGuard } from '../auth/guards/roles.guard'
 import { Roles } from '../common/decorators/roles.decorator'
+import { User } from '../common/decorators/user.decorator'
 import { Rol } from '../common/enums/rol.enum'
+import { UtilsService } from '../utils/utils.service'
 import { UsuarioResponseDto } from './dto/usuario-response.dto'
+import { Usuario } from './usuario.entity'
 import { UsuarioService } from './usuario.service'
 
 @Controller('usuarios')
-@UseInterceptors(ClassSerializerInterceptor)
-@UseGuards(AuthGuard('jwt'), RolesGuard)
+@UseGuards(RolesGuard)
 @Roles(Rol.ADMIN)
 export class UsuarioController {
-  constructor(private readonly service: UsuarioService) {}
+  constructor(
+    private readonly service: UsuarioService,
+    private readonly utils: UtilsService,
+  ) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getAll(@Query('hasTutorCentro') hasTutorCentro?: boolean): Promise<UsuarioResponseDto[]> {
-    const users = await this.service.getAll(hasTutorCentro)
+  async getAll(@Query('hasTutorCentro') hasTutorCentro?: boolean) {
+    const usuarios = await this.service.getAll(hasTutorCentro)
 
-    return plainToInstance(UsuarioResponseDto, users, {
-      excludeExtraneousValues: true,
-      enableImplicitConversion: true,
-    })
+    return plainToInstance(UsuarioResponseDto, usuarios)
+  }
+
+  @Get('me')
+  @HttpCode(HttpStatus.OK)
+  @Roles(Rol.ADMIN, Rol.STANDARD)
+  async getSelfData(@User() user: Usuario): Promise<UsuarioResponseDto> {
+    const userData = await this.service.getById(user.id)
+
+    const isAdmin = this.utils.isAdmin(user)
+    if (isAdmin) {
+      return plainToInstance(UsuarioResponseDto, userData, {
+        groups: ['ADMIN'],
+      })
+    }
+    return plainToInstance(UsuarioResponseDto, userData)
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  async getById(@Param('id', ParseIntPipe) id: number): Promise<UsuarioResponseDto> {
-    const user = await this.service.getById(id)
+  async getById(@Param('id', ParseIntPipe) id: number) {
+    const usuario = await this.service.getById(id)
 
-    return plainToInstance(UsuarioResponseDto, user, {
-      excludeExtraneousValues: true,
-      enableImplicitConversion: true,
-    })
+    return plainToInstance(UsuarioResponseDto, usuario)
   }
 
-  /* @Get('me')
-  async getSelfData(@User() user: Usuario): Promise<UsuarioResponseDto> {
-    const userData = await this.service.getById(user.id)
-    const groups = user.rol.nombre === Rol.ADMIN ? ['admin'] : []
-
-    return plainToInstance(UsuarioResponseDto, userData, {
-      groups: groups,
-      excludeExtraneousValues: true,
-    })
-  }
-
+  /*
   @Post()
   @Roles(Rol.ADMIN)
   @UseGuards(RolesGuard)

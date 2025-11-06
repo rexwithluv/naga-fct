@@ -1,20 +1,25 @@
-import { Expose, Type } from 'class-transformer'
+import { Exclude, Expose, Type } from 'class-transformer'
 import { RolUsuarioResponseDto } from '../../rol-usuario/dto/rol-usuario-response.dto'
+import { TutorCentroResponseDto } from '../../tutor-centro/dto/tutor-centro-response.dto'
 
 export class UsuarioResponseDto {
   @Expose()
-  id: number
+  readonly id: number
 
   @Expose()
-  email: string
+  readonly email: string
 
   @Expose()
-  activo: boolean
+  readonly activo: boolean
 
   @Expose()
   @Type(() => RolUsuarioResponseDto)
-  rol: RolUsuarioResponseDto
+  readonly rol: RolUsuarioResponseDto
 
   @Expose()
-  tutorCentro: any
+  @Type(() => TutorCentroResponseDto)
+  readonly tutorCentro: TutorCentroResponseDto
+
+  @Exclude()
+  readonly password: string
 }

@@ -79,7 +79,7 @@ VALUES ('Cursando'),
 INSERT INTO
     roles_usuario (nombre)
 VALUES ("ADMIN"),
-    ("ESTANDAR");
+    ("STANDARD");
 
 ---
 

@@ -28,7 +28,7 @@ export class UsuarioService {
   }
 
   async getAll(hasTutorCentro?: boolean): Promise<Usuario[]> {
-    let whereClause: any = {}
+    let whereClause: object = {}
 
     if (hasTutorCentro === true) {
       whereClause = { tutorCentro: Not(IsNull()) }

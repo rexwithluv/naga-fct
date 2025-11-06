@@ -57,7 +57,7 @@ describe('AlumnoController (e2e)', () => {
         expect(response.body).toBeInstanceOf(Array)
 
         const alumno = response.body[0]
-        console.log(alumno)
+
         expect(alumno).toHaveProperty('id')
         expect(typeof alumno.id).toBe('string')
 
