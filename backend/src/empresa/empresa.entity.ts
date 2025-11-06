@@ -33,13 +33,13 @@ export class Empresa {
   @JoinColumn({ name: 'especialidad_id', foreignKeyConstraintName: 'fk_empresas_especialidad' })
   especialidad: Especialidad
 
-  @Column({ nullable: true, length: 500 })
+  @Column({ name: 'contacto_nombre', nullable: true, length: 500 })
   contactoNombre: string
 
-  @Column({ nullable: true, length: 500 })
+  @Column({ name: 'contacto_email', nullable: true, length: 500 })
   contactoEmail: string
 
-  @Column({ nullable: true, length: 500 })
+  @Column({ name: 'contacto_telefono', nullable: true, length: 500 })
   contactoTelefono: string
 
   @Column({ nullable: false })
