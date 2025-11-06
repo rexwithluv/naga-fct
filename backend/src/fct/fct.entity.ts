@@ -3,7 +3,7 @@ import { Alumno } from '../alumno/alumno.entity'
 import { TutorEmpresa } from '../tutor-empresa/tutor-empresa.entity'
 
 @Entity('fct')
-export class FCT {
+export class Fct {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number
 

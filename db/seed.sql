@@ -594,7 +594,7 @@ INSERT INTO
         fecha_inicio,
         fecha_fin
     )
-VALUES (1, 1, '2025-04-01', null),
+VALUES (1, 1, '2025-04-01', '2025-06-26'),
     (
         2,
         2,
