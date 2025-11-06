@@ -27,18 +27,18 @@ export class Alumno {
   @Column({ name: 'numero_seguridad_social', nullable: true, length: 500 })
   numeroSeguridadSocial: string
 
-  @ManyToOne(() => Concello, { lazy: true, nullable: false })
+  @ManyToOne(() => Concello, { nullable: false })
   @JoinColumn({
     name: 'concello_id',
     foreignKeyConstraintName: 'fk_alumnos_concellos',
   })
-  concello: Promise<Concello>
+  concello: Concello
 
-  @ManyToOne(() => EstadoAlumno, { lazy: true, nullable: false })
+  @ManyToOne(() => EstadoAlumno, { nullable: false })
   @JoinColumn({ name: 'estado_id', foreignKeyConstraintName: 'fk_alumnos_estado_alumnos' })
-  estado: Promise<EstadoAlumno>
+  estadoAlumno: EstadoAlumno
 
-  @ManyToOne(() => TutorCentro, { lazy: true, nullable: false })
+  @ManyToOne(() => TutorCentro, { nullable: false })
   @JoinColumn({ name: 'tutor_centro_id', foreignKeyConstraintName: 'fk_alumnos_tutor_centro' })
-  tutorCentro: Promise<TutorCentro>
+  tutorCentro: TutorCentro
 }

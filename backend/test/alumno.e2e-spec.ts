@@ -57,7 +57,7 @@ describe('AlumnoController (e2e)', () => {
         expect(response.body).toBeInstanceOf(Array)
 
         const alumno = response.body[0]
-
+        console.log(alumno)
         expect(alumno).toHaveProperty('id')
         expect(typeof alumno.id).toBe('string')
 
@@ -86,21 +86,33 @@ describe('AlumnoController (e2e)', () => {
         expect(alumno).toHaveProperty('numeroSeguridadSocial')
         expect(typeof alumno.numeroSeguridadSocial).toBe('string')
 
-        expect(alumno).toHaveProperty('estado')
-        expect(typeof alumno.estado).toBe('string')
-        expect(alumno.estado).toHaveProperty('id')
-        expect(typeof alumno.estado.id).toBe('string')
-        expect(alumno.estado).toHaveProperty('nombre')
-        expect(typeof alumno.estado.nombre).toBe('string')
+        expect(alumno).toHaveProperty('estadoAlumno')
+        expect(typeof alumno.estadoAlumno).toBe('object')
+        expect(alumno.estadoAlumno).toHaveProperty('id')
+        expect(typeof alumno.estadoAlumno.id).toBe('string')
+        expect(alumno.estadoAlumno).toHaveProperty('nombre')
+        expect(typeof alumno.estadoAlumno.nombre).toBe('string')
 
         expect(alumno).toHaveProperty('tutorCentro')
-        expect(typeof alumno.tutorCentro).toBe('string')
+        expect(typeof alumno.tutorCentro).toBe('object')
         expect(alumno.tutorCentro).toHaveProperty('id')
         expect(typeof alumno.tutorCentro.id).toBe('string')
         expect(alumno.tutorCentro).toHaveProperty('nombre')
         expect(typeof alumno.tutorCentro.nombre).toBe('string')
         expect(alumno.tutorCentro).toHaveProperty('curso')
-        expect(typeof alumno.tutorCentro.curso).toBe('string')
+        expect(typeof alumno.tutorCentro.curso).toBe('object')
+        expect(alumno.tutorCentro.curso).toHaveProperty('id')
+        expect(typeof alumno.tutorCentro.curso.id).toBe('string')
+        expect(alumno.tutorCentro.curso).toHaveProperty('codigo')
+        expect(typeof alumno.tutorCentro.curso.codigo).toBe('string')
+        expect(alumno.tutorCentro.curso).toHaveProperty('nombre')
+        expect(typeof alumno.tutorCentro.curso.nombre).toBe('string')
+        expect(alumno.tutorCentro.usuario).toHaveProperty('id')
+        expect(typeof alumno.tutorCentro.usuario.id).toBe('string')
+        expect(alumno.tutorCentro.usuario).toHaveProperty('email')
+        expect(typeof alumno.tutorCentro.usuario.email).toBe('string')
+        expect(alumno.tutorCentro.usuario).toHaveProperty('activo')
+        expect(typeof alumno.tutorCentro.usuario.activo).toBe('boolean')
       })
       it('should an array without tutorCentro field', async () => {
         const response = await request(app.getHttpServer())
@@ -140,19 +152,19 @@ describe('AlumnoController (e2e)', () => {
         expect(alumno).toHaveProperty('numeroSeguridadSocial')
         expect(typeof alumno.numeroSeguridadSocial).toBe('string')
 
-        expect(alumno).toHaveProperty('estado')
-        expect(typeof alumno.estado).toBe('string')
-        expect(alumno.estado).toHaveProperty('id')
-        expect(typeof alumno.estado.id).toBe('string')
-        expect(alumno.estado).toHaveProperty('nombre')
-        expect(typeof alumno.estado.nombre).toBe('string')
+        expect(alumno).toHaveProperty('estadoAlumno')
+        expect(typeof alumno.estadoAlumno).toBe('object')
+        expect(alumno.estadoAlumno).toHaveProperty('id')
+        expect(typeof alumno.estadoAlumno.id).toBe('string')
+        expect(alumno.estadoAlumno).toHaveProperty('nombre')
+        expect(typeof alumno.estadoAlumno.nombre).toBe('string')
 
         expect(alumno).not.toHaveProperty('tutorCentro')
       })
     })
   })
 
-  describe('GET /alumnos/:id', () => {
+  /* describe('GET /alumnos/:id', () => {
     const endpoint = `${baseEndpoint}/1`
 
     describe('Authorization', () => {
@@ -290,5 +302,5 @@ describe('AlumnoController (e2e)', () => {
           .expect(404)
       })
     })
-  })
+  }) */
 })

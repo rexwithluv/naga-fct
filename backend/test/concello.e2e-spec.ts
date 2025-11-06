@@ -50,7 +50,7 @@ describe('ConcelloController (e2e)', () => {
     })
 
     describe('Response', () => {
-      it('should return an array with id and nombre', async () => {
+      it('should return an array with id and nombre - admin', async () => {
         const response = await request(app.getHttpServer())
           .get(endpoint)
           .set('Authorization', `Bearer ${adminToken}`)
@@ -67,7 +67,7 @@ describe('ConcelloController (e2e)', () => {
         expect(typeof role.nombre).toBe('string')
       })
 
-      it('should return an array with id and nombre', async () => {
+      it('should return an array with id and nombre - standard', async () => {
         const response = await request(app.getHttpServer())
           .get(endpoint)
           .set('Authorization', `Bearer ${standardToken}`)
@@ -87,7 +87,7 @@ describe('ConcelloController (e2e)', () => {
 
     describe('Filters', () => {
       const filterEndpoint = `${endpoint}?nombre=Tui`
-      it('should return an array where all the names start with "Tui"', async () => {
+      it('should return an array where all the names start with "Tui" - admin', async () => {
         const response = await request(app.getHttpServer())
           .get(filterEndpoint)
           .set('Authorization', `Bearer ${adminToken}`)
@@ -98,7 +98,7 @@ describe('ConcelloController (e2e)', () => {
         ).toBe(true)
       })
 
-      it('should return an array where all the names start with "Tui"', async () => {
+      it('should return an array where all the names start with "Tui" - standard', async () => {
         const response = await request(app.getHttpServer())
           .get(filterEndpoint)
           .set('Authorization', `Bearer ${standardToken}`)
