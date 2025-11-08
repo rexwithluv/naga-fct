@@ -63,4 +63,47 @@ describe('TutorEmpresaController (e2e)', () => {
       })
     })
   })
+  describe(`GET ${baseEndpoint}/:id`, () => {
+    describe('Authorization', () => {
+      it('should return 200', () => {
+        return request(app.getHttpServer())
+          .get(baseEndpoint)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .expect(200)
+      })
+
+      it('should return 200', () => {
+        return request(app.getHttpServer())
+          .get(baseEndpoint)
+          .set('Authorization', `Bearer ${standardToken}`)
+          .expect(200)
+      })
+
+      it('should return 401', () => {
+        return request(app.getHttpServer()).get(baseEndpoint).expect(401)
+      })
+    })
+
+    describe('Response', () => {
+      it('should return a TutorEmpresaResponseDto - admin', async () => {
+        const response = await request(app.getHttpServer())
+          .get(baseEndpoint)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .expect(200)
+
+        const tutorEmpresa = response.body
+        expect(tutorEmpresa).toEqual(tutorEmpresa)
+      })
+
+      it('should return a TutorEmpresaResponseDto - standard', async () => {
+        const response = await request(app.getHttpServer())
+          .get(baseEndpoint)
+          .set('Authorization', `Bearer ${standardToken}`)
+          .expect(200)
+
+        const tutorEmpresa = response.body
+        expect(tutorEmpresa).toEqual(tutorEmpresa)
+      })
+    })
+  })
 })
