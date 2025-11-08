@@ -17,6 +17,9 @@ export class TutorCentroController {
   async getAll() {
     const tutoresCentro = await this.service.getAll()
 
-    return plainToInstance(TutorCentroResponseDto, tutoresCentro)
+    return plainToInstance(TutorCentroResponseDto, tutoresCentro, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    })
   }
 }

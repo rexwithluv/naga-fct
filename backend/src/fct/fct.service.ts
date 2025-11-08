@@ -9,7 +9,7 @@ export class FctService {
 
   async getAll() {
     return await this.repository.find({
-      relations: ['alumno', 'tutorEmpresa', 'tutorEmpresa.empresa'],
+      relations: ['alumno', 'alumno.tutorCentro', 'tutorEmpresa', 'tutorEmpresa.empresa'],
     })
   }
 }

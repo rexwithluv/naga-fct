@@ -3,6 +3,11 @@ import request from 'supertest'
 describe('RolUsuarioController (e2e)', () => {
   const baseEndpoint = '/roles-usuario'
 
+  const expectedRolStructure = {
+    id: expect.any(String),
+    nombre: expect.any(String),
+  }
+
   describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200', () => {
@@ -33,13 +38,8 @@ describe('RolUsuarioController (e2e)', () => {
 
         expect(response.body).toBeInstanceOf(Array)
 
-        const role = response.body[0]
-
-        expect(role).toHaveProperty('id')
-        expect(typeof role.id).toBe('string')
-
-        expect(role).toHaveProperty('nombre')
-        expect(typeof role.nombre).toBe('string')
+        const rolUsuario = response.body[0]
+        expect(rolUsuario).toEqual(expectedRolStructure)
       })
     })
   })

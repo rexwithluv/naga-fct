@@ -3,6 +3,15 @@ import request from 'supertest'
 describe('SkillController (e2e)', () => {
   const baseEndpoint = '/skills'
 
+  const expectedSkillStructure = {
+    id: expect.any(String),
+    nombre: expect.any(String),
+    especialidad: {
+      id: expect.any(String),
+      nombre: expect.any(String),
+    },
+  }
+
   describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200', () => {
@@ -34,19 +43,7 @@ describe('SkillController (e2e)', () => {
         expect(response.body).toBeInstanceOf(Array)
 
         const skill = response.body[0]
-
-        expect(skill).toHaveProperty('id')
-        expect(typeof skill.id).toBe('string')
-
-        expect(skill).toHaveProperty('nombre')
-        expect(typeof skill.nombre).toBe('string')
-
-        expect(skill).toHaveProperty('especialidad')
-        expect(typeof skill.especialidad).toBe('object')
-        expect(skill.especialidad).toHaveProperty('id')
-        expect(typeof skill.especialidad.id).toBe('string')
-        expect(skill.especialidad).toHaveProperty('nombre')
-        expect(typeof skill.especialidad.nombre).toBe('string')
+        expect(skill).toEqual(expectedSkillStructure)
       })
 
       it('should return an array with SkillResponseDto - standard', async () => {
@@ -58,19 +55,7 @@ describe('SkillController (e2e)', () => {
         expect(response.body).toBeInstanceOf(Array)
 
         const skill = response.body[0]
-
-        expect(skill).toHaveProperty('id')
-        expect(typeof skill.id).toBe('string')
-
-        expect(skill).toHaveProperty('nombre')
-        expect(typeof skill.nombre).toBe('string')
-
-        expect(skill).toHaveProperty('especialidad')
-        expect(typeof skill.especialidad).toBe('object')
-        expect(skill.especialidad).toHaveProperty('id')
-        expect(typeof skill.especialidad.id).toBe('string')
-        expect(skill.especialidad).toHaveProperty('nombre')
-        expect(typeof skill.especialidad.nombre).toBe('string')
+        expect(skill).toEqual(expectedSkillStructure)
       })
     })
   })

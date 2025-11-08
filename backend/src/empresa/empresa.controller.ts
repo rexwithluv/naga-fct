@@ -19,7 +19,12 @@ export class EmpresaController {
     const empresas = await this.service.getAll(jwtUser)
     const groups: string[] = this.utils.isAdmin(jwtUser) ? ['admin'] : []
 
-    return plainToInstance(EmpresaResponseDto, empresas, { groups: groups })
+    return plainToInstance(EmpresaResponseDto, empresas, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+
+      groups: groups,
+    })
   }
 
   @Get(':id')
@@ -28,6 +33,11 @@ export class EmpresaController {
     const empresa = await this.service.getById(jwtUser, id)
     const groups: string[] = this.utils.isAdmin(jwtUser) ? ['admin'] : []
 
-    return plainToInstance(EmpresaResponseDto, empresa, { groups: groups })
+    return plainToInstance(EmpresaResponseDto, empresa, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+
+      groups: groups,
+    })
   }
 }

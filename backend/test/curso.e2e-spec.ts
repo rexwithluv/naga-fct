@@ -3,6 +3,24 @@ import request from 'supertest'
 describe('CursoController (e2e)', () => {
   const baseEndpoint = '/cursos'
 
+  const expectedCursoStructure = {
+    id: expect.any(String),
+    codigo: expect.any(String),
+    nombre: expect.any(String),
+
+    especialidad: {
+      id: expect.any(String),
+      nombre: expect.any(String),
+    },
+    tutorCentro: {
+      id: expect.any(String),
+      nombre: expect.any(String),
+      apellidos: expect.any(String),
+      email: expect.any(String),
+      activo: expect.any(Boolean),
+    },
+  }
+
   describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200 - admin', () => {
@@ -35,32 +53,7 @@ describe('CursoController (e2e)', () => {
 
         const curso = response.body[0]
 
-        expect(curso).toHaveProperty('id')
-        expect(typeof curso.id).toBe('string')
-
-        expect(curso).toHaveProperty('codigo')
-        expect(typeof curso.codigo).toBe('string')
-
-        expect(curso).toHaveProperty('nombre')
-        expect(typeof curso.nombre).toBe('string')
-
-        expect(curso).toHaveProperty('especialidad')
-        expect(typeof curso.especialidad).toBe('object')
-        expect(curso.especialidad).toHaveProperty('id')
-        expect(typeof curso.especialidad.id).toBe('string')
-        expect(curso.especialidad).toHaveProperty('nombre')
-        expect(typeof curso.especialidad.nombre).toBe('string')
-
-        expect(curso).toHaveProperty('tutorCentro')
-        expect(typeof curso.tutorCentro).toBe('object')
-        expect(curso.tutorCentro).toHaveProperty('id')
-        expect(typeof curso.tutorCentro.id).toBe('string')
-        expect(curso.tutorCentro).toHaveProperty('nombre')
-        expect(typeof curso.tutorCentro.nombre).toBe('string')
-        expect(curso.tutorCentro).toHaveProperty('email')
-        expect(typeof curso.tutorCentro.email).toBe('string')
-        expect(curso.tutorCentro).toHaveProperty('activo')
-        expect(typeof curso.tutorCentro.activo).toBe('boolean')
+        expect(curso).toEqual(expectedCursoStructure)
       })
     })
   })

@@ -12,8 +12,9 @@ export class AlumnoRepository extends Repository<Alumno> {
     'concello',
     'estadoAlumno',
     'tutorCentro',
-    'tutorCentro.curso',
     'tutorCentro.usuario',
+    'tutorCentro.curso',
+    'tutorCentro.curso.especialidad',
   ]
 
   async findAll(): Promise<Alumno[]> {

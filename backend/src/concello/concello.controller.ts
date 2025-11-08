@@ -12,6 +12,9 @@ export class ConcelloController {
   async getAll(@Query('nombre') name: string = '') {
     const concellos = await this.service.getAll(name)
 
-    return plainToInstance(ConcelloResponseDto, concellos)
+    return plainToInstance(ConcelloResponseDto, concellos, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    })
   }
 }

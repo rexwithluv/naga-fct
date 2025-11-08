@@ -1,10 +1,9 @@
 import { Expose, Transform, Type } from 'class-transformer'
 import { ConcelloResponseDto } from '../../concello/dto/concello-response.dto'
-import { CursoResponseDto } from '../../curso/dto/curso-response.dto'
 import { EstadoAlumnoResponseDto } from '../../estado-alumno/dto/estado-alumno-response.dto'
 import { TutorCentroMinimalResponseDto } from '../../tutor-centro/dto/tutor-centro-minimal-response.dto'
 
-export class AlumnoResponseDto {
+export class AlumnoMinimalResponseDto {
   @Expose()
   @Transform(({ value }) => String(value))
   readonly id: string
@@ -38,16 +37,4 @@ export class AlumnoResponseDto {
   @Expose({ groups: ['admin'] })
   @Type(() => TutorCentroMinimalResponseDto)
   readonly tutorCentro: TutorCentroMinimalResponseDto
-
-  @Expose({ groups: ['admin'] })
-  @Transform(({ obj }) => {
-    const curso = obj?.tutorCentro?.curso
-    return {
-      id: String(curso?.id),
-      codigo: curso?.codigo,
-      especialidad: { id: String(curso?.especialidad?.id), nombre: curso?.especialidad?.nombre },
-      nombre: curso?.nombre,
-    }
-  })
-  readonly curso: CursoResponseDto
 }

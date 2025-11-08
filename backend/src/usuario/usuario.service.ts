@@ -38,7 +38,7 @@ export class UsuarioService {
 
     return await this.repository.find({
       where: whereClause,
-      relations: ['rol', 'tutorCentro'],
+      relations: ['rol', 'tutorCentro', 'tutorCentro.curso', 'tutorCentro.curso.especialidad'],
     })
   }
 

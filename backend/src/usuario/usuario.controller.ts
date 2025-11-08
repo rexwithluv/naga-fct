@@ -32,7 +32,10 @@ export class UsuarioController {
   async getAll(@Query('hasTutorCentro') hasTutorCentro?: boolean) {
     const usuarios = await this.service.getAll(hasTutorCentro)
 
-    return plainToInstance(UsuarioResponseDto, usuarios)
+    return plainToInstance(UsuarioResponseDto, usuarios, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    })
   }
 
   @Get('me')
@@ -41,13 +44,10 @@ export class UsuarioController {
   async getSelfData(@User() jwtUser: JwtPayloadDto): Promise<UsuarioResponseDto> {
     const userData = await this.service.getById(jwtUser.id)
 
-    const isAdmin = this.utils.isAdmin(jwtUser)
-    if (isAdmin) {
-      return plainToInstance(UsuarioResponseDto, userData, {
-        groups: ['admin'],
-      })
-    }
-    return plainToInstance(UsuarioResponseDto, userData)
+    return plainToInstance(UsuarioResponseDto, userData, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    })
   }
 
   @Get(':id')
@@ -55,7 +55,10 @@ export class UsuarioController {
   async getById(@User() jwtUser: JwtPayloadDto, @Param('id', ParseIntPipe) id: number) {
     const usuario = await this.service.getById(id)
 
-    return plainToInstance(UsuarioResponseDto, usuario)
+    return plainToInstance(UsuarioResponseDto, usuario, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    })
   }
 
   /*

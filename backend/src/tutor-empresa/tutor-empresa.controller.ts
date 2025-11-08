@@ -12,6 +12,9 @@ export class TutorEmpresaController {
   async getAll() {
     const tutoresEmpresa = await this.service.getAll()
 
-    return plainToInstance(TutorEmpresaResponseDto, tutoresEmpresa)
+    return plainToInstance(TutorEmpresaResponseDto, tutoresEmpresa, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    })
   }
 }

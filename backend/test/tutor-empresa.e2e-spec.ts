@@ -3,6 +3,19 @@ import request from 'supertest'
 describe('TutorEmpresaController (e2e)', () => {
   const baseEndpoint = '/tutores-empresa'
 
+  const expectTutorEmpresaStructure = {
+    id: expect.any(String),
+    nombre: expect.any(String),
+    apellidos: expect.any(String),
+    email: expect.any(String),
+    telefono: expect.any(String),
+
+    empresa: {
+      id: expect.any(String),
+      nombre: expect.any(String),
+    },
+  }
+
   describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200', () => {
@@ -34,28 +47,7 @@ describe('TutorEmpresaController (e2e)', () => {
         expect(response.body).toBeInstanceOf(Array)
 
         const tutorEmpresa = response.body[0]
-
-        expect(tutorEmpresa).toHaveProperty('id')
-        expect(typeof tutorEmpresa.id).toBe('string')
-
-        expect(tutorEmpresa).toHaveProperty('empresa')
-        expect(typeof tutorEmpresa.empresa).toBe('object')
-        expect(tutorEmpresa.empresa).toHaveProperty('id')
-        expect(typeof tutorEmpresa.empresa.id).toBe('string')
-        expect(tutorEmpresa.empresa).toHaveProperty('nombre')
-        expect(typeof tutorEmpresa.empresa.nombre).toBe('string')
-
-        expect(tutorEmpresa).toHaveProperty('nombre')
-        expect(typeof tutorEmpresa.nombre).toBe('string')
-
-        expect(tutorEmpresa).toHaveProperty('apellidos')
-        expect(typeof tutorEmpresa.apellidos).toBe('string')
-
-        expect(tutorEmpresa).toHaveProperty('email')
-        expect(typeof tutorEmpresa.email).toBe('string')
-
-        expect(tutorEmpresa).toHaveProperty('telefono')
-        expect(typeof tutorEmpresa.telefono).toBe('string')
+        expect(tutorEmpresa).toEqual(tutorEmpresa)
       })
 
       it('should return an array without especialidad - standard', async () => {
@@ -67,28 +59,7 @@ describe('TutorEmpresaController (e2e)', () => {
         expect(response.body).toBeInstanceOf(Array)
 
         const tutorEmpresa = response.body[0]
-
-        expect(tutorEmpresa).toHaveProperty('id')
-        expect(typeof tutorEmpresa.id).toBe('string')
-
-        expect(tutorEmpresa).toHaveProperty('empresa')
-        expect(typeof tutorEmpresa.empresa).toBe('object')
-        expect(tutorEmpresa.empresa).toHaveProperty('id')
-        expect(typeof tutorEmpresa.empresa.id).toBe('string')
-        expect(tutorEmpresa.empresa).toHaveProperty('nombre')
-        expect(typeof tutorEmpresa.empresa.nombre).toBe('string')
-
-        expect(tutorEmpresa).toHaveProperty('nombre')
-        expect(typeof tutorEmpresa.nombre).toBe('string')
-
-        expect(tutorEmpresa).toHaveProperty('apellidos')
-        expect(typeof tutorEmpresa.apellidos).toBe('string')
-
-        expect(tutorEmpresa).toHaveProperty('email')
-        expect(typeof tutorEmpresa.email).toBe('string')
-
-        expect(tutorEmpresa).toHaveProperty('telefono')
-        expect(typeof tutorEmpresa.telefono).toBe('string')
+        expect(tutorEmpresa).toEqual(tutorEmpresa)
       })
     })
   })

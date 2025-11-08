@@ -3,6 +3,55 @@ import request from 'supertest'
 describe('UsuarioController (e2e)', () => {
   const baseEndpoint = '/usuarios'
 
+  const validateUsuarioStructure = (usuario: any) => {
+    const expectedUsuarioStructure = {
+      id: expect.any(String),
+      email: expect.any(String),
+      activo: expect.any(Boolean),
+
+      rol: {
+        id: expect.any(String),
+        nombre: expect.any(String),
+      },
+    }
+    const expectedTutorCentroStructure = {
+      id: expect.any(String),
+      nombre: expect.any(String),
+      apellidos: expect.any(String),
+      email: expect.any(String),
+      activo: expect.any(Boolean),
+
+      curso: {
+        id: expect.any(String),
+        codigo: expect.any(String),
+        nombre: expect.any(String),
+        especialidad: {
+          id: expect.any(String),
+          nombre: expect.any(String),
+        },
+      },
+    }
+
+    const expectedTutorCentroValue =
+      usuario?.tutorCentro === null ? null : expectedTutorCentroStructure
+    if (expectedTutorCentroValue !== null) {
+      expect(usuario?.tutorCentro).toEqual(expectedTutorCentroStructure)
+    }
+
+    const expectedStrictUsuarioStructure = {
+      id: expect.any(String),
+      email: expect.any(String),
+      activo: expect.any(Boolean),
+      rol: {
+        id: expect.any(String),
+        nombre: expect.any(String),
+      },
+      tutorCentro: expectedTutorCentroValue,
+    }
+
+    expect(usuario).toEqual(expectedStrictUsuarioStructure)
+  }
+
   describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200', () => {
@@ -34,24 +83,7 @@ describe('UsuarioController (e2e)', () => {
 
         const usuario = response.body[0]
 
-        expect(usuario).toHaveProperty('id')
-        expect(typeof usuario.id).toBe('string')
-
-        expect(usuario).toHaveProperty('email')
-        expect(typeof usuario.email).toBe('string')
-
-        expect(usuario).toHaveProperty('rol')
-        expect(typeof usuario.rol).toBe('object')
-        expect(usuario.rol).toHaveProperty('id')
-        expect(typeof usuario.rol.id).toBe('string')
-        expect(usuario.rol).toHaveProperty('nombre')
-        expect(typeof usuario.rol.nombre).toBe('string')
-
-        expect(usuario).toHaveProperty('tutorCentro')
-        expect(usuario.tutorCentro).toBeNull()
-
-        expect(usuario).toHaveProperty('activo')
-        expect(typeof usuario.activo).toBe('boolean')
+        validateUsuarioStructure(usuario)
       })
     })
   })
@@ -182,28 +214,8 @@ describe('UsuarioController (e2e)', () => {
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200)
 
-        const user = response.body
-
-        expect(user).not.toBeInstanceOf(Array)
-
-        expect(user).toHaveProperty('id')
-        expect(typeof user.id).toBe('string')
-
-        expect(user).toHaveProperty('email')
-        expect(typeof user.email).toBe('string')
-
-        expect(user).toHaveProperty('rol')
-        expect(typeof user.rol).toBe('object')
-        expect(user.rol).toHaveProperty('id')
-        expect(typeof user.rol.id).toBe('string')
-        expect(user.rol).toHaveProperty('nombre')
-        expect(typeof user.rol.nombre).toBe('string')
-
-        expect(user).toHaveProperty('tutorCentro')
-        expect(user.tutorCentro).toBeNull()
-
-        expect(user).toHaveProperty('activo')
-        expect(typeof user.activo).toBe('boolean')
+        const usuario = response.body
+        validateUsuarioStructure(usuario)
       })
     })
   })

@@ -12,6 +12,9 @@ export class EstadoAlumnoController {
   async getAll() {
     const estadosAlumno = await this.service.getAll()
 
-    return plainToInstance(EstadoAlumnoResponseDto, estadosAlumno)
+    return plainToInstance(EstadoAlumnoResponseDto, estadosAlumno, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    })
   }
 }

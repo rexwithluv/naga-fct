@@ -17,6 +17,9 @@ export class CursoController {
   async getAll() {
     const cursos = await this.service.getAll()
 
-    return plainToInstance(CursoResponseDto, cursos)
+    return plainToInstance(CursoResponseDto, cursos, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    })
   }
 }

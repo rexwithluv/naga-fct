@@ -1,7 +1,7 @@
 import { Expose, Transform, Type } from 'class-transformer'
-import { AlumnoResponseDto } from '../../alumno/dto/alumno-response.dto'
-import { EmpresaResponseDto } from '../../empresa/dto/empresa-response.dto'
-import { TutorEmpresaResponseDto } from '../../tutor-empresa/dto/tutor-empresa-response.dto'
+import { AlumnoMinimalResponseDto } from '../../alumno/dto/alumno-minimal-response.dto'
+import { TutorCentroMinimalResponseDto } from '../../tutor-centro/dto/tutor-centro-minimal-response.dto'
+import { TutorEmpresaMinimalResponseDto } from '../../tutor-empresa/dto/tutor-empresa-minimal-response.dto'
 
 export class FctResponseDto {
   @Expose()
@@ -9,17 +9,32 @@ export class FctResponseDto {
   readonly id: string
 
   @Expose()
-  @Type(() => AlumnoResponseDto)
-  readonly alumno: AlumnoResponseDto
+  @Type(() => AlumnoMinimalResponseDto)
+  readonly alumno: AlumnoMinimalResponseDto
+
+  @Expose({ groups: ['admin'] })
+  @Type(() => TutorCentroMinimalResponseDto)
+  readonly tutorCentro: TutorCentroMinimalResponseDto
 
   @Expose()
-  @Type(() => TutorEmpresaResponseDto)
-  readonly tutorEmpresa: TutorEmpresaResponseDto
+  @Type(() => TutorEmpresaMinimalResponseDto)
+  readonly tutorEmpresa: TutorEmpresaMinimalResponseDto
 
   @Expose()
-  @Type(() => EmpresaResponseDto)
-  @Transform(({ obj }) => (obj.tutorEmpresa ? obj.tutorEmpresa.empresa : null))
-  readonly empresa: EmpresaResponseDto
+  @Transform(({ obj }) => {
+    const empresa = obj.tutorEmpresa ? obj.tutorEmpresa.empresa : null
+    if (empresa === null) {
+      return null
+    }
+
+    return {
+      id: String(empresa.id),
+      direccion: empresa.direccion,
+      nombre: empresa.nombre,
+      observaciones: empresa.observaciones,
+    }
+  })
+  readonly empresa: any
 
   @Expose()
   readonly fechaInicio: string

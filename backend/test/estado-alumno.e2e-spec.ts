@@ -3,6 +3,11 @@ import request from 'supertest'
 describe('EstadoAlumnoController (e2e)', () => {
   const baseEndpoint = '/estados-alumno'
 
+  const expectedEstadoAlumnoStructure = {
+    id: expect.any(String),
+    nombre: expect.any(String),
+  }
+
   describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200 - admin', () => {
@@ -34,12 +39,7 @@ describe('EstadoAlumnoController (e2e)', () => {
         expect(response.body).toBeInstanceOf(Array)
 
         const estadoAlumno = response.body[0]
-
-        expect(estadoAlumno).toHaveProperty('id')
-        expect(typeof estadoAlumno.id).toBe('string')
-
-        expect(estadoAlumno).toHaveProperty('nombre')
-        expect(typeof estadoAlumno.nombre).toBe('string')
+        expect(estadoAlumno).toEqual(expectedEstadoAlumnoStructure)
       })
       it('should return an array with EstadoAlumnoResponseDto - standard', async () => {
         const response = await request(app.getHttpServer())
@@ -50,12 +50,7 @@ describe('EstadoAlumnoController (e2e)', () => {
         expect(response.body).toBeInstanceOf(Array)
 
         const estadoAlumno = response.body[0]
-
-        expect(estadoAlumno).toHaveProperty('id')
-        expect(typeof estadoAlumno.id).toBe('string')
-
-        expect(estadoAlumno).toHaveProperty('nombre')
-        expect(typeof estadoAlumno.nombre).toBe('string')
+        expect(estadoAlumno).toEqual(expectedEstadoAlumnoStructure)
       })
     })
   })

@@ -4,6 +4,11 @@ import { EspecialidadResponseDto } from '../src/especialidad/dto/especialidad-re
 describe('ConcelloController (e2e)', () => {
   const baseEndpoint = '/concellos'
 
+  const expectedConcelloStructure = {
+    id: expect.any(String),
+    nombre: expect.any(String),
+  }
+
   describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200', () => {
@@ -34,13 +39,9 @@ describe('ConcelloController (e2e)', () => {
 
         expect(response.body).toBeInstanceOf(Array)
 
-        const role = response.body[0]
+        const concello = response.body[0]
 
-        expect(role).toHaveProperty('id')
-        expect(typeof role.id).toBe('string')
-
-        expect(role).toHaveProperty('nombre')
-        expect(typeof role.nombre).toBe('string')
+        expect(concello).toEqual(expectedConcelloStructure)
       })
 
       it('should return an array with id and nombre - standard', async () => {
@@ -51,13 +52,9 @@ describe('ConcelloController (e2e)', () => {
 
         expect(response.body).toBeInstanceOf(Array)
 
-        const role = response.body[0]
+        const concello = response.body[0]
 
-        expect(role).toHaveProperty('id')
-        expect(typeof role.id).toBe('string')
-
-        expect(role).toHaveProperty('nombre')
-        expect(typeof role.nombre).toBe('string')
+        expect(concello).toEqual(expectedConcelloStructure)
       })
     })
 

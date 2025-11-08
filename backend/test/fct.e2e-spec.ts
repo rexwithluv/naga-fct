@@ -3,6 +3,78 @@ import request from 'supertest'
 describe('FctController (e2e)', () => {
   const baseEndpoint = '/fct'
 
+  const validateFctStructure = (fct: any) => {
+    const standardExpectedFctStructure = {
+      id: expect.any(String),
+      fechaInicio: expect.any(String),
+      fechaFin: expect.any(String),
+
+      alumno: {
+        id: expect.any(String),
+        nombre: expect.any(String),
+        dniNie: expect.any(String),
+        apellidos: expect.any(String),
+        email: expect.any(String),
+        telefono: expect.any(String),
+        numeroSeguridadSocial: expect.any(String),
+      },
+      empresa: {
+        id: expect.any(String),
+        nombre: expect.any(String),
+        direccion: expect.any(String),
+        observaciones: expect.any(String),
+      },
+      tutorEmpresa: {
+        id: expect.any(String),
+        nombre: expect.any(String),
+        apellidos: expect.any(String),
+        email: expect.any(String),
+        telefono: expect.any(String),
+      },
+    }
+    const adminExpectedFctStructure = {
+      id: expect.any(String),
+      fechaInicio: expect.any(String),
+      fechaFin: expect.any(String),
+
+      alumno: {
+        id: expect.any(String),
+        nombre: expect.any(String),
+        dniNie: expect.any(String),
+        apellidos: expect.any(String),
+        email: expect.any(String),
+        telefono: expect.any(String),
+        numeroSeguridadSocial: expect.any(String),
+
+        tutorCentro: {
+          id: expect.any(String),
+          nombre: expect.any(String),
+          apellidos: expect.any(String),
+          email: expect.any(String),
+        },
+      },
+      empresa: {
+        id: expect.any(String),
+        nombre: expect.any(String),
+        direccion: expect.any(String),
+        observaciones: expect.any(String),
+      },
+      tutorEmpresa: {
+        id: expect.any(String),
+        nombre: expect.any(String),
+        apellidos: expect.any(String),
+        email: expect.any(String),
+        telefono: expect.any(String),
+      },
+    }
+
+    if (fct?.alumno?.tutorCentro === undefined) {
+      expect(fct).toEqual(standardExpectedFctStructure)
+    } else {
+      expect(fct).toEqual(adminExpectedFctStructure)
+    }
+  }
+
   describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200', () => {
@@ -34,50 +106,7 @@ describe('FctController (e2e)', () => {
         expect(response.body).toBeInstanceOf(Array)
 
         const fct = response.body[0]
-
-        expect(fct).toHaveProperty('id')
-        expect(typeof fct.id).toBe('string')
-
-        expect(fct).toHaveProperty('alumno')
-        expect(typeof fct.alumno).toBe('object')
-        expect(fct.alumno).toHaveProperty('id')
-        expect(typeof fct.alumno.id).toBe('string')
-        expect(fct.alumno).toHaveProperty('dniNie')
-        expect(typeof fct.alumno.dniNie).toBe('string')
-        expect(fct.alumno).toHaveProperty('nombre')
-        expect(typeof fct.alumno.nombre).toBe('string')
-        expect(fct.alumno).toHaveProperty('apellidos')
-        expect(typeof fct.alumno.apellidos).toBe('string')
-        expect(fct.alumno).toHaveProperty('email')
-        expect(typeof fct.alumno.email).toBe('string')
-        expect(fct.alumno).toHaveProperty('telefono')
-        expect(typeof fct.alumno.telefono).toBe('string')
-        expect(fct.alumno).toHaveProperty('numeroSeguridadSocial')
-        expect(typeof fct.alumno.numeroSeguridadSocial).toBe('string')
-
-        expect(fct).toHaveProperty('empresa')
-        expect(typeof fct.empresa).toBe('object')
-        expect(fct.empresa).toHaveProperty('id')
-        expect(typeof fct.empresa.id).toBe('string')
-        expect(fct.empresa).toHaveProperty('nombre')
-        expect(typeof fct.empresa.nombre).toBe('string')
-        expect(fct.empresa).toHaveProperty('direccion')
-        expect(typeof fct.empresa.direccion).toBe('string')
-
-        expect(fct).toHaveProperty('tutorEmpresa')
-        expect(typeof fct.tutorEmpresa).toBe('object')
-        expect(fct.tutorEmpresa).toHaveProperty('nombre')
-        expect(typeof fct.tutorEmpresa.nombre).toBe('string')
-        expect(fct.tutorEmpresa).toHaveProperty('apellidos')
-        expect(typeof fct.tutorEmpresa.apellidos).toBe('string')
-        expect(fct.tutorEmpresa).toHaveProperty('id')
-        expect(typeof fct.tutorEmpresa.id).toBe('string')
-
-        expect(fct).toHaveProperty('fechaInicio')
-        expect(typeof fct.fechaInicio).toBe('string')
-
-        expect(fct).toHaveProperty('fechaFin')
-        expect(typeof fct.fechaFin).toBe('string')
+        validateFctStructure(fct)
       })
 
       it('should return an array without FctResponseDto - standard', async () => {
@@ -89,50 +118,7 @@ describe('FctController (e2e)', () => {
         expect(response.body).toBeInstanceOf(Array)
 
         const fct = response.body[0]
-
-        expect(fct).toHaveProperty('id')
-        expect(typeof fct.id).toBe('string')
-
-        expect(fct).toHaveProperty('alumno')
-        expect(typeof fct.alumno).toBe('object')
-        expect(fct.alumno).toHaveProperty('id')
-        expect(typeof fct.alumno.id).toBe('string')
-        expect(fct.alumno).toHaveProperty('dniNie')
-        expect(typeof fct.alumno.dniNie).toBe('string')
-        expect(fct.alumno).toHaveProperty('nombre')
-        expect(typeof fct.alumno.nombre).toBe('string')
-        expect(fct.alumno).toHaveProperty('apellidos')
-        expect(typeof fct.alumno.apellidos).toBe('string')
-        expect(fct.alumno).toHaveProperty('email')
-        expect(typeof fct.alumno.email).toBe('string')
-        expect(fct.alumno).toHaveProperty('telefono')
-        expect(typeof fct.alumno.telefono).toBe('string')
-        expect(fct.alumno).toHaveProperty('numeroSeguridadSocial')
-        expect(typeof fct.alumno.numeroSeguridadSocial).toBe('string')
-
-        expect(fct).toHaveProperty('empresa')
-        expect(typeof fct.empresa).toBe('object')
-        expect(fct.empresa).toHaveProperty('id')
-        expect(typeof fct.empresa.id).toBe('string')
-        expect(fct.empresa).toHaveProperty('nombre')
-        expect(typeof fct.empresa.nombre).toBe('string')
-        expect(fct.empresa).toHaveProperty('direccion')
-        expect(typeof fct.empresa.direccion).toBe('string')
-
-        expect(fct).toHaveProperty('tutorEmpresa')
-        expect(typeof fct.tutorEmpresa).toBe('object')
-        expect(fct.tutorEmpresa).toHaveProperty('nombre')
-        expect(typeof fct.tutorEmpresa.nombre).toBe('string')
-        expect(fct.tutorEmpresa).toHaveProperty('apellidos')
-        expect(typeof fct.tutorEmpresa.apellidos).toBe('string')
-        expect(fct.tutorEmpresa).toHaveProperty('id')
-        expect(typeof fct.tutorEmpresa.id).toBe('string')
-
-        expect(fct).toHaveProperty('fechaInicio')
-        expect(typeof fct.fechaInicio).toBe('string')
-
-        expect(fct).toHaveProperty('fechaFin')
-        expect(typeof fct.fechaFin).toBe('string')
+        validateFctStructure(fct)
       })
     })
   })

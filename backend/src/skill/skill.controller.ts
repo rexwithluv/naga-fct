@@ -14,6 +14,9 @@ export class SkillController {
   async getAll(@User() jwtUser: JwtPayloadDto) {
     const skills = await this.service.getAll(jwtUser)
 
-    return plainToInstance(SkillResponseDto, skills)
+    return plainToInstance(SkillResponseDto, skills, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    })
   }
 }

@@ -1,10 +1,11 @@
-import { Exclude, Expose, Type } from 'class-transformer'
+import { Expose, Transform, Type } from 'class-transformer'
 import { RolUsuarioResponseDto } from '../../rol-usuario/dto/rol-usuario-response.dto'
 import { TutorCentroResponseDto } from '../../tutor-centro/dto/tutor-centro-response.dto'
 
 export class UsuarioResponseDto {
   @Expose()
-  readonly id: number
+  @Transform(({ value }) => String(value))
+  readonly id: string
 
   @Expose()
   readonly email: string
@@ -19,7 +20,4 @@ export class UsuarioResponseDto {
   @Expose()
   @Type(() => TutorCentroResponseDto)
   readonly tutorCentro: TutorCentroResponseDto
-
-  @Exclude()
-  readonly password: string
 }

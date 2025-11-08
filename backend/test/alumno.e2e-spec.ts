@@ -3,6 +3,58 @@ import request from 'supertest'
 describe('AlumnoController (e2e)', () => {
   const baseEndpoint = '/alumnos'
 
+  const expectedAlumnoStructureAdmin = {
+    id: expect.any(String),
+    dniNie: expect.any(String),
+    nombre: expect.any(String),
+    apellidos: expect.any(String),
+    email: expect.any(String),
+    telefono: expect.any(String),
+    numeroSeguridadSocial: expect.any(String),
+
+    concello: {
+      id: expect.any(String),
+      nombre: expect.any(String),
+    },
+    estadoAlumno: {
+      id: expect.any(String),
+      nombre: expect.any(String),
+    },
+    curso: {
+      id: expect.any(String),
+      nombre: expect.any(String),
+      codigo: expect.any(String),
+      especialidad: {
+        id: expect.any(String),
+        nombre: expect.any(String),
+      },
+    },
+    tutorCentro: {
+      id: expect.any(String),
+      nombre: expect.any(String),
+      apellidos: expect.any(String),
+      email: expect.any(String),
+    },
+  }
+  const expectedAlumnoStructureStandard = {
+    id: expect.any(String),
+    dniNie: expect.any(String),
+    nombre: expect.any(String),
+    apellidos: expect.any(String),
+    email: expect.any(String),
+    telefono: expect.any(String),
+    numeroSeguridadSocial: expect.any(String),
+
+    concello: {
+      id: expect.any(String),
+      nombre: expect.any(String),
+    },
+    estadoAlumno: {
+      id: expect.any(String),
+      nombre: expect.any(String),
+    },
+  }
+
   describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200 - admin', () => {
@@ -24,118 +76,31 @@ describe('AlumnoController (e2e)', () => {
       })
     })
     describe('Response', () => {
-      it('should an array with tutorCentro field', async () => {
+      it('should an array with tutorCentro field - admin', async () => {
         const response = await request(app.getHttpServer())
           .get(baseEndpoint)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200)
 
         expect(response.body).toBeInstanceOf(Array)
+        expect(response.body.length).toBeGreaterThan(0)
 
         const alumno = response.body[0]
 
-        expect(alumno).toHaveProperty('id')
-        expect(typeof alumno.id).toBe('string')
-
-        expect(alumno).toHaveProperty('dniNie')
-        expect(typeof alumno.dniNie).toBe('string')
-
-        expect(alumno).toHaveProperty('nombre')
-        expect(typeof alumno.nombre).toBe('string')
-
-        expect(alumno).toHaveProperty('apellidos')
-        expect(typeof alumno.apellidos).toBe('string')
-
-        expect(alumno).toHaveProperty('email')
-        expect(typeof alumno.email).toBe('string')
-
-        expect(alumno).toHaveProperty('telefono')
-        expect(typeof alumno.telefono).toBe('string')
-
-        expect(alumno).toHaveProperty('concello')
-        expect(typeof alumno.concello).toBe('object')
-        expect(alumno.concello).toHaveProperty('id')
-        expect(typeof alumno.concello.id).toBe('string')
-        expect(alumno.concello).toHaveProperty('nombre')
-        expect(typeof alumno.concello.nombre).toBe('string')
-
-        expect(alumno).toHaveProperty('numeroSeguridadSocial')
-        expect(typeof alumno.numeroSeguridadSocial).toBe('string')
-
-        expect(alumno).toHaveProperty('estadoAlumno')
-        expect(typeof alumno.estadoAlumno).toBe('object')
-        expect(alumno.estadoAlumno).toHaveProperty('id')
-        expect(typeof alumno.estadoAlumno.id).toBe('string')
-        expect(alumno.estadoAlumno).toHaveProperty('nombre')
-        expect(typeof alumno.estadoAlumno.nombre).toBe('string')
-
-        expect(alumno).toHaveProperty('tutorCentro')
-        expect(typeof alumno.tutorCentro).toBe('object')
-        expect(alumno.tutorCentro).toHaveProperty('id')
-        expect(typeof alumno.tutorCentro.id).toBe('string')
-        expect(alumno.tutorCentro).toHaveProperty('nombre')
-        expect(typeof alumno.tutorCentro.nombre).toBe('string')
-        expect(alumno.tutorCentro).toHaveProperty('curso')
-        expect(typeof alumno.tutorCentro.curso).toBe('object')
-        expect(alumno.tutorCentro.curso).toHaveProperty('id')
-        expect(typeof alumno.tutorCentro.curso.id).toBe('string')
-        expect(alumno.tutorCentro.curso).toHaveProperty('codigo')
-        expect(typeof alumno.tutorCentro.curso.codigo).toBe('string')
-        expect(alumno.tutorCentro.curso).toHaveProperty('nombre')
-        expect(typeof alumno.tutorCentro.curso.nombre).toBe('string')
-        expect(alumno.tutorCentro.usuario).toHaveProperty('id')
-        expect(typeof alumno.tutorCentro.usuario.id).toBe('string')
-        expect(alumno.tutorCentro.usuario).toHaveProperty('email')
-        expect(typeof alumno.tutorCentro.usuario.email).toBe('string')
-        expect(alumno.tutorCentro.usuario).toHaveProperty('activo')
-        expect(typeof alumno.tutorCentro.usuario.activo).toBe('boolean')
+        expect(alumno).toEqual(expectedAlumnoStructureAdmin)
       })
-      it('should an array without tutorCentro field', async () => {
+      it('should an array without tutorCentro field - standard', async () => {
         const response = await request(app.getHttpServer())
           .get(baseEndpoint)
           .set('Authorization', `Bearer ${standardToken}`)
           .expect(200)
 
         expect(response.body).toBeInstanceOf(Array)
+        expect(response.body.length).toBeGreaterThan(0)
 
         const alumno = response.body[0]
 
-        expect(alumno).toHaveProperty('id')
-        expect(typeof alumno.id).toBe('string')
-
-        expect(alumno).toHaveProperty('dniNie')
-        expect(typeof alumno.dniNie).toBe('string')
-
-        expect(alumno).toHaveProperty('nombre')
-        expect(typeof alumno.nombre).toBe('string')
-
-        expect(alumno).toHaveProperty('apellidos')
-        expect(typeof alumno.apellidos).toBe('string')
-
-        expect(alumno).toHaveProperty('email')
-        expect(typeof alumno.email).toBe('string')
-
-        expect(alumno).toHaveProperty('telefono')
-        expect(typeof alumno.telefono).toBe('string')
-
-        expect(alumno).toHaveProperty('concello')
-        expect(typeof alumno.concello).toBe('object')
-        expect(alumno.concello).toHaveProperty('id')
-        expect(typeof alumno.concello.id).toBe('string')
-        expect(alumno.concello).toHaveProperty('nombre')
-        expect(typeof alumno.concello.nombre).toBe('string')
-
-        expect(alumno).toHaveProperty('numeroSeguridadSocial')
-        expect(typeof alumno.numeroSeguridadSocial).toBe('string')
-
-        expect(alumno).toHaveProperty('estadoAlumno')
-        expect(typeof alumno.estadoAlumno).toBe('object')
-        expect(alumno.estadoAlumno).toHaveProperty('id')
-        expect(typeof alumno.estadoAlumno.id).toBe('string')
-        expect(alumno.estadoAlumno).toHaveProperty('nombre')
-        expect(typeof alumno.estadoAlumno.nombre).toBe('string')
-
-        expect(alumno).not.toHaveProperty('tutorCentro')
+        expect(alumno).toEqual(expectedAlumnoStructureStandard)
       })
     })
   })
@@ -162,7 +127,7 @@ describe('AlumnoController (e2e)', () => {
       })
     })
     describe('Response', () => {
-      it('should return an AlumnoResponseDto with tutorCentro field', async () => {
+      it('should return an AlumnoResponseDto with tutorCentro field - admin', async () => {
         const response = await request(app.getHttpServer())
           .get(endpoint)
           .set('Authorization', `Bearer ${adminToken}`)
@@ -170,59 +135,9 @@ describe('AlumnoController (e2e)', () => {
 
         const alumno = response.body
 
-        expect(alumno).toHaveProperty('id')
-        expect(typeof alumno.id).toBe('string')
-
-        expect(alumno).toHaveProperty('dniNie')
-        expect(typeof alumno.dniNie).toBe('string')
-
-        expect(alumno).toHaveProperty('nombre')
-        expect(typeof alumno.nombre).toBe('string')
-
-        expect(alumno).toHaveProperty('apellidos')
-        expect(typeof alumno.apellidos).toBe('string')
-
-        expect(alumno).toHaveProperty('email')
-        expect(typeof alumno.email).toBe('string')
-
-        expect(alumno).toHaveProperty('telefono')
-        expect(typeof alumno.telefono).toBe('string')
-
-        expect(alumno).toHaveProperty('concello')
-        expect(typeof alumno.concello).toBe('object')
-        expect(alumno.concello).toHaveProperty('id')
-        expect(typeof alumno.concello.id).toBe('string')
-        expect(alumno.concello).toHaveProperty('nombre')
-        expect(typeof alumno.concello.nombre).toBe('string')
-
-        expect(alumno).toHaveProperty('numeroSeguridadSocial')
-        expect(typeof alumno.numeroSeguridadSocial).toBe('string')
-
-        expect(alumno).toHaveProperty('estadoAlumno')
-        expect(typeof alumno.estadoAlumno).toBe('object')
-        expect(alumno.estadoAlumno).toHaveProperty('id')
-        expect(typeof alumno.estadoAlumno.id).toBe('string')
-        expect(alumno.estadoAlumno).toHaveProperty('nombre')
-        expect(typeof alumno.estadoAlumno.nombre).toBe('string')
-
-        expect(alumno).toHaveProperty('tutorCentro')
-        expect(typeof alumno.tutorCentro).toBe('object')
-        expect(alumno.tutorCentro).toHaveProperty('id')
-        expect(typeof alumno.tutorCentro.id).toBe('string')
-        expect(alumno.tutorCentro).toHaveProperty('nombre')
-        expect(typeof alumno.tutorCentro.nombre).toBe('string')
-
-        // id, codigo, nombre
-        expect(alumno).toHaveProperty('curso')
-        expect(typeof alumno.curso).toBe('object')
-        expect(alumno.curso).toHaveProperty('id')
-        expect(typeof alumno.curso.id).toBe('string')
-        expect(alumno.curso).toHaveProperty('nombre')
-        expect(typeof alumno.curso.nombre).toBe('string')
-        expect(alumno.curso).toHaveProperty('codigo')
-        expect(typeof alumno.curso.codigo).toBe('string')
+        expect(alumno).toEqual(expectedAlumnoStructureAdmin)
       })
-      it('should return an AlumnoResponseDto without tutorCentro field', async () => {
+      it('should return an AlumnoResponseDto without tutorCentro field - standard', async () => {
         const response = await request(app.getHttpServer())
           .get(endpoint)
           .set('Authorization', `Bearer ${standardToken}`)
@@ -230,42 +145,7 @@ describe('AlumnoController (e2e)', () => {
 
         const alumno = response.body
 
-        expect(alumno).toHaveProperty('id')
-        expect(typeof alumno.id).toBe('string')
-
-        expect(alumno).toHaveProperty('dniNie')
-        expect(typeof alumno.dniNie).toBe('string')
-
-        expect(alumno).toHaveProperty('nombre')
-        expect(typeof alumno.nombre).toBe('string')
-
-        expect(alumno).toHaveProperty('apellidos')
-        expect(typeof alumno.apellidos).toBe('string')
-
-        expect(alumno).toHaveProperty('email')
-        expect(typeof alumno.email).toBe('string')
-
-        expect(alumno).toHaveProperty('telefono')
-        expect(typeof alumno.telefono).toBe('string')
-
-        expect(alumno).toHaveProperty('concello')
-        expect(typeof alumno.concello).toBe('object')
-        expect(alumno.concello).toHaveProperty('id')
-        expect(typeof alumno.concello.id).toBe('string')
-        expect(alumno.concello).toHaveProperty('nombre')
-        expect(typeof alumno.concello.nombre).toBe('string')
-
-        expect(alumno).toHaveProperty('numeroSeguridadSocial')
-        expect(typeof alumno.numeroSeguridadSocial).toBe('string')
-
-        expect(alumno).toHaveProperty('estadoAlumno')
-        expect(typeof alumno.estadoAlumno).toBe('object')
-        expect(alumno.estadoAlumno).toHaveProperty('id')
-        expect(typeof alumno.estadoAlumno.id).toBe('string')
-        expect(alumno.estadoAlumno).toHaveProperty('nombre')
-        expect(typeof alumno.estadoAlumno.nombre).toBe('string')
-
-        expect(alumno).not.toHaveProperty('tutorCentro')
+        expect(alumno).toEqual(expectedAlumnoStructureStandard)
       })
     })
     describe('Errors', () => {
