@@ -2,6 +2,7 @@ import { INestApplication } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
 import { App } from 'supertest/types'
 import { AppModule } from '../src/app.module'
+import { applyGlobalConfig } from '../src/config/global-config'
 import { loginAsAdmin, loginAsStandard } from './e2e-helpers'
 
 declare global {
@@ -16,6 +17,9 @@ beforeAll(async () => {
   }).compile()
 
   app = moduleFixture.createNestApplication()
+
+  applyGlobalConfig(app)
+
   await app.init()
 
   adminToken = await loginAsAdmin(app)
