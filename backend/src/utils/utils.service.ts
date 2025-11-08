@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
+import { JwtPayloadDto } from '../auth/dto/jwt-payload.dto'
 import { Rol } from '../common/enums/rol.enum'
-import { Usuario } from '../usuario/usuario.entity'
 
 @Injectable()
 export class UtilsService {
-  isAdmin(usuario: Usuario): boolean {
-    return String(usuario.rol) === Rol.ADMIN
+  isAdmin(jwtUser: JwtPayloadDto): boolean {
+    return String(jwtUser.rol) === Rol.ADMIN
   }
 }

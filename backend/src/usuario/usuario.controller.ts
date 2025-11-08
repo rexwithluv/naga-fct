@@ -9,13 +9,13 @@ import {
   UseGuards,
 } from '@nestjs/common'
 import { plainToInstance } from 'class-transformer'
+import { JwtPayloadDto } from '../auth/dto/jwt-payload.dto'
 import { RolesGuard } from '../auth/guards/roles.guard'
 import { Roles } from '../common/decorators/roles.decorator'
 import { User } from '../common/decorators/user.decorator'
 import { Rol } from '../common/enums/rol.enum'
 import { UtilsService } from '../utils/utils.service'
 import { UsuarioResponseDto } from './dto/usuario-response.dto'
-import { Usuario } from './usuario.entity'
 import { UsuarioService } from './usuario.service'
 
 @Controller('usuarios')
@@ -38,13 +38,13 @@ export class UsuarioController {
   @Get('me')
   @HttpCode(HttpStatus.OK)
   @Roles(Rol.ADMIN, Rol.STANDARD)
-  async getSelfData(@User() user: Usuario): Promise<UsuarioResponseDto> {
-    const userData = await this.service.getById(user.id)
+  async getSelfData(@User() jwtUser: JwtPayloadDto): Promise<UsuarioResponseDto> {
+    const userData = await this.service.getById(jwtUser.id)
 
-    const isAdmin = this.utils.isAdmin(user)
+    const isAdmin = this.utils.isAdmin(jwtUser)
     if (isAdmin) {
       return plainToInstance(UsuarioResponseDto, userData, {
-        groups: ['ADMIN'],
+        groups: ['admin'],
       })
     }
     return plainToInstance(UsuarioResponseDto, userData)
@@ -52,7 +52,7 @@ export class UsuarioController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  async getById(@Param('id', ParseIntPipe) id: number) {
+  async getById(@User() jwtUser: JwtPayloadDto, @Param('id', ParseIntPipe) id: number) {
     const usuario = await this.service.getById(id)
 
     return plainToInstance(UsuarioResponseDto, usuario)

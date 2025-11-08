@@ -198,21 +198,29 @@ describe('AlumnoController (e2e)', () => {
         expect(alumno).toHaveProperty('numeroSeguridadSocial')
         expect(typeof alumno.numeroSeguridadSocial).toBe('string')
 
-        expect(alumno).toHaveProperty('estado')
-        expect(typeof alumno.estado).toBe('string')
-        expect(alumno.estado).toHaveProperty('id')
-        expect(typeof alumno.estado.id).toBe('string')
-        expect(alumno.estado).toHaveProperty('nombre')
-        expect(typeof alumno.estado.nombre).toBe('string')
+        expect(alumno).toHaveProperty('estadoAlumno')
+        expect(typeof alumno.estadoAlumno).toBe('object')
+        expect(alumno.estadoAlumno).toHaveProperty('id')
+        expect(typeof alumno.estadoAlumno.id).toBe('string')
+        expect(alumno.estadoAlumno).toHaveProperty('nombre')
+        expect(typeof alumno.estadoAlumno.nombre).toBe('string')
 
         expect(alumno).toHaveProperty('tutorCentro')
-        expect(typeof alumno.tutorCentro).toBe('string')
+        expect(typeof alumno.tutorCentro).toBe('object')
         expect(alumno.tutorCentro).toHaveProperty('id')
         expect(typeof alumno.tutorCentro.id).toBe('string')
         expect(alumno.tutorCentro).toHaveProperty('nombre')
         expect(typeof alumno.tutorCentro.nombre).toBe('string')
-        expect(alumno.tutorCentro).toHaveProperty('curso')
-        expect(typeof alumno.tutorCentro.curso).toBe('string')
+
+        // id, codigo, nombre
+        expect(alumno).toHaveProperty('curso')
+        expect(typeof alumno.curso).toBe('object')
+        expect(alumno.curso).toHaveProperty('id')
+        expect(typeof alumno.curso.id).toBe('string')
+        expect(alumno.curso).toHaveProperty('nombre')
+        expect(typeof alumno.curso.nombre).toBe('string')
+        expect(alumno.curso).toHaveProperty('codigo')
+        expect(typeof alumno.curso.codigo).toBe('string')
       })
       it('should return an AlumnoResponseDto without tutorCentro field', async () => {
         const response = await request(app.getHttpServer())
@@ -250,18 +258,18 @@ describe('AlumnoController (e2e)', () => {
         expect(alumno).toHaveProperty('numeroSeguridadSocial')
         expect(typeof alumno.numeroSeguridadSocial).toBe('string')
 
-        expect(alumno).toHaveProperty('estado')
-        expect(typeof alumno.estado).toBe('string')
-        expect(alumno.estado).toHaveProperty('id')
-        expect(typeof alumno.estado.id).toBe('string')
-        expect(alumno.estado).toHaveProperty('nombre')
-        expect(typeof alumno.estado.nombre).toBe('string')
+        expect(alumno).toHaveProperty('estadoAlumno')
+        expect(typeof alumno.estadoAlumno).toBe('object')
+        expect(alumno.estadoAlumno).toHaveProperty('id')
+        expect(typeof alumno.estadoAlumno.id).toBe('string')
+        expect(alumno.estadoAlumno).toHaveProperty('nombre')
+        expect(typeof alumno.estadoAlumno.nombre).toBe('string')
 
         expect(alumno).not.toHaveProperty('tutorCentro')
       })
     })
     describe('Errors', () => {
-      const forbiddenEndpoint = endpoint
+      const forbiddenEndpoint = `${baseEndpoint}/5`
       const notFoundEndpoint = `${baseEndpoint}/9999`
 
       it('should return 403, standard user dont see others alumnos', async () => {
@@ -279,9 +287,44 @@ describe('AlumnoController (e2e)', () => {
     })
   })
 
-  describe(`POST ${baseEndpoint}`, () => {})
+  // describe(`POST ${baseEndpoint}`, () => {
+  //   describe('Authorization', () => {
+  //     it('should return 201 - admin', () => {})
+  //     it('should return 201 - standard', () => {})
+  //     it('should return 401 - without token', () => {})
+  //   })
+  //   describe('Response', () => {
+  //     it('should return AlumnoResponseDto with TutorCentro field - admin', () => {})
+  //     it('should return AlumnoResponseDto without TutorCentro field - standard', () => {})
+  //   })
+  //   describe('Errors', () => {
+  //     it('should return 403 trying to create Alumno in another Curso that not my own - standard', () => {})
+  //   })
+  // })
 
-  describe(`PUT ${baseEndpoint}/:id`, () => {})
+  // describe(`PUT ${baseEndpoint}/:id`, () => {
+  //   describe('Authorization', () => {
+  //     it('should return 201 - admin', () => {})
+  //     it('should return 201 - standard', () => {})
+  //     it('should return 401 - without token', () => {})
+  //   })
+  //   describe('Response', () => {
+  //     it('should return AlumnoResponseDto with TutorCentro field - admin', () => {})
+  //     it('should return AlumnoResponseDto without TutorCentro field - standard', () => {})
+  //   })
+  //   describe('Errors', () => {
+  //     it('should return 403 trying to update Alumno in another Curso that not my own - standard', () => {})
+  //   })
+  // })
 
-  describe(`DELETE ${baseEndpoint}/id`, () => {})
+  // describe(`DELETE ${baseEndpoint}/id`, () => {
+  //   describe('Authorization', () => {
+  //     it('should return 204 - admin', () => {})
+  //     it('should return 204 - standard', () => {})
+  //     it('should return 401 - without token', () => {})
+  //   })
+  //   describe('Errors', () => {
+  //     it('should return 403 trying to delete Alumno in another Curso that not my own - standard', () => {})
+  //   })
+  // })
 })

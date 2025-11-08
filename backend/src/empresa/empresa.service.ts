@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
+import { JwtPayloadDto } from '../auth/dto/jwt-payload.dto'
 import { Especialidad } from '../especialidad/especialidad.entity'
-import { Usuario } from '../usuario/usuario.entity'
 import { UsuarioService } from '../usuario/usuario.service'
 import { UtilsService } from '../utils/utils.service'
 import { Empresa } from './empresa.entity'
@@ -15,17 +15,18 @@ export class EmpresaService {
     private readonly usuarioServie: UsuarioService,
   ) {}
 
-  private getUsuarioEspecialidad(usuario: Usuario): Especialidad | null {
-    return usuario?.tutorCentro?.curso?.especialidad
+  private async getUsuarioEspecialidad(jwtUser: JwtPayloadDto): Promise<Especialidad | null> {
+    const user = await this.usuarioServie.getById(jwtUser.id)
+    return user?.tutorCentro?.curso?.especialidad
   }
 
-  async getAll(usuario: Usuario): Promise<Empresa[]> {
+  async getAll(jwtUser: JwtPayloadDto): Promise<Empresa[]> {
     const groupsRelations = ['concello', 'skills', 'especialidad']
-    if (this.utils.isAdmin(usuario)) {
+    if (this.utils.isAdmin(jwtUser)) {
       return await this.repository.find({ relations: groupsRelations })
     }
 
-    const usuarioEspecialidad = (await this.usuarioServie.getById(usuario.id)).tutorCentro.curso
+    const usuarioEspecialidad = (await this.usuarioServie.getById(jwtUser.id)).tutorCentro.curso
       .especialidad
     if (!usuarioEspecialidad) {
       return []
@@ -39,12 +40,12 @@ export class EmpresaService {
     })
   }
 
-  async getById(usuario: Usuario, id: number) {
-    if (this.utils.isAdmin(usuario)) {
+  async getById(jwtUser: JwtPayloadDto, id: number) {
+    if (this.utils.isAdmin(jwtUser)) {
       return await this.repository.find()
     }
 
-    const usuarioEspecialidad = this.getUsuarioEspecialidad(usuario)
+    const usuarioEspecialidad = await this.getUsuarioEspecialidad(jwtUser)
     if (!usuarioEspecialidad) {
       return []
     }

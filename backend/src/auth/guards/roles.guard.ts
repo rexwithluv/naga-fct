@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { ROLES_KEY } from '../../common/decorators/roles.decorator'
 import { Rol } from '../../common/enums/rol.enum'
-import { UsuarioPayloadDto } from '../dto/usuario-payload.dto'
+import { JwtPayloadDto } from '../dto/jwt-payload.dto'
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -19,7 +19,7 @@ export class RolesGuard implements CanActivate {
     }
 
     const { user } = context.switchToHttp().getRequest()
-    const usuario = user as UsuarioPayloadDto
+    const usuario = user as JwtPayloadDto
 
     if (!usuario) {
       return false

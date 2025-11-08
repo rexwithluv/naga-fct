@@ -21,7 +21,7 @@ export class EmpresaResponseDto {
   @Expose()
   readonly observaciones: string
 
-  @Expose({ groups: ['ADMIN'] })
+  @Expose({ groups: ['admin'] })
   @Type(() => EspecialidadResponseDto)
   readonly especialidad: EspecialidadResponseDto
 

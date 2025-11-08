@@ -1,7 +1,7 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common'
 import { plainToInstance } from 'class-transformer'
+import { JwtPayloadDto } from '../auth/dto/jwt-payload.dto'
 import { User } from '../common/decorators/user.decorator'
-import { Usuario } from '../usuario/usuario.entity'
 import { SkillResponseDto } from './dto/skill-response.dto'
 import { SkillService } from './skill.service'
 
@@ -11,8 +11,8 @@ export class SkillController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getAll(@User() usuario: Usuario) {
-    const skills = await this.service.getAll(usuario)
+  async getAll(@User() jwtUser: JwtPayloadDto) {
+    const skills = await this.service.getAll(jwtUser)
 
     return plainToInstance(SkillResponseDto, skills)
   }

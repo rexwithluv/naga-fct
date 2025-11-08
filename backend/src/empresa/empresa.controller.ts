@@ -1,7 +1,7 @@
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common'
 import { plainToInstance } from 'class-transformer'
+import { JwtPayloadDto } from '../auth/dto/jwt-payload.dto'
 import { User } from '../common/decorators/user.decorator'
-import { Usuario } from '../usuario/usuario.entity'
 import { UtilsService } from '../utils/utils.service'
 import { EmpresaResponseDto } from './dto/empresa-response.dto'
 import { EmpresaService } from './empresa.service'
@@ -15,12 +15,12 @@ export class EmpresaController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getAll(@User() user: Usuario) {
-    const empresas = await this.service.getAll(user)
+  async getAll(@User() jwtUser: JwtPayloadDto) {
+    const empresas = await this.service.getAll(jwtUser)
 
-    const isAdmin = this.utils.isAdmin(user)
+    const isAdmin = this.utils.isAdmin(jwtUser)
     if (isAdmin) {
-      return plainToInstance(EmpresaResponseDto, empresas, { groups: ['ADMIN'] })
+      return plainToInstance(EmpresaResponseDto, empresas, { groups: ['admin'] })
     }
 
     return plainToInstance(EmpresaResponseDto, empresas)
@@ -28,8 +28,8 @@ export class EmpresaController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  async getById(@User() user: Usuario, id: number) {
-    const empresa = await this.service.getById(user, id)
+  async getById(@User() jwtUser: JwtPayloadDto, id: number) {
+    const empresa = await this.service.getById(jwtUser, id)
 
     return plainToInstance(EmpresaResponseDto, empresa)
   }

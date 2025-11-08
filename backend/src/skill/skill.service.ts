@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { Usuario } from '../usuario/usuario.entity'
+import { JwtPayloadDto } from '../auth/dto/jwt-payload.dto'
+import { User } from '../common/decorators/user.decorator'
 import { UsuarioService } from '../usuario/usuario.service'
 import { UtilsService } from '../utils/utils.service'
 import { Skill } from './skill.entity'
@@ -14,7 +15,7 @@ export class SkillService {
     private readonly usuarioService: UsuarioService,
   ) {}
 
-  async getAll(jwtUser: Usuario): Promise<Skill[]> {
+  async getAll(@User() jwtUser: JwtPayloadDto): Promise<Skill[]> {
     const groupsRelations: string[] = ['especialidad']
     if (this.utils.isAdmin(jwtUser)) {
       return this.repository.find({ relations: groupsRelations })
