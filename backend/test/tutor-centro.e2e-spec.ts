@@ -3,7 +3,7 @@ import request from 'supertest'
 describe('AlumnoController (e2e)', () => {
   const baseEndpoint = '/tutores-centro'
 
-  describe('GET /tutores-centro', () => {
+  describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200 - admin', () => {
         return request(app.getHttpServer())

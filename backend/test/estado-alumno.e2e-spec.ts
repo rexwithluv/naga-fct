@@ -1,33 +1,33 @@
 import request from 'supertest'
 
 describe('EstadoAlumnoController (e2e)', () => {
-  const endpoint = '/estados-alumno'
+  const baseEndpoint = '/estados-alumno'
 
-  describe(`GET ${endpoint}`, () => {
+  describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200 - admin', () => {
         return request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200)
       })
 
       it('should return 200 - standard', () => {
         return request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${standardToken}`)
           .expect(200)
       })
 
       it('should return 401 - without token', () => {
-        return request(app.getHttpServer()).get(endpoint).expect(401)
+        return request(app.getHttpServer()).get(baseEndpoint).expect(401)
       })
     })
 
     describe('Response', () => {
       it('should return an array with EstadoAlumnoResponseDto - admin', async () => {
         const response = await request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200)
 
@@ -43,7 +43,7 @@ describe('EstadoAlumnoController (e2e)', () => {
       })
       it('should return an array with EstadoAlumnoResponseDto - standard', async () => {
         const response = await request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${standardToken}`)
           .expect(200)
 

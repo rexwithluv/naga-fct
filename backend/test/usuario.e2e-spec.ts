@@ -3,7 +3,7 @@ import request from 'supertest'
 describe('UsuarioController (e2e)', () => {
   const baseEndpoint = '/usuarios'
 
-  describe('GET /usuarios', () => {
+  describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200', () => {
         return request(app.getHttpServer())
@@ -153,7 +153,7 @@ describe('UsuarioController (e2e)', () => {
   //   })
   // })
 
-  describe('GET /usuarios/me', () => {
+  describe(`GET ${baseEndpoint}/me`, () => {
     const endpoint = `${baseEndpoint}/me`
 
     describe('Authorization', () => {

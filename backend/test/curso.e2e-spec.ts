@@ -1,33 +1,33 @@
 import request from 'supertest'
 
 describe('CursoController (e2e)', () => {
-  const endpoint = '/cursos'
+  const baseEndpoint = '/cursos'
 
-  describe(`GET ${endpoint}`, () => {
+  describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200 - admin', () => {
         return request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200)
       })
 
       it('should return 403 - standard', () => {
         return request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${standardToken}`)
           .expect(403)
       })
 
       it('should return 401 - without token', () => {
-        return request(app.getHttpServer()).get(endpoint).expect(401)
+        return request(app.getHttpServer()).get(baseEndpoint).expect(401)
       })
     })
 
     describe('Response', () => {
       it('should return an array with CursoResponseDto - admin', async () => {
         const response = await request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200)
 

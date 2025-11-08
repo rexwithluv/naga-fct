@@ -2,33 +2,33 @@ import request from 'supertest'
 import { EspecialidadResponseDto } from '../src/especialidad/dto/especialidad-response.dto'
 
 describe('ConcelloController (e2e)', () => {
-  const endpoint = '/concellos'
+  const baseEndpoint = '/concellos'
 
-  describe('GET /concellos', () => {
+  describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200', () => {
         return request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200)
       })
 
       it('should return 200', () => {
         return request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${standardToken}`)
           .expect(200)
       })
 
       it('should return 401', () => {
-        return request(app.getHttpServer()).get(endpoint).expect(401)
+        return request(app.getHttpServer()).get(baseEndpoint).expect(401)
       })
     })
 
     describe('Response', () => {
       it('should return an array with id and nombre - admin', async () => {
         const response = await request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200)
 
@@ -45,7 +45,7 @@ describe('ConcelloController (e2e)', () => {
 
       it('should return an array with id and nombre - standard', async () => {
         const response = await request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${standardToken}`)
           .expect(200)
 
@@ -62,7 +62,7 @@ describe('ConcelloController (e2e)', () => {
     })
 
     describe('Filters', () => {
-      const filterEndpoint = `${endpoint}?nombre=Tui`
+      const filterEndpoint = `${baseEndpoint}?nombre=Tui`
       it('should return an array where all the names start with "Tui" - admin', async () => {
         const response = await request(app.getHttpServer())
           .get(filterEndpoint)

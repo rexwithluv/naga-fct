@@ -1,33 +1,33 @@
 import request from 'supertest'
 
 describe('TutorEmpresaController (e2e)', () => {
-  const endpoint = '/tutores-empresa'
+  const baseEndpoint = '/tutores-empresa'
 
-  describe(`GET ${endpoint}`, () => {
+  describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200', () => {
         return request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200)
       })
 
       it('should return 200', () => {
         return request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${standardToken}`)
           .expect(200)
       })
 
       it('should return 401', () => {
-        return request(app.getHttpServer()).get(endpoint).expect(401)
+        return request(app.getHttpServer()).get(baseEndpoint).expect(401)
       })
     })
 
     describe('Response', () => {
       it('should return an array with TutorEmpresaResponseDto - admin', async () => {
         const response = await request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200)
 
@@ -60,7 +60,7 @@ describe('TutorEmpresaController (e2e)', () => {
 
       it('should return an array without especialidad - standard', async () => {
         const response = await request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${standardToken}`)
           .expect(200)
 

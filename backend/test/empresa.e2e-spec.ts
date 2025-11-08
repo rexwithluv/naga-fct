@@ -1,33 +1,33 @@
 import request from 'supertest'
 
 describe('EmpresaController (e2e)', () => {
-  const endpoint = '/empresas'
+  const baseEndpoint = '/empresas'
 
-  describe('GET /empresas', () => {
+  describe(`GET ${baseEndpoint}`, () => {
     describe('Authorization', () => {
       it('should return 200', () => {
         return request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200)
       })
 
       it('should return 200', () => {
         return request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${standardToken}`)
           .expect(200)
       })
 
       it('should return 401', () => {
-        return request(app.getHttpServer()).get(endpoint).expect(401)
+        return request(app.getHttpServer()).get(baseEndpoint).expect(401)
       })
     })
 
     describe('Response', () => {
       it('should return an array with especialidad - admin', async () => {
         const response = await request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${adminToken}`)
           .expect(200)
 
@@ -91,7 +91,7 @@ describe('EmpresaController (e2e)', () => {
 
       it('should return an array without especialidad - standard', async () => {
         const response = await request(app.getHttpServer())
-          .get(endpoint)
+          .get(baseEndpoint)
           .set('Authorization', `Bearer ${standardToken}`)
           .expect(200)
 
