@@ -4,17 +4,7 @@ describe('UsuarioController (e2e)', () => {
   const baseEndpoint = '/usuarios'
 
   const validateUsuarioStructure = (usuario: any) => {
-    const expectedUsuarioStructure = {
-      id: expect.any(String),
-      email: expect.any(String),
-      activo: expect.any(Boolean),
-
-      rol: {
-        id: expect.any(String),
-        nombre: expect.any(String),
-      },
-    }
-    const expectedTutorCentroStructure = {
+    const tutorCentroStructure = {
       id: expect.any(String),
       nombre: expect.any(String),
       apellidos: expect.any(String),
@@ -32,24 +22,20 @@ describe('UsuarioController (e2e)', () => {
       },
     }
 
-    const expectedTutorCentroValue =
-      usuario?.tutorCentro === null ? null : expectedTutorCentroStructure
-    if (expectedTutorCentroValue !== null) {
-      expect(usuario?.tutorCentro).toEqual(expectedTutorCentroStructure)
-    }
-
-    const expectedStrictUsuarioStructure = {
+    const haveTutorCentro = usuario?.tutorCentro !== null
+    const expectedStructure = {
       id: expect.any(String),
       email: expect.any(String),
       activo: expect.any(Boolean),
+
       rol: {
         id: expect.any(String),
         nombre: expect.any(String),
       },
-      tutorCentro: expectedTutorCentroValue,
+      tutorCentro: haveTutorCentro ? tutorCentroStructure : null,
     }
 
-    expect(usuario).toEqual(expectedStrictUsuarioStructure)
+    expect(usuario).toEqual(expectedStructure)
   }
 
   describe(`GET ${baseEndpoint}`, () => {
@@ -87,104 +73,6 @@ describe('UsuarioController (e2e)', () => {
       })
     })
   })
-
-  // describe('GET /usuarios/:id', () => {
-  //   describe('Authorization', () => {
-  //     const endpoint = `${baseEndpoint}/1`
-  //     it('should return 200', () => {
-  //       return request(app.getHttpServer())
-  //         .get(endpoint)
-  //         .set('Authorization', `Bearer ${adminToken}`)
-  //         .expect(200)
-  //     })
-
-  //     it('should return 403', () => {
-  //       return request(app.getHttpServer())
-  //         .get(endpoint)
-  //         .set('Authorization', `Bearer ${standardToken}`)
-  //         .expect(403)
-  //     })
-
-  //     it('should return 401', () => {
-  //       return request(app.getHttpServer()).get(endpoint).expect(401)
-  //     })
-  //   })
-  //   describe('Response', () => {
-  //     const endpointTutorCentroObject = `${baseEndpoint}/1`
-  //     const endpointTutorCentroNull = `${baseEndpoint}/3`
-
-  //     it('should return an array with the tutorCentro object', async () => {
-  //       const response = await request(app.getHttpServer())
-  //         .get(endpointTutorCentroObject)
-  //         .set('Authorization', `Bearer ${adminToken}`)
-  //         .expect(200)
-
-  //       const usuario = response.body[0]
-
-  //       expect(usuario).toHaveProperty('id')
-  //       expect(typeof usuario.id).toBe('string')
-
-  //       expect(usuario).toHaveProperty('email')
-  //       expect(typeof usuario.email).toBe('string')
-
-  //       expect(usuario).toHaveProperty('rol')
-  //       expect(typeof usuario.rol).toBe('object')
-  //       expect(usuario.rol).toHaveProperty('id')
-  //       expect(typeof usuario.rol.id).toBe('string')
-  //       expect(usuario.rol).toHaveProperty('nombre')
-  //       expect(typeof usuario.rol.nombre).toBe('string')
-
-  //       expect(usuario).toHaveProperty('tutorCentro')
-  //       expect(typeof usuario.tutorCentro).toBe('object')
-  //       expect(usuario).toHaveProperty('nombre')
-  //       expect(typeof usuario.tutorCentro.nombre).toBe('string')
-  //       expect(usuario).toHaveProperty('apellidos')
-  //       expect(typeof usuario.tutorCentro.apellidos).toBe('string')
-  //       expect(usuario).toHaveProperty('id')
-  //       expect(typeof usuario.tutorCentro.id).toBe('string')
-
-  //       expect(usuario).toHaveProperty('activo')
-  //       expect(typeof usuario.activo).toBe('boolean')
-  //     })
-  //     it('should return an array with tutorCentro null', async () => {
-  //       const response = await request(app.getHttpServer())
-  //         .get(endpointTutorCentroNull)
-  //         .set('Authorization', `Bearer ${adminToken}`)
-  //         .expect(200)
-
-  //       const usuario = response.body
-
-  //       expect(usuario).toHaveProperty('id')
-  //       expect(typeof usuario.id).toBe('string')
-
-  //       expect(usuario).toHaveProperty('email')
-  //       expect(typeof usuario.email).toBe('string')
-
-  //       expect(usuario).toHaveProperty('rol')
-  //       expect(typeof usuario.rol).toBe('object')
-  //       expect(usuario.rol).toHaveProperty('id')
-  //       expect(typeof usuario.rol.id).toBe('string')
-  //       expect(usuario.rol).toHaveProperty('nombre')
-  //       expect(typeof usuario.rol.nombre).toBe('string')
-
-  //       expect(usuario).toHaveProperty('tutorCentro')
-  //       expect(typeof usuario.TutorCentro).toBeNull()
-
-  //       expect(usuario).toHaveProperty('activo')
-  //       expect(typeof usuario.activo).toBe('boolean')
-  //     })
-  //   })
-  //   describe('Errors', () => {
-  //     const notExistUser = `${baseEndpoint}/999999`
-  //     it('should return 404', () => {
-  //       return request(app.getHttpServer())
-  //         .get(notExistUser)
-  //         .set('Authorization', `Bearer ${adminToken}`)
-  //         .expect(404)
-  //     })
-  //   })
-  // })
-
   describe(`GET ${baseEndpoint}/me`, () => {
     const endpoint = `${baseEndpoint}/me`
 
@@ -216,6 +104,60 @@ describe('UsuarioController (e2e)', () => {
 
         const usuario = response.body
         validateUsuarioStructure(usuario)
+      })
+    })
+  })
+  describe('GET /usuarios/:id', () => {
+    const endpoint = `${baseEndpoint}/1`
+    const endpointTutorCentroNull = endpoint
+    const endpointTutorCentroObject = `${baseEndpoint}/2`
+
+    describe('Authorization', () => {
+      it('should return 200', () => {
+        return request(app.getHttpServer())
+          .get(endpoint)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .expect(200)
+      })
+
+      it('should return 403', () => {
+        return request(app.getHttpServer())
+          .get(endpoint)
+          .set('Authorization', `Bearer ${standardToken}`)
+          .expect(403)
+      })
+
+      it('should return 401', () => {
+        return request(app.getHttpServer()).get(endpoint).expect(401)
+      })
+    })
+    describe('Response', () => {
+      it('should return an array with the tutorCentro object', async () => {
+        const response = await request(app.getHttpServer())
+          .get(endpointTutorCentroObject)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .expect(200)
+
+        const usuario = response.body
+        validateUsuarioStructure(usuario)
+      })
+      it('should return an array with tutorCentro null', async () => {
+        const response = await request(app.getHttpServer())
+          .get(endpointTutorCentroNull)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .expect(200)
+
+        const usuario = response.body
+        validateUsuarioStructure(usuario)
+      })
+    })
+    describe('Errors', () => {
+      const notExistUser = `${baseEndpoint}/999999`
+      it('should return 404', () => {
+        return request(app.getHttpServer())
+          .get(notExistUser)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .expect(404)
       })
     })
   })

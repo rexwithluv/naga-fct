@@ -3,56 +3,62 @@ import request from 'supertest'
 describe('AlumnoController (e2e)', () => {
   const baseEndpoint = '/alumnos'
 
-  const expectedAlumnoStructureAdmin = {
-    id: expect.any(String),
-    dniNie: expect.any(String),
-    nombre: expect.any(String),
-    apellidos: expect.any(String),
-    email: expect.any(String),
-    telefono: expect.any(String),
-    numeroSeguridadSocial: expect.any(String),
-
-    concello: {
+  const validateAlumnoStructure = (alumno: any) => {
+    const adminAlumnoStructure = {
       id: expect.any(String),
-      nombre: expect.any(String),
-    },
-    estadoAlumno: {
-      id: expect.any(String),
-      nombre: expect.any(String),
-    },
-    curso: {
-      id: expect.any(String),
-      nombre: expect.any(String),
-      codigo: expect.any(String),
-      especialidad: {
-        id: expect.any(String),
-        nombre: expect.any(String),
-      },
-    },
-    tutorCentro: {
-      id: expect.any(String),
+      dniNie: expect.any(String),
       nombre: expect.any(String),
       apellidos: expect.any(String),
       email: expect.any(String),
-    },
-  }
-  const expectedAlumnoStructureStandard = {
-    id: expect.any(String),
-    dniNie: expect.any(String),
-    nombre: expect.any(String),
-    apellidos: expect.any(String),
-    email: expect.any(String),
-    telefono: expect.any(String),
-    numeroSeguridadSocial: expect.any(String),
+      telefono: expect.any(String),
+      numeroSeguridadSocial: expect.any(String),
 
-    concello: {
+      concello: {
+        id: expect.any(String),
+        nombre: expect.any(String),
+      },
+      estadoAlumno: {
+        id: expect.any(String),
+        nombre: expect.any(String),
+      },
+      curso: {
+        id: expect.any(String),
+        nombre: expect.any(String),
+        codigo: expect.any(String),
+        especialidad: {
+          id: expect.any(String),
+          nombre: expect.any(String),
+        },
+      },
+      tutorCentro: {
+        id: expect.any(String),
+        nombre: expect.any(String),
+        apellidos: expect.any(String),
+        email: expect.any(String),
+      },
+    }
+    const standardAlumnoStructure = {
       id: expect.any(String),
+      dniNie: expect.any(String),
       nombre: expect.any(String),
-    },
-    estadoAlumno: {
-      id: expect.any(String),
-      nombre: expect.any(String),
-    },
+      apellidos: expect.any(String),
+      email: expect.any(String),
+      telefono: expect.any(String),
+      numeroSeguridadSocial: expect.any(String),
+
+      concello: {
+        id: expect.any(String),
+        nombre: expect.any(String),
+      },
+      estadoAlumno: {
+        id: expect.any(String),
+        nombre: expect.any(String),
+      },
+    }
+
+    const expectedStructure =
+      alumno?.tutorCentro === undefined ? standardAlumnoStructure : adminAlumnoStructure
+    expect(alumno).toEqual(expectedStructure)
   }
 
   describe(`GET ${baseEndpoint}`, () => {
@@ -86,8 +92,7 @@ describe('AlumnoController (e2e)', () => {
         expect(response.body.length).toBeGreaterThan(0)
 
         const alumno = response.body[0]
-
-        expect(alumno).toEqual(expectedAlumnoStructureAdmin)
+        validateAlumnoStructure(alumno)
       })
       it('should an array without tutorCentro field - standard', async () => {
         const response = await request(app.getHttpServer())
@@ -99,8 +104,7 @@ describe('AlumnoController (e2e)', () => {
         expect(response.body.length).toBeGreaterThan(0)
 
         const alumno = response.body[0]
-
-        expect(alumno).toEqual(expectedAlumnoStructureStandard)
+        validateAlumnoStructure(alumno)
       })
     })
   })
@@ -134,8 +138,7 @@ describe('AlumnoController (e2e)', () => {
           .expect(200)
 
         const alumno = response.body
-
-        expect(alumno).toEqual(expectedAlumnoStructureAdmin)
+        validateAlumnoStructure(alumno)
       })
       it('should return an AlumnoResponseDto without tutorCentro field - standard', async () => {
         const response = await request(app.getHttpServer())
@@ -144,8 +147,7 @@ describe('AlumnoController (e2e)', () => {
           .expect(200)
 
         const alumno = response.body
-
-        expect(alumno).toEqual(expectedAlumnoStructureStandard)
+        validateAlumnoStructure(alumno)
       })
     })
     describe('Errors', () => {

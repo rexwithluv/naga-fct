@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Param,
-  ParseIntPipe,
-  Query,
-  UseGuards,
-} from '@nestjs/common'
+import { Controller, Get, HttpCode, HttpStatus, Param, Query, UseGuards } from '@nestjs/common'
 import { plainToInstance } from 'class-transformer'
 import { JwtPayloadDto } from '../auth/dto/jwt-payload.dto'
 import { RolesGuard } from '../auth/guards/roles.guard'
@@ -52,7 +43,7 @@ export class UsuarioController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  async getById(@User() jwtUser: JwtPayloadDto, @Param('id', ParseIntPipe) id: number) {
+  async getById(@Param('id') id: string) {
     const usuario = await this.service.getById(id)
 
     return plainToInstance(UsuarioResponseDto, usuario, {
