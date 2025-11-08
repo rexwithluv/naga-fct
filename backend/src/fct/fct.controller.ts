@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common'
+import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common'
 import { plainToInstance } from 'class-transformer'
 import { JwtPayloadDto } from '../auth/dto/jwt-payload.dto'
 import { User } from '../common/decorators/user.decorator'
@@ -16,7 +16,21 @@ export class FctController {
   @Get()
   @HttpCode(HttpStatus.OK)
   async getAll(@User() jwtUser: JwtPayloadDto) {
-    const fct = await this.service.getAll()
+    const fct = await this.service.getAll(jwtUser)
+    const groups: string[] = this.utils.isAdmin(jwtUser) ? ['admin'] : []
+
+    return plainToInstance(FctResponseDto, fct, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+
+      groups: groups,
+    })
+  }
+
+  @Get('/:id')
+  @HttpCode(HttpStatus.OK)
+  async getById(@User() jwtUser: JwtPayloadDto, @Param('id') id: string) {
+    const fct = await this.service.getById(jwtUser, id)
     const groups: string[] = this.utils.isAdmin(jwtUser) ? ['admin'] : []
 
     return plainToInstance(FctResponseDto, fct, {
