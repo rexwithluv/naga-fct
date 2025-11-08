@@ -17,20 +17,17 @@ export class EmpresaController {
   @HttpCode(HttpStatus.OK)
   async getAll(@User() jwtUser: JwtPayloadDto) {
     const empresas = await this.service.getAll(jwtUser)
+    const groups: string[] = this.utils.isAdmin(jwtUser) ? ['admin'] : []
 
-    const isAdmin = this.utils.isAdmin(jwtUser)
-    if (isAdmin) {
-      return plainToInstance(EmpresaResponseDto, empresas, { groups: ['admin'] })
-    }
-
-    return plainToInstance(EmpresaResponseDto, empresas)
+    return plainToInstance(EmpresaResponseDto, empresas, { groups: groups })
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async getById(@User() jwtUser: JwtPayloadDto, id: number) {
     const empresa = await this.service.getById(jwtUser, id)
+    const groups: string[] = this.utils.isAdmin(jwtUser) ? ['admin'] : []
 
-    return plainToInstance(EmpresaResponseDto, empresa)
+    return plainToInstance(EmpresaResponseDto, empresa, { groups: groups })
   }
 }

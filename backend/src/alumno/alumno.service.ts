@@ -21,7 +21,7 @@ export class AlumnoService {
   async getAll(jwtUser: JwtPayloadDto): Promise<Alumno[]> {
     const isAdmin = this.utils.isAdmin(jwtUser)
     if (isAdmin) {
-      return await this.repository.getAll()
+      return await this.repository.findAll()
     }
 
     const cursoId: number = await this.getCursoIdFromJwtUser(jwtUser)
@@ -29,11 +29,11 @@ export class AlumnoService {
       return []
     }
 
-    return await this.repository.getByCursoId(cursoId)
+    return await this.repository.findAllWhereCursoId(cursoId)
   }
 
   async getById(jwtUser: JwtPayloadDto, id: string): Promise<Alumno> {
-    const alumno = await this.repository.getById(Number(id))
+    const alumno = await this.repository.findById(Number(id))
 
     const isAdmin = this.utils.isAdmin(jwtUser)
     if (isAdmin) {
@@ -47,6 +47,6 @@ export class AlumnoService {
       throw new ForbiddenException("Don't have permission to see this Alumno")
     }
 
-    return await this.repository.getById(Number(id))
+    return await this.repository.findById(Number(id))
   }
 }

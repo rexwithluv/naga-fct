@@ -16,11 +16,11 @@ export class AlumnoRepository extends Repository<Alumno> {
     'tutorCentro.usuario',
   ]
 
-  async getAll(): Promise<Alumno[]> {
+  async findAll(): Promise<Alumno[]> {
     return await this.find({ relations: this.relations })
   }
 
-  async getById(id: number): Promise<Alumno> {
+  async findById(id: number): Promise<Alumno> {
     return await this.findOneOrFail({
       relations: this.relations,
       where: {
@@ -29,7 +29,7 @@ export class AlumnoRepository extends Repository<Alumno> {
     })
   }
 
-  async getByCursoId(cursoId: number): Promise<Alumno[]> {
+  async findAllWhereCursoId(cursoId: number): Promise<Alumno[]> {
     return await this.find({
       relations: this.relations,
       where: {

@@ -1,60 +1,46 @@
 import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
 import { JwtPayloadDto } from '../auth/dto/jwt-payload.dto'
-import { Especialidad } from '../especialidad/especialidad.entity'
 import { UsuarioService } from '../usuario/usuario.service'
 import { UtilsService } from '../utils/utils.service'
 import { Empresa } from './empresa.entity'
+import { EmpresaRepository } from './empresa.repository'
 
 @Injectable()
 export class EmpresaService {
   constructor(
-    @InjectRepository(Empresa) private readonly repository: Repository<Empresa>,
+    private readonly repository: EmpresaRepository,
     private readonly utils: UtilsService,
-    private readonly usuarioServie: UsuarioService,
+    private readonly usuarioService: UsuarioService,
   ) {}
 
-  private async getUsuarioEspecialidad(jwtUser: JwtPayloadDto): Promise<Especialidad | null> {
-    const user = await this.usuarioServie.getById(jwtUser.id)
-    return user?.tutorCentro?.curso?.especialidad
+  private async getUsuarioEspecialidadId(jwtUser: JwtPayloadDto): Promise<number | undefined> {
+    const user = await this.usuarioService.getById(jwtUser.id)
+    return user?.tutorCentro?.curso?.especialidad?.id
   }
 
   async getAll(jwtUser: JwtPayloadDto): Promise<Empresa[]> {
-    const groupsRelations = ['concello', 'skills', 'especialidad']
     if (this.utils.isAdmin(jwtUser)) {
-      return await this.repository.find({ relations: groupsRelations })
+      return await this.repository.findAll()
     }
 
-    const usuarioEspecialidad = (await this.usuarioServie.getById(jwtUser.id)).tutorCentro.curso
-      .especialidad
-    if (!usuarioEspecialidad) {
+    const usuarioEspecialidadId: number | undefined = await this.getUsuarioEspecialidadId(jwtUser)
+    if (!usuarioEspecialidadId) {
       return []
     }
 
-    return await this.repository.find({
-      where: {
-        especialidad: { id: usuarioEspecialidad.id },
-      },
-      relations: groupsRelations,
-    })
+    return await this.repository.findAllWhereEspecialidadId(usuarioEspecialidadId)
   }
 
   async getById(jwtUser: JwtPayloadDto, id: number) {
     if (this.utils.isAdmin(jwtUser)) {
-      return await this.repository.find()
+      return await this.repository.findById(id)
     }
 
-    const usuarioEspecialidad = await this.getUsuarioEspecialidad(jwtUser)
-    if (!usuarioEspecialidad) {
+    const usuarioEspecialidadId: number | undefined = await this.getUsuarioEspecialidadId(jwtUser)
+    if (!usuarioEspecialidadId) {
       return []
     }
 
-    return await this.repository.findOneOrFail({
-      where: {
-        id: id,
-        especialidad: { id: usuarioEspecialidad.id },
-      },
-    })
+    return await this.repository.findByIdAndEspecialidadId(id, usuarioEspecialidadId)
   }
 }
