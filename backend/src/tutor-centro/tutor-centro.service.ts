@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
 import { TutorCentro } from './tutor-centro.entity'
+import { TutorCentroRepository } from './tutor-centro.repository'
 
 @Injectable()
 export class TutorCentroService {
-  constructor(
-    @InjectRepository(TutorCentro)
-    private readonly repository: Repository<TutorCentro>,
-  ) {}
+  constructor(private readonly repository: TutorCentroRepository) {}
 
   async getAll(): Promise<TutorCentro[]> {
-    return await this.repository.find({ relations: ['curso', 'usuario'] })
+    return await this.repository.findAll()
+  }
+
+  async getById(id: string) {
+    return await this.repository.findById(Number(id))
   }
 }

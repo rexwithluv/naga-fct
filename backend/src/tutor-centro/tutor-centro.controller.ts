@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, HttpStatus, UseGuards } from '@nestjs/common'
+import { Controller, Get, HttpCode, HttpStatus, Param, UseGuards } from '@nestjs/common'
 import { plainToInstance } from 'class-transformer'
 import { RolesGuard } from '../auth/guards/roles.guard'
 import { Roles } from '../common/decorators/roles.decorator'
@@ -18,6 +18,17 @@ export class TutorCentroController {
     const tutoresCentro = await this.service.getAll()
 
     return plainToInstance(TutorCentroResponseDto, tutoresCentro, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+    })
+  }
+
+  @Get('/:id')
+  @HttpCode(HttpStatus.OK)
+  async getById(@Param('id') id: string) {
+    const tutorCentro = await this.service.getById(id)
+
+    return plainToInstance(TutorCentroResponseDto, tutorCentro, {
       excludeExtraneousValues: true,
       enableImplicitConversion: true,
     })
