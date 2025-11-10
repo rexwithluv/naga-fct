@@ -4,8 +4,7 @@ import { UsuarioResponseDto } from '../../usuario/dto/usuario-response.dto'
 
 export class TutorCentroResponseDto {
   @Expose()
-  @Transform(({ value }) => String(value))
-  readonly id: string
+  readonly id: number
 
   @Expose()
   readonly nombre: string

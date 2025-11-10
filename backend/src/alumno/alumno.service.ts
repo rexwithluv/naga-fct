@@ -18,6 +18,7 @@ export class AlumnoService {
     const user: Usuario = await this.usuarioService.getById(jwtUser.id)
     return user?.tutorCentro?.curso?.id
   }
+
   async getAll(jwtUser: JwtPayloadDto): Promise<Alumno[]> {
     const isAdmin = this.utils.isAdmin(jwtUser)
     if (isAdmin) {

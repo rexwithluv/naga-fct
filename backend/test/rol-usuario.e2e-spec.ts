@@ -4,7 +4,7 @@ describe('RolUsuarioController (e2e)', () => {
   const baseEndpoint = '/roles-usuario'
 
   const expectedRolStructure = {
-    id: expect.any(String),
+    id: expect.any(Number),
     nombre: expect.any(String),
   }
 

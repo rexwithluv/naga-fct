@@ -4,14 +4,14 @@ describe('TutorEmpresaController (e2e)', () => {
   const baseEndpoint = '/tutores-empresa'
 
   const expectTutorEmpresaStructure = {
-    id: expect.any(String),
+    id: expect.any(Number),
     nombre: expect.any(String),
     apellidos: expect.any(String),
     email: expect.any(String),
     telefono: expect.any(String),
 
     empresa: {
-      id: expect.any(String),
+      id: expect.any(Number),
       nombre: expect.any(String),
       direccion: expect.any(String),
       observaciones: expect.any(String),

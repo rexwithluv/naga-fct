@@ -5,14 +5,14 @@ describe('AlumnoController (e2e)', () => {
 
   const validateTutorCentroStructure = (tutorCentro: any): void => {
     const expectedTutorCentroWithoutUserStructure = {
-      id: expect.any(String),
+      id: expect.any(Number),
       nombre: expect.any(String),
       apellidos: expect.any(String),
       email: expect.any(String),
       activo: expect.any(Boolean),
 
       curso: {
-        id: expect.any(String),
+        id: expect.any(Number),
         nombre: expect.any(String),
         codigo: expect.any(String),
       },
@@ -20,7 +20,7 @@ describe('AlumnoController (e2e)', () => {
     const expectedTutorCentroWithUserStructure = {
       ...expectedTutorCentroWithoutUserStructure,
       usuario: {
-        id: expect.any(String),
+        id: expect.any(Number),
         email: expect.any(String),
         activo: expect.any(Boolean),
       },

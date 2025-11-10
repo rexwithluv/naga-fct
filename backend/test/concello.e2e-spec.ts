@@ -5,7 +5,7 @@ describe('ConcelloController (e2e)', () => {
   const baseEndpoint = '/concellos'
 
   const expectedConcelloStructure = {
-    id: expect.any(String),
+    id: expect.any(Number),
     nombre: expect.any(String),
   }
 

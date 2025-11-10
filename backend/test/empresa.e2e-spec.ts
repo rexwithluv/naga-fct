@@ -4,27 +4,27 @@ describe('EmpresaController (e2e)', () => {
   const baseEndpoint = '/empresas'
 
   const standardExpectedEmpresaStructure = {
-    id: expect.any(String),
+    id: expect.any(Number),
     nombre: expect.any(String),
     direccion: expect.any(String),
     observaciones: expect.any(String),
     activa: expect.any(Boolean),
     plazas: expect.any(Number),
 
-    concello: { id: expect.any(String), nombre: expect.any(String) },
+    concello: { id: expect.any(Number), nombre: expect.any(String) },
     contacto: {
       nombre: expect.any(String),
       email: expect.any(String),
       telefono: expect.any(String),
     },
     skills: expect.arrayContaining([
-      expect.objectContaining({ id: expect.any(String), nombre: expect.any(String) }),
+      expect.objectContaining({ id: expect.any(Number), nombre: expect.any(String) }),
     ]),
   }
   const adminExpectedEmpresaStructure = {
     ...standardExpectedEmpresaStructure,
     especialidad: {
-      id: expect.any(String),
+      id: expect.any(Number),
       nombre: expect.any(String),
     },
   }

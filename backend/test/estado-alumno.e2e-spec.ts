@@ -4,7 +4,7 @@ describe('EstadoAlumnoController (e2e)', () => {
   const baseEndpoint = '/estados-alumno'
 
   const expectedEstadoAlumnoStructure = {
-    id: expect.any(String),
+    id: expect.any(Number),
     nombre: expect.any(String),
   }
 

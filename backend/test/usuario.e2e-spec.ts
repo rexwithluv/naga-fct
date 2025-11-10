@@ -5,18 +5,18 @@ describe('UsuarioController (e2e)', () => {
 
   const validateUsuarioStructure = (usuario: any) => {
     const tutorCentroStructure = {
-      id: expect.any(String),
+      id: expect.any(Number),
       nombre: expect.any(String),
       apellidos: expect.any(String),
       email: expect.any(String),
       activo: expect.any(Boolean),
 
       curso: {
-        id: expect.any(String),
+        id: expect.any(Number),
         codigo: expect.any(String),
         nombre: expect.any(String),
         especialidad: {
-          id: expect.any(String),
+          id: expect.any(Number),
           nombre: expect.any(String),
         },
       },
@@ -24,12 +24,12 @@ describe('UsuarioController (e2e)', () => {
 
     const haveTutorCentro = usuario?.tutorCentro !== null
     const expectedStructure = {
-      id: expect.any(String),
+      id: expect.any(Number),
       email: expect.any(String),
       activo: expect.any(Boolean),
 
       rol: {
-        id: expect.any(String),
+        id: expect.any(Number),
         nombre: expect.any(String),
       },
       tutorCentro: haveTutorCentro ? tutorCentroStructure : null,

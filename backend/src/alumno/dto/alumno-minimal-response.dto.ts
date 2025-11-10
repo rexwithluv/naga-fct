@@ -5,8 +5,7 @@ import { TutorCentroMinimalResponseDto } from '../../tutor-centro/dto/tutor-cent
 
 export class AlumnoMinimalResponseDto {
   @Expose()
-  @Transform(({ value }) => String(value))
-  readonly id: string
+  readonly id: number
 
   @Expose()
   readonly dniNie: string

@@ -1,11 +1,10 @@
-import { Expose, Transform, Type } from 'class-transformer'
+import { Expose, Type } from 'class-transformer'
 import { RolUsuarioResponseDto } from '../../rol-usuario/dto/rol-usuario-response.dto'
 import { TutorCentroResponseDto } from '../../tutor-centro/dto/tutor-centro-response.dto'
 
 export class UsuarioResponseDto {
   @Expose()
-  @Transform(({ value }) => String(value))
-  readonly id: string
+  readonly id: number
 
   @Expose()
   readonly email: string

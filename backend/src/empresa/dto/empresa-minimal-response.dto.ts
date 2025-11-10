@@ -1,9 +1,9 @@
-import { Expose, Transform, Type } from 'class-transformer'
+import { Expose, Type } from 'class-transformer'
 import { ConcelloResponseDto } from '../../concello/dto/concello-response.dto'
 import { EspecialidadResponseDto } from '../../especialidad/dto/especialidad-response.dto'
 import { SkillResponseDto } from '../../skill/dto/skill-response.dto'
 
-export class EmpresaResponseDto {
+export class EmpresaMinimalResponseDto {
   @Expose()
   readonly id: number
 
@@ -23,22 +23,6 @@ export class EmpresaResponseDto {
   @Expose({ groups: ['admin'] })
   @Type(() => EspecialidadResponseDto)
   readonly especialidad: EspecialidadResponseDto
-
-  @Expose()
-  @Transform(({ obj }) => {
-    return {
-      nombre: obj.contactoNombre,
-      email: obj.contactoEmail,
-      telefono: obj.contactoTelefono,
-    }
-  })
-  readonly contacto: { nombre: string; email: string; telefono: string }
-
-  @Expose()
-  readonly activa: boolean
-
-  @Expose()
-  readonly plazas: number
 
   @Expose()
   @Type(() => SkillResponseDto)

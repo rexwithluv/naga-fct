@@ -13,23 +13,16 @@ export class AlumnoController {
     private readonly utils: UtilsService,
   ) {}
 
-  // private getSerializationGroups(isAdmin: boolean): string[] {
-  //   return isAdmin
-  //     ? ['admin', ...TUTOR_CENTRO_EXCLUSION_GROUPS]
-  //     : [...TUTOR_CENTRO_EXCLUSION_GROUPS];
-  // }
-
   @Get()
   @HttpCode(HttpStatus.OK)
   async getAll(@User() jwtUser: JwtPayloadDto) {
     const alumnos = await this.service.getAll(jwtUser)
-    const groups: string[] = this.utils.isAdmin(jwtUser) ? ['admin'] : []
 
     return plainToInstance(AlumnoResponseDto, alumnos, {
       excludeExtraneousValues: true,
       enableImplicitConversion: true,
 
-      groups: groups,
+      groups: this.utils.getGroups(jwtUser),
     })
   }
 
@@ -37,13 +30,12 @@ export class AlumnoController {
   @HttpCode(HttpStatus.OK)
   async getById(@User() jwtUser: JwtPayloadDto, @Param('id') id: string) {
     const alumno = await this.service.getById(jwtUser, id)
-    const groups: string[] = this.utils.isAdmin(jwtUser) ? ['admin'] : []
 
     return plainToInstance(AlumnoResponseDto, alumno, {
       excludeExtraneousValues: true,
       enableImplicitConversion: true,
 
-      groups: groups,
+      groups: this.utils.getGroups(jwtUser),
     })
   }
 }

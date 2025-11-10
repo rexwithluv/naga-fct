@@ -6,8 +6,7 @@ import { TutorCentroMinimalResponseDto } from '../../tutor-centro/dto/tutor-cent
 
 export class AlumnoResponseDto {
   @Expose()
-  @Transform(({ value }) => String(value))
-  readonly id: string
+  readonly id: number
 
   @Expose()
   readonly dniNie: string
@@ -43,9 +42,9 @@ export class AlumnoResponseDto {
   @Transform(({ obj }) => {
     const curso = obj?.tutorCentro?.curso
     return {
-      id: String(curso?.id),
+      id: curso?.id,
       codigo: curso?.codigo,
-      especialidad: { id: String(curso?.especialidad?.id), nombre: curso?.especialidad?.nombre },
+      especialidad: { id: curso?.especialidad?.id, nombre: curso?.especialidad?.nombre },
       nombre: curso?.nombre,
     }
   })

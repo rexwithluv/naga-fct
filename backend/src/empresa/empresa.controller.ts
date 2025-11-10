@@ -17,13 +17,12 @@ export class EmpresaController {
   @HttpCode(HttpStatus.OK)
   async getAll(@User() jwtUser: JwtPayloadDto) {
     const empresas = await this.service.getAll(jwtUser)
-    const groups: string[] = this.utils.isAdmin(jwtUser) ? ['admin'] : []
 
     return plainToInstance(EmpresaResponseDto, empresas, {
       excludeExtraneousValues: true,
       enableImplicitConversion: true,
 
-      groups: groups,
+      groups: this.utils.getGroups(jwtUser),
     })
   }
 
@@ -31,13 +30,12 @@ export class EmpresaController {
   @HttpCode(HttpStatus.OK)
   async getById(@User() jwtUser: JwtPayloadDto, id: number) {
     const empresa = await this.service.getById(jwtUser, id)
-    const groups: string[] = this.utils.isAdmin(jwtUser) ? ['admin'] : []
 
     return plainToInstance(EmpresaResponseDto, empresa, {
       excludeExtraneousValues: true,
       enableImplicitConversion: true,
 
-      groups: groups,
+      groups: this.utils.getGroups(jwtUser),
     })
   }
 }

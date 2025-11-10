@@ -1,9 +1,13 @@
-import { Expose, Transform } from 'class-transformer'
+import { Expose, Type } from 'class-transformer'
+import { EmpresaMinimalResponseDto } from '../../empresa/dto/empresa-minimal-response.dto'
 
 export class TutorEmpresaMinimalResponseDto {
   @Expose()
-  @Transform(({ value }) => String(value))
-  readonly id: string
+  readonly id: number
+
+  @Expose()
+  @Type(() => EmpresaMinimalResponseDto)
+  readonly empresa: EmpresaMinimalResponseDto
 
   @Expose()
   readonly nombre: string

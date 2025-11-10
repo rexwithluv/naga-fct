@@ -2,8 +2,7 @@ import { Expose, Transform } from 'class-transformer'
 
 export class TutorCentroMinimalResponseDto {
   @Expose()
-  @Transform(({ value }) => String(value))
-  readonly id: string
+  readonly id: number
 
   @Expose()
   readonly nombre: string

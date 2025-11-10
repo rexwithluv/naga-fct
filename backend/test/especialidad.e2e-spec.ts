@@ -4,7 +4,7 @@ describe('EspecialidadController (e2e)', () => {
   const baseEndpoint = '/especialidades'
 
   const expectedEspecialidadStructure = {
-    id: expect.any(String),
+    id: expect.any(Number),
     nombre: expect.any(String),
   }
 

@@ -1,9 +1,8 @@
-import { Expose, Transform } from 'class-transformer'
+import { Expose } from 'class-transformer'
 
 export class EspecialidadResponseDto {
   @Expose()
-  @Transform(({ value }) => String(value))
-  readonly id: string
+  readonly id: number
 
   @Expose()
   readonly nombre: string

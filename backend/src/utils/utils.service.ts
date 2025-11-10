@@ -7,4 +7,8 @@ export class UtilsService {
   isAdmin(jwtUser: JwtPayloadDto): boolean {
     return String(jwtUser.rol) === Rol.ADMIN
   }
+
+  getGroups(jwtUser: JwtPayloadDto): string[] {
+    return this.isAdmin(jwtUser) ? ['admin'] : []
+  }
 }

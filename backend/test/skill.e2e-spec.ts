@@ -4,10 +4,10 @@ describe('SkillController (e2e)', () => {
   const baseEndpoint = '/skills'
 
   const expectedSkillStructure = {
-    id: expect.any(String),
+    id: expect.any(Number),
     nombre: expect.any(String),
     especialidad: {
-      id: expect.any(String),
+      id: expect.any(Number),
       nombre: expect.any(String),
     },
   }

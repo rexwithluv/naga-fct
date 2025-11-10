@@ -17,13 +17,12 @@ export class FctController {
   @HttpCode(HttpStatus.OK)
   async getAll(@User() jwtUser: JwtPayloadDto) {
     const fct = await this.service.getAll(jwtUser)
-    const groups: string[] = this.utils.isAdmin(jwtUser) ? ['admin'] : []
 
     return plainToInstance(FctResponseDto, fct, {
       excludeExtraneousValues: true,
       enableImplicitConversion: true,
 
-      groups: groups,
+      groups: this.utils.getGroups(jwtUser),
     })
   }
 
@@ -31,13 +30,12 @@ export class FctController {
   @HttpCode(HttpStatus.OK)
   async getById(@User() jwtUser: JwtPayloadDto, @Param('id') id: string) {
     const fct = await this.service.getById(jwtUser, id)
-    const groups: string[] = this.utils.isAdmin(jwtUser) ? ['admin'] : []
 
     return plainToInstance(FctResponseDto, fct, {
       excludeExtraneousValues: true,
       enableImplicitConversion: true,
 
-      groups: groups,
+      groups: this.utils.getGroups(jwtUser),
     })
   }
 }

@@ -5,12 +5,12 @@ describe('FctController (e2e)', () => {
 
   const validateFctStructure = (fct: any) => {
     const standardExpectedFctStructure = {
-      id: expect.any(String),
+      id: expect.any(Number),
       fechaInicio: expect.any(String),
       fechaFin: expect.any(String),
 
       alumno: {
-        id: expect.any(String),
+        id: expect.any(Number),
         nombre: expect.any(String),
         dniNie: expect.any(String),
         apellidos: expect.any(String),
@@ -18,27 +18,29 @@ describe('FctController (e2e)', () => {
         telefono: expect.any(String),
         numeroSeguridadSocial: expect.any(String),
       },
-      empresa: {
-        id: expect.any(String),
-        nombre: expect.any(String),
-        direccion: expect.any(String),
-        observaciones: expect.any(String),
-      },
+
       tutorEmpresa: {
-        id: expect.any(String),
+        id: expect.any(Number),
         nombre: expect.any(String),
         apellidos: expect.any(String),
         email: expect.any(String),
         telefono: expect.any(String),
+
+        empresa: {
+          id: expect.any(Number),
+          nombre: expect.any(String),
+          direccion: expect.any(String),
+          observaciones: expect.any(String),
+        },
       },
     }
     const adminExpectedFctStructure = {
-      id: expect.any(String),
+      id: expect.any(Number),
       fechaInicio: expect.any(String),
       fechaFin: expect.any(String),
 
       alumno: {
-        id: expect.any(String),
+        id: expect.any(Number),
         nombre: expect.any(String),
         dniNie: expect.any(String),
         apellidos: expect.any(String),
@@ -47,24 +49,25 @@ describe('FctController (e2e)', () => {
         numeroSeguridadSocial: expect.any(String),
 
         tutorCentro: {
-          id: expect.any(String),
+          id: expect.any(Number),
           nombre: expect.any(String),
           apellidos: expect.any(String),
           email: expect.any(String),
         },
       },
-      empresa: {
-        id: expect.any(String),
-        nombre: expect.any(String),
-        direccion: expect.any(String),
-        observaciones: expect.any(String),
-      },
       tutorEmpresa: {
-        id: expect.any(String),
+        id: expect.any(Number),
         nombre: expect.any(String),
         apellidos: expect.any(String),
         email: expect.any(String),
         telefono: expect.any(String),
+
+        empresa: {
+          id: expect.any(Number),
+          nombre: expect.any(String),
+          direccion: expect.any(String),
+          observaciones: expect.any(String),
+        },
       },
     }
 

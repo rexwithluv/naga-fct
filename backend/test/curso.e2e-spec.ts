@@ -4,16 +4,16 @@ describe('CursoController (e2e)', () => {
   const baseEndpoint = '/cursos'
 
   const expectedCursoStructure = {
-    id: expect.any(String),
+    id: expect.any(Number),
     codigo: expect.any(String),
     nombre: expect.any(String),
 
     especialidad: {
-      id: expect.any(String),
+      id: expect.any(Number),
       nombre: expect.any(String),
     },
     tutorCentro: {
-      id: expect.any(String),
+      id: expect.any(Number),
       nombre: expect.any(String),
       apellidos: expect.any(String),
       email: expect.any(String),
