@@ -1,4 +1,4 @@
-import { Expose, Transform, Type } from 'class-transformer'
+import { Expose, Type } from 'class-transformer'
 import { ConcelloResponseDto } from '../../concello/dto/concello-response.dto'
 import { EstadoAlumnoResponseDto } from '../../estado-alumno/dto/estado-alumno-response.dto'
 import { TutorCentroMinimalResponseDto } from '../../tutor-centro/dto/tutor-centro-minimal-response.dto'

@@ -1,4 +1,4 @@
-import { Expose, Transform, Type } from 'class-transformer'
+import { Expose, Type } from 'class-transformer'
 import { CursoResponseDto } from '../../curso/dto/curso-response.dto'
 import { UsuarioResponseDto } from '../../usuario/dto/usuario-response.dto'
 

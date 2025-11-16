@@ -16,7 +16,7 @@ export class AlumnoCreateDto {
   readonly dniNie: string
 
   @IsNotEmpty()
-  @IsNumberString()
+  @IsString()
   @MinLength(1)
   readonly nombre: string
 
@@ -35,7 +35,7 @@ export class AlumnoCreateDto {
   readonly telefono: string
 
   @IsNotEmpty()
-  @IsString()
+  @IsNumberString()
   @Length(12, 12)
   readonly numeroSeguridadSocial: string
 

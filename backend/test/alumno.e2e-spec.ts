@@ -62,15 +62,15 @@ describe('AlumnoController (e2e)', () => {
   }
   const createAlumnoPayload = () => {
     return {
-      dniNie: 'X55555555A',
+      dniNie: `X${String(Date.now()).slice(6, 13)}A`,
       nombre: 'Test',
       apellidos: 'E2E',
       email: `test_${Date.now()}@test.com`,
       telefono: '123456789',
-      numeroSeguridadSocial: `28${String(Date.now()).slice(0, 8)}40`,
+      numeroSeguridadSocial: `28${String(Date.now()).slice(5, 13)}40`,
       concelloId: 1,
       estadoAlumnoId: 1,
-      tutorCentroId: 1,
+      tutorCentroId: 3,
     }
   }
 
@@ -182,61 +182,95 @@ describe('AlumnoController (e2e)', () => {
     })
   })
 
-  // describe(`POST ${baseEndpoint}`, () => {
-  //   describe('Authorization', () => {
-  //     it('should return 201 - admin', () => {
-  //       return request(app.getHttpServer())
-  //         .post(baseEndpoint)
-  //         .set('Authorization', `Bearer ${adminToken}`)
-  //         .send(createAlumnoPayload())
-  //         .expect(201)
-  //     })
-  //     it('should return 201 - standard', () => {
-  //       return request(app.getHttpServer())
-  //         .post(baseEndpoint)
-  //         .set('Authorization', `Bearer ${standardToken}`)
-  //         .send(createAlumnoPayload())
-  //         .expect(201)
-  //     })
-  //     it('should return 401 - without token', () => {
-  //       return request(app.getHttpServer())
-  //         .post(baseEndpoint)
-  //         .send(createAlumnoPayload())
-  //         .expect(401)
-  //     })
-  //   })
-  // describe('Response', () => {
-  //   it('should return AlumnoResponseDto with TutorCentro field - admin', () => {})
-  //   it('should return AlumnoResponseDto without TutorCentro field - standard', () => {})
-  // })
-  // describe('Errors', () => {
-  //   it('should return 403 trying to create Alumno in another Curso that not my own - standard', () => {})
-  // })
-  // })
+  describe(`POST ${baseEndpoint}`, () => {
+    describe('Authorization', () => {
+      it('should return 201 - admin', () => {
+        return request(app.getHttpServer())
+          .post(baseEndpoint)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .send(createAlumnoPayload())
+          .expect(201)
+      })
+      it('should return 201 - standard', () => {
+        return request(app.getHttpServer())
+          .post(baseEndpoint)
+          .set('Authorization', `Bearer ${standardToken}`)
+          .send(createAlumnoPayload())
+          .expect(201)
+      })
+      it('should return 401 - without token', () => {
+        return request(app.getHttpServer())
+          .post(baseEndpoint)
+          .send(createAlumnoPayload())
+          .expect(401)
+      })
+    })
+    describe('Response', () => {
+      it('should return AlumnoResponseDto with TutorCentro field - admin', async () => {
+        const response = await request(app.getHttpServer())
+          .post(baseEndpoint)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .send(createAlumnoPayload())
+          .expect(201)
 
-  // describe(`PUT ${baseEndpoint}/:id`, () => {
-  //   describe('Authorization', () => {
-  //     it('should return 200 - admin', () => {})
-  //     it('should return 200 - standard', () => {})
-  //     it('should return 401 - without token', () => {})
-  //   })
-  //   describe('Response', () => {
-  //     it('should return AlumnoResponseDto with TutorCentro field - admin', () => {})
-  //     it('should return AlumnoResponseDto without TutorCentro field - standard', () => {})
-  //   })
-  //   describe('Errors', () => {
-  //     it('should return 403 trying to update Alumno in another Curso that not my own - standard', () => {})
-  //   })
-  // })
+        const alumno = response.body
+        validateAlumnoStructure(alumno)
+      })
+      it('should return AlumnoResponseDto without TutorCentro field - standard', async () => {
+        const response = await request(app.getHttpServer())
+          .post(baseEndpoint)
+          .set('Authorization', `Bearer ${standardToken}`)
+          .send(createAlumnoPayload())
+          .expect(201)
 
-  // describe(`DELETE ${baseEndpoint}/:id`, () => {
-  //   describe('Authorization', () => {
-  //     it('should return 204 - admin', () => {})
-  //     it('should return 204 - standard', () => {})
-  //     it('should return 401 - without token', () => {})
-  //   })
-  //   describe('Errors', () => {
-  //     it('should return 403 trying to delete Alumno in another Curso that not my own - standard', () => {})
-  //   })
-  // })
+        const alumno = response.body
+        validateAlumnoStructure(alumno)
+      })
+    })
+  })
+
+  describe(`PUT ${baseEndpoint}/:id`, () => {
+    describe('Authorization', () => {
+      it('should return 200 - admin', () => {})
+      it('should return 200 - standard', () => {})
+      it('should return 401 - without token', () => {})
+    })
+    describe('Response', () => {
+      it('should return AlumnoResponseDto with TutorCentro field - admin', () => {})
+      it('should return AlumnoResponseDto without TutorCentro field - standard', () => {})
+    })
+    describe('Errors', () => {
+      it('should return 403 trying to update Alumno in another Curso that not my own - standard', () => {})
+    })
+  })
+
+  describe(`DELETE ${baseEndpoint}/:id`, () => {
+    const endpoint = `${baseEndpoint}/1`
+    const forbiddenEndpoint = `${baseEndpoint}/7`
+    describe('Authorization', () => {
+      it('should return 204 - admin', () => {
+        return request(app.getHttpServer())
+          .delete(endpoint)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .expect(204)
+      })
+      it('should return 204 - standard', () => {
+        return request(app.getHttpServer())
+          .delete(endpoint)
+          .set('Authorization', `Bearer ${standardToken}`)
+          .expect(204)
+      })
+      it('should return 401 - without token', () => {
+        return request(app.getHttpServer()).delete(endpoint).expect(401)
+      })
+    })
+    describe('Errors', () => {
+      it('should return 403 trying to delete Alumno in another Curso that not my own - standard', () => {
+        return request(app.getHttpServer())
+          .delete(forbiddenEndpoint)
+          .set('Authorization', `Bearer ${standardToken}`)
+          .expect(403)
+      })
+    })
+  })
 })

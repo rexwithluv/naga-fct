@@ -1,10 +1,23 @@
-import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common'
 import { plainToInstance } from 'class-transformer'
 import { JwtPayloadDto } from '../auth/dto/jwt-payload.dto'
 import { User } from '../common/decorators/user.decorator'
 import { UtilsService } from '../utils/utils.service'
 import { AlumnoService } from './alumno.service'
+import { AlumnoCreateDto } from './dto/alumno-create.dto'
 import { AlumnoResponseDto } from './dto/alumno-response.dto'
+import { AlumnoUpdateDto } from './dto/alumno-update.dto'
 
 @Controller('alumnos')
 export class AlumnoController {
@@ -28,8 +41,56 @@ export class AlumnoController {
 
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
-  async getById(@User() jwtUser: JwtPayloadDto, @Param('id') id: string) {
+  async getById(@User() jwtUser: JwtPayloadDto, @Param('id', ParseIntPipe) id: number) {
     const alumno = await this.service.getById(jwtUser, id)
+
+    return plainToInstance(AlumnoResponseDto, alumno, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+
+      groups: this.utils.getGroups(jwtUser),
+    })
+  }
+
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  async create(
+    @User() jwtUser: JwtPayloadDto,
+    @Body()
+    dto: AlumnoCreateDto,
+  ) {
+    const alumno = await this.service.create(jwtUser, dto)
+
+    return plainToInstance(AlumnoResponseDto, alumno, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+
+      groups: this.utils.getGroups(jwtUser),
+    })
+  }
+
+  @Put('/:id')
+  @HttpCode(HttpStatus.OK)
+  async update(
+    @User() jwtUser: JwtPayloadDto,
+    @Param('id', ParseIntPipe) id: number,
+    @Body()
+    dto: AlumnoUpdateDto,
+  ) {
+    const alumno = await this.service.update(jwtUser, id, dto)
+
+    return plainToInstance(AlumnoResponseDto, alumno, {
+      excludeExtraneousValues: true,
+      enableImplicitConversion: true,
+
+      groups: this.utils.getGroups(jwtUser),
+    })
+  }
+
+  @Delete('/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async delete(@User() jwtUser: JwtPayloadDto, @Param('id', ParseIntPipe) id: number) {
+    const alumno = await this.service.delete(jwtUser, id)
 
     return plainToInstance(AlumnoResponseDto, alumno, {
       excludeExtraneousValues: true,

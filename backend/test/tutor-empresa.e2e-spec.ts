@@ -15,7 +15,7 @@ describe('TutorEmpresaController (e2e)', () => {
       nombre: expect.any(String),
       direccion: expect.any(String),
       observaciones: expect.any(String),
-      contacto:{
+      contacto: {
         nombre: expect.any(String),
         email: expect.any(String),
         telefono: expect.any(String),

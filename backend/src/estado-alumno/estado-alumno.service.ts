@@ -9,7 +9,11 @@ export class EstadoAlumnoService {
     @InjectRepository(EstadoAlumno) private readonly repository: Repository<EstadoAlumno>,
   ) {}
 
-  async getAll() {
-    return this.repository.find()
+  async getAll(): Promise<EstadoAlumno[]> {
+    return await this.repository.find()
+  }
+
+  async getByNombre(nombre: string): Promise<EstadoAlumno> {
+    return await this.repository.findOneOrFail({ where: { nombre: nombre } })
   }
 }

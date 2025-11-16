@@ -21,6 +21,21 @@ services:
     ports:
       - 3306:3306
 
+  temp-pma:
+    image: phpmyadmin:latest
+    container_name: naga-pma
+    environment:
+      - PMA_HOST=temp-db
+      - PMA_USER=root
+      - PMA_PASSWORD=abc123.
+    depends_on:
+      temp-db:
+        condition: service_healthy
+    ports:
+      - 8080:80
+    networks:
+      - naga-network
+
   db:
     image: mariadb:lts
     container_name: naga-mariadb

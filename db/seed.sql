@@ -71,10 +71,10 @@ VALUES (
 
 INSERT INTO
     estados_alumno (nombre)
-VALUES ('Cursando'),
-    ('De baja'),
-    ('Graduado'),
-    ('En prácticas');
+VALUES ('ACTIVE'),
+    ('INACTIVE'),
+    ('GRADUATED'),
+    ('IN_PRACTICE');
 
 INSERT INTO
     roles_usuario (nombre)
