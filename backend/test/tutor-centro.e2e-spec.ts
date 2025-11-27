@@ -37,14 +37,14 @@ describe('AlumnoController (e2e)', () => {
       it('should return 200 - admin', () => {
         return request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
       })
 
       it('should return 403 - standard', () => {
         return request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization',standardToken)
           .expect(403)
       })
 
@@ -56,7 +56,7 @@ describe('AlumnoController (e2e)', () => {
       it('should an array with TutorCentroResponseDto', async () => {
         const response = await request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
 
         expect(response.body).toBeInstanceOf(Array)
@@ -72,14 +72,14 @@ describe('AlumnoController (e2e)', () => {
       it('should return 200 - admin', () => {
         return request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
       })
 
       it('should return 403 - standard', () => {
         return request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization',standardToken)
           .expect(403)
       })
 
@@ -91,7 +91,7 @@ describe('AlumnoController (e2e)', () => {
       it('should an array with TutorCentroResponseDto', async () => {
         const response = await request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
 
         const tutorCentro = response.body

@@ -79,14 +79,14 @@ describe('AlumnoController (e2e)', () => {
       it('should return 200 - admin', () => {
         return request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
       })
 
       it('should return 200 - standard', () => {
         return request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(200)
       })
 
@@ -98,7 +98,7 @@ describe('AlumnoController (e2e)', () => {
       it('should an array with tutorCentro field - admin', async () => {
         const response = await request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
 
         expect(response.body).toBeInstanceOf(Array)
@@ -110,7 +110,7 @@ describe('AlumnoController (e2e)', () => {
       it('should an array without tutorCentro field - standard', async () => {
         const response = await request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(200)
 
         expect(response.body).toBeInstanceOf(Array)
@@ -128,14 +128,14 @@ describe('AlumnoController (e2e)', () => {
       it('should return 200 - admin', () => {
         return request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
       })
 
       it('should return 200 - standard', () => {
         return request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(200)
       })
 
@@ -147,7 +147,7 @@ describe('AlumnoController (e2e)', () => {
       it('should return an AlumnoResponseDto with tutorCentro field - admin', async () => {
         const response = await request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
 
         const alumno = response.body
@@ -156,7 +156,7 @@ describe('AlumnoController (e2e)', () => {
       it('should return an AlumnoResponseDto without tutorCentro field - standard', async () => {
         const response = await request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(200)
 
         const alumno = response.body
@@ -170,13 +170,13 @@ describe('AlumnoController (e2e)', () => {
       it('should return 403, standard user dont see others alumnos', async () => {
         return request(app.getHttpServer())
           .get(forbiddenEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(403)
       })
       it('should return 404', () => {
         return request(app.getHttpServer())
           .get(notFoundEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(404)
       })
     })
@@ -187,14 +187,14 @@ describe('AlumnoController (e2e)', () => {
       it('should return 201 - admin', () => {
         return request(app.getHttpServer())
           .post(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .send(createAlumnoPayload())
           .expect(201)
       })
       it('should return 201 - standard', () => {
         return request(app.getHttpServer())
           .post(baseEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .send(createAlumnoPayload())
           .expect(201)
       })
@@ -209,7 +209,7 @@ describe('AlumnoController (e2e)', () => {
       it('should return AlumnoResponseDto with TutorCentro field - admin', async () => {
         const response = await request(app.getHttpServer())
           .post(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .send(createAlumnoPayload())
           .expect(201)
 
@@ -219,7 +219,7 @@ describe('AlumnoController (e2e)', () => {
       it('should return AlumnoResponseDto without TutorCentro field - standard', async () => {
         const response = await request(app.getHttpServer())
           .post(baseEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .send(createAlumnoPayload())
           .expect(201)
 
@@ -230,17 +230,57 @@ describe('AlumnoController (e2e)', () => {
   })
 
   describe(`PUT ${baseEndpoint}/:id`, () => {
+    const endpoint = `${baseEndpoint}/1`
+    const forbiddenEndpoint = `${baseEndpoint}/5`
     describe('Authorization', () => {
-      it('should return 200 - admin', () => {})
-      it('should return 200 - standard', () => {})
-      it('should return 401 - without token', () => {})
+      it('should return 200 - admin', () => {
+        return request(app.getHttpServer())
+          .put(endpoint)
+          .set('Authorization', adminToken)
+          .send(createAlumnoPayload())
+          .expect(200)
+      })
+      it('should return 200 - standard', () => {
+        return request(app.getHttpServer())
+          .put(endpoint)
+          .set('Authorization', standardToken)
+          .send(createAlumnoPayload())
+          .expect(200)
+      })
+      it('should return 401 - without token', () => {
+        return request(app.getHttpServer()).delete(endpoint).send(createAlumnoPayload()).expect(401)
+      })
     })
     describe('Response', () => {
-      it('should return AlumnoResponseDto with TutorCentro field - admin', () => {})
-      it('should return AlumnoResponseDto without TutorCentro field - standard', () => {})
+      it('should return AlumnoResponseDto with TutorCentro field - admin', async () => {
+        const response = await request(app.getHttpServer())
+          .put(endpoint)
+          .set('Authorization', adminToken)
+          .send(createAlumnoPayload())
+          .expect(200)
+
+        const alumno = response.body
+        validateAlumnoStructure(alumno)
+      })
+      it('should return AlumnoResponseDto without TutorCentro field - standard', async () => {
+        const response = await request(app.getHttpServer())
+          .put(endpoint)
+          .set('Authorization', standardToken)
+          .send(createAlumnoPayload())
+          .expect(200)
+
+        const alumno = response.body
+        validateAlumnoStructure(alumno)
+      })
     })
     describe('Errors', () => {
-      it('should return 403 trying to update Alumno in another Curso that not my own - standard', () => {})
+      it('should return 403 trying to update Alumno in another Curso that not my own - standard', () => {
+        return request(app.getHttpServer())
+          .put(forbiddenEndpoint)
+          .set('Authorization', standardToken)
+          .send(createAlumnoPayload())
+          .expect(403)
+      })
     })
   })
 
@@ -251,13 +291,13 @@ describe('AlumnoController (e2e)', () => {
       it('should return 204 - admin', () => {
         return request(app.getHttpServer())
           .delete(endpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(204)
       })
       it('should return 204 - standard', () => {
         return request(app.getHttpServer())
           .delete(endpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(204)
       })
       it('should return 401 - without token', () => {
@@ -268,7 +308,7 @@ describe('AlumnoController (e2e)', () => {
       it('should return 403 trying to delete Alumno in another Curso that not my own - standard', () => {
         return request(app.getHttpServer())
           .delete(forbiddenEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(403)
       })
     })

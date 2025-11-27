@@ -80,7 +80,6 @@ export class AlumnoService {
     const alumno = await this.getById(jwtUser, id)
 
     const merge = this.repository.merge(alumno, dto)
-    console.log(merge)
     return await this.repository.save(merge)
   }
 

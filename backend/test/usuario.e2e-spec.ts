@@ -43,14 +43,14 @@ describe('UsuarioController (e2e)', () => {
       it('should return 200', () => {
         return request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
       })
 
       it('should return 403', () => {
         return request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(403)
       })
 
@@ -62,7 +62,7 @@ describe('UsuarioController (e2e)', () => {
       it('should return an array', async () => {
         const response = await request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
 
         expect(response.body).toBeInstanceOf(Array)
@@ -80,14 +80,14 @@ describe('UsuarioController (e2e)', () => {
       it('should return 200 - admin', () => {
         return request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
       })
 
       it('should return 200 - standard', () => {
         return request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(200)
       })
 
@@ -99,7 +99,7 @@ describe('UsuarioController (e2e)', () => {
       it('should return my data', async () => {
         const response = await request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
 
         const usuario = response.body
@@ -116,14 +116,14 @@ describe('UsuarioController (e2e)', () => {
       it('should return 200', () => {
         return request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
       })
 
       it('should return 403', () => {
         return request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(403)
       })
 
@@ -135,7 +135,7 @@ describe('UsuarioController (e2e)', () => {
       it('should return an array with the tutorCentro object', async () => {
         const response = await request(app.getHttpServer())
           .get(endpointTutorCentroObject)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
 
         const usuario = response.body
@@ -144,7 +144,7 @@ describe('UsuarioController (e2e)', () => {
       it('should return an array with tutorCentro null', async () => {
         const response = await request(app.getHttpServer())
           .get(endpointTutorCentroNull)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
 
         const usuario = response.body
@@ -156,7 +156,7 @@ describe('UsuarioController (e2e)', () => {
       it('should return 404', () => {
         return request(app.getHttpServer())
           .get(notExistUser)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(404)
       })
     })
@@ -180,7 +180,7 @@ describe('UsuarioController (e2e)', () => {
       it('POST /usuarios (ADMIN) - Create admin user', () => {
         return request(app.getHttpServer())
           .post(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .send(newAdmin)
           .expect(201)
       })
@@ -188,7 +188,7 @@ describe('UsuarioController (e2e)', () => {
       it('should return 403', () => {
         return request(app.getHttpServer())
           .post(baseEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .send(newUser)
           .expect(403)
       })
@@ -214,7 +214,7 @@ describe('UsuarioController (e2e)', () => {
       it('should return a created admin user and tutorCentro null', async () => {
         const response = await request(app.getHttpServer())
           .post(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .send(newAdmin)
           .expect(201)
 
@@ -243,7 +243,7 @@ describe('UsuarioController (e2e)', () => {
       it('should return a created standard user', async () => {
         const response = await request(app.getHttpServer())
           .post(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .send(newUser)
           .expect(201)
 
@@ -286,7 +286,7 @@ describe('UsuarioController (e2e)', () => {
       it('should return 400', async () => {
         return request(app.getHttpServer())
           .post(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .send(badUser)
           .expect(400)
       })
@@ -305,7 +305,7 @@ describe('UsuarioController (e2e)', () => {
 
       const response = await request(app.getHttpServer())
         .patch(`${endpoint}/${createdUserId}`)
-        .set('Authorization', `Bearer ${adminToken}`)
+        .set('Authorization', adminToken)
         .send(updatePayload)
         .expect(200);
 
@@ -318,7 +318,7 @@ describe('UsuarioController (e2e)', () => {
     it('PATCH /usuarios/:id (STANDARD) - Acceso prohibido a OTROS usuarios', () => {
       return request(app.getHttpServer())
         .patch(`${endpoint}/${createdUserId}`)
-        .set('Authorization', `Bearer ${standardToken}`)
+        .set('Authorization', standardToken)
         .send({
           email: 'unauthorized@change.com'
         })
@@ -328,7 +328,7 @@ describe('UsuarioController (e2e)', () => {
     it('PATCH /usuarios/:id (ADMIN) - Intento de actualizar un campo no permitido (rolId)', () => {
       return request(app.getHttpServer())
         .patch(`${endpoint}/${createdUserId}`)
-        .set('Authorization', `Bearer ${adminToken}`)
+        .set('Authorization', adminToken)
         .send({
           rolId: 1 // Asumiendo 1 es ADMIN
         })
@@ -345,7 +345,7 @@ describe('UsuarioController (e2e)', () => {
 
       return request(app.getHttpServer())
         .delete(`${endpoint}/${createdUserId}`)
-        .set('Authorization', `Bearer ${standardToken}`)
+        .set('Authorization', standardToken)
         .expect(403);
     });
 
@@ -355,20 +355,20 @@ describe('UsuarioController (e2e)', () => {
       // 1. Eliminar el usuario (debería devolver 200 o 204 dependiendo de tu API)
       await request(app.getHttpServer())
         .delete(`${endpoint}/${createdUserId}`)
-        .set('Authorization', `Bearer ${adminToken}`)
+        .set('Authorization', adminToken)
         .expect(200); // o 204 No Content
 
       // 2. Comprobar que ya no existe (verificación)
       await request(app.getHttpServer())
         .get(`${endpoint}/${createdUserId}`)
-        .set('Authorization', `Bearer ${adminToken}`)
+        .set('Authorization', adminToken)
         .expect(404);
     });
 
     it('DELETE /usuarios/:id (ADMIN) - Usuario no encontrado', () => {
       return request(app.getHttpServer())
         .delete(`${endpoint}/999999`)
-        .set('Authorization', `Bearer ${adminToken}`)
+        .set('Authorization', adminToken)
         .expect(404);
     });
   }); */

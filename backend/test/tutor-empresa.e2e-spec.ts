@@ -30,14 +30,14 @@ describe('TutorEmpresaController (e2e)', () => {
       it('should return 200', () => {
         return request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
       })
 
       it('should return 200', () => {
         return request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(200)
       })
 
@@ -50,7 +50,7 @@ describe('TutorEmpresaController (e2e)', () => {
       it('should return an array with TutorEmpresaResponseDto - admin', async () => {
         const response = await request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
 
         expect(response.body).toBeInstanceOf(Array)
@@ -62,7 +62,7 @@ describe('TutorEmpresaController (e2e)', () => {
       it('should return an array without especialidad - standard', async () => {
         const response = await request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(200)
 
         expect(response.body).toBeInstanceOf(Array)
@@ -78,14 +78,14 @@ describe('TutorEmpresaController (e2e)', () => {
       it('should return 200', () => {
         return request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
       })
 
       it('should return 200', () => {
         return request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(200)
       })
 
@@ -98,7 +98,7 @@ describe('TutorEmpresaController (e2e)', () => {
       it('should return a TutorEmpresaResponseDto - admin', async () => {
         const response = await request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
 
         const tutorEmpresa = response.body
@@ -108,7 +108,7 @@ describe('TutorEmpresaController (e2e)', () => {
       it('should return a TutorEmpresaResponseDto - standard', async () => {
         const response = await request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(200)
 
         const tutorEmpresa = response.body

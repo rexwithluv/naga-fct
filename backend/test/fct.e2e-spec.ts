@@ -83,14 +83,14 @@ describe('FctController (e2e)', () => {
       it('should return 200', () => {
         return request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
       })
 
       it('should return 200', () => {
         return request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(200)
       })
 
@@ -103,7 +103,7 @@ describe('FctController (e2e)', () => {
       it('should return an array FctResponseDto - admin', async () => {
         const response = await request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
 
         expect(response.body).toBeInstanceOf(Array)
@@ -115,7 +115,7 @@ describe('FctController (e2e)', () => {
       it('should return an array FctResponseDto - standard', async () => {
         const response = await request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(200)
 
         expect(response.body).toBeInstanceOf(Array)
@@ -133,14 +133,14 @@ describe('FctController (e2e)', () => {
       it('should return 200', () => {
         return request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
       })
 
       it('should return 200', () => {
         return request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(200)
       })
 
@@ -152,7 +152,7 @@ describe('FctController (e2e)', () => {
       it('should return a FctResponseDto - admin', async () => {
         const response = await request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
 
         const fct = response.body
@@ -162,7 +162,7 @@ describe('FctController (e2e)', () => {
       it('should return a FctResponseDto - standard', async () => {
         const response = await request(app.getHttpServer())
           .get(endpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(200)
 
         const fct = response.body
@@ -173,7 +173,7 @@ describe('FctController (e2e)', () => {
       it('should return 403 when a standard user tries to access FCT they do not own', () => {
         return request(app.getHttpServer())
           .get(forbiddenEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(403)
       })
     })

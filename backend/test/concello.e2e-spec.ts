@@ -14,14 +14,14 @@ describe('ConcelloController (e2e)', () => {
       it('should return 200', () => {
         return request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
       })
 
       it('should return 200', () => {
         return request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(200)
       })
 
@@ -34,7 +34,7 @@ describe('ConcelloController (e2e)', () => {
       it('should return an array with id and nombre - admin', async () => {
         const response = await request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
 
         expect(response.body).toBeInstanceOf(Array)
@@ -47,7 +47,7 @@ describe('ConcelloController (e2e)', () => {
       it('should return an array with id and nombre - standard', async () => {
         const response = await request(app.getHttpServer())
           .get(baseEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(200)
 
         expect(response.body).toBeInstanceOf(Array)
@@ -63,7 +63,7 @@ describe('ConcelloController (e2e)', () => {
       it('should return an array where all the names start with "Tui" - admin', async () => {
         const response = await request(app.getHttpServer())
           .get(filterEndpoint)
-          .set('Authorization', `Bearer ${adminToken}`)
+          .set('Authorization', adminToken)
           .expect(200)
 
         expect(
@@ -74,7 +74,7 @@ describe('ConcelloController (e2e)', () => {
       it('should return an array where all the names start with "Tui" - standard', async () => {
         const response = await request(app.getHttpServer())
           .get(filterEndpoint)
-          .set('Authorization', `Bearer ${standardToken}`)
+          .set('Authorization', standardToken)
           .expect(200)
 
         expect(

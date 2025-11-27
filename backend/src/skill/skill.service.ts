@@ -15,10 +15,11 @@ export class SkillService {
     private readonly usuarioService: UsuarioService,
   ) {}
 
+  private readonly relations: string[] = ['especialidad']
+
   async getAll(@User() jwtUser: JwtPayloadDto): Promise<Skill[]> {
-    const groupsRelations: string[] = ['especialidad']
     if (this.utils.isAdmin(jwtUser)) {
-      return this.repository.find({ relations: groupsRelations })
+      return this.repository.find({ relations: this.relations })
     }
 
     const user = await this.usuarioService.getById(jwtUser.id)
@@ -27,7 +28,11 @@ export class SkillService {
       where: {
         especialidad: userEspecialidad,
       },
-      relations: groupsRelations,
+      relations: this.relations,
     })
+  }
+
+  async getById(id: number): Promise<Skill> {
+    return await this.repository.findOneOrFail({ where: { id: id }, relations: this.relations })
   }
 }
